@@ -14,9 +14,9 @@ const LANGUAGES = {
     strings: {
       loginWelcome:'Mirësevini', loginSubtitle:'Hyni në sistemin e menaxhimit të punonjësve',
       loginIdentifierLabel:'Email ose username', loginIdentifierPlaceholder:'Shkruaj email-in ose username-in',
-      password:'Fjalëkalimi', loginHelp:'Ndihmë për hyrje', rememberMe:'Më mbaj mend në këtë pajisje',
-      login:'Hyni', loginLoading:'Duke hyrë...', demoInfo:'Hyr me email ose username.',
-      standardSchedule:'Orari normal: 08:00 - 17:00', overtimeRule:'Sistemi llogarit automatikisht orët e punës dhe pagesën sipas regjistrimeve.',
+      password:'Fjalëkalimi', loginHelp:'Ndihmë për qasje', rememberMe:'Më mbaj mend në këtë pajisje',
+      login:'Hyni', loginLoading:'Duke hyrë...', demoInfo:'Përdor email ose username-in e llogarisë suaj.',
+      standardSchedule:'Orari normal: 08:00 - 17:00', overtimeRule:'Çdo kërkesë për punë jashtë orarit verifikohet nga administrata.',
       panelProfessional:'Panel profesional', panel:'Panel', menu:'Menu', dashboard:'Dashboard', employees:'Punonjësit',
       requests:'Kërkesat', payroll:'Pagat', attendance:'Pjesëmarrja', logout:'Dilni', newRequest:'Kërkesë e Re',
       standardCheckIn:'Check In', standardCheckOut:'Check Out', overtimeCheckIn:'Orë shtesë: Check In', overtimeCheckOut:'Orë shtesë: Check Out',
@@ -43,7 +43,7 @@ const LANGUAGES = {
       unpaid:'Pa paguar', debtFree:'Pa borgj', debtOpen:'Ka borgj', noRecentActivity:'Nuk ka aktivitet të fundit.',
       noRequests:"Nuk ka kërkesa për t’u shfaqur.", noAttendanceMonth:'Nuk ka regjistrime për këtë muaj.', noEmployees:'Nuk u gjet asnjë punonjës.',
       noPayrollEmployees:'Nuk ka punonjës.', requestLeaveEarly:'Lëshim herët', requestDayOff:'Ditë pushimi',
-      requestWeekendWork:'Punë në vikend', requestOvertime:'Kërkesë për orë shtesë', requestComplaint:'Ankesë', requestOther:'Tjetër', fillLoginFields:'Plotëso email/username dhe fjalëkalimin.',
+      requestWeekendWork:'Punë në vikend', requestComplaint:'Ankesë', requestOther:'Tjetër', fillLoginFields:'Plotëso email/username dhe fjalëkalimin.',
       loginError:'Email/username ose fjalëkalim i pasaktë.', loginUnexpectedError:'Ndodhi një gabim gjatë hyrjes.',
       welcomeUser:'Mirësevini', loggedOut:'U çkyçët me sukses.', accessDenied:'Nuk keni qasje në këtë faqe.',
       todayNoCheckin:'Nuk keni bërë check in sot.', todayWorkingSince:'Në punë që nga', todayFinished:'Përfunduar',
@@ -53,7 +53,7 @@ const LANGUAGES = {
       confirmDelete:'A je i sigurt që dëshiron ta fshish', employeeDeleted:'Punonjësi u fshi me sukses.', employeeDeleteError:'Nuk u fshi punonjësi.',
       requestDescriptionRequired:'Përshkrimi është i detyrueshëm.', requestSent:'Kërkesa u dërgua me sukses.', requestSendError:'Nuk u dërgua kërkesa.',
       requestApproved:'Kërkesa u aprovua.', requestRejected:'Kërkesa u refuzua.', requestUpdateError:'Nuk u përditësua kërkesa.',
-      approvalPrompt:'Shkruaj mesazh aprovimi (opsionale):', rejectionPrompt:'Shkruaj arsyen e refuzimit (opsionale):', adminResponse:'Përgjigjja e adminit', overtimeNeedsApproval:'Pas orës 18:00 duhet aprovimi i adminit për orë shtesë.', overtimeRequestSent:'Kërkesa për orë shtesë iu dërgua adminit.', overtimeReasonPrompt:'Shkruaj arsyen për orët shtesë:', accessHelpText:'Për ndihmë me qasje, kontakto administratorin. Mos ndaj fjalëkalimin me askënd.',
+      approvalPrompt:'Shkruaj mesazh aprovimi (opsionale):', rejectionPrompt:'Shkruaj arsyen e refuzimit (opsionale):', adminResponse:'Përgjigjja e adminit',
       standardCheckinSuccess:'Check in u regjistrua me sukses.', standardCheckoutSuccess:'Check out u regjistrua me sukses.',
       autoCheckoutSuccess:'Check out automatik në ora 17:00 u regjistrua.', attendanceSaveError:'Nuk u ruajt pjesëmarrja.',
       overtimeBeforeFive:'Orët shtesë mund të fillohen vetëm pas orës 17:00.', overtimeNeedStandardDone:'Së pari duhet të mbyllen seancat normale.',
@@ -74,7 +74,7 @@ LANGUAGES.en.strings = {
   loginWelcome:'Welcome', loginSubtitle:'Sign in to the employee management system', loginIdentifierLabel:'Email or username',
   loginIdentifierPlaceholder:'Enter email or username', password:'Password', loginHelp:'Access help', rememberMe:'Remember me on this device',
   login:'Sign In', loginLoading:'Signing in...', demoInfo:'Sign in using email or username.', standardSchedule:'Regular schedule: 08:00 - 17:00',
-  overtimeRule:'The system automatically calculates work hours and pay from attendance records.', panelProfessional:'Professional panel', panel:'Panel', menu:'Menu',
+  overtimeRule:'Overtime is paid using the rate set for each employee.', panelProfessional:'Professional panel', panel:'Panel', menu:'Menu',
   employees:'Employees', requests:'Requests', payroll:'Payroll', attendance:'Attendance', logout:'Logout', newRequest:'New Request',
   salaryDueThisMonth:'Salary due', bankDueThisMonth:'Bank salary due', pendingRequests:'Pending requests', salaryChart:'Salary chart',
   salaryChartHint:'Due this month', quickInfo:'Quick info', todayStatusTitle:'Today status', overtimeTodayTitle:'Overtime today',
@@ -95,7 +95,7 @@ LANGUAGES.en.strings = {
   pending:'Pending', approved:'Approved', rejected:'Rejected', paid:'Paid', unpaid:'Unpaid', debtFree:'No debt', debtOpen:'Debt open',
   noRecentActivity:'No recent activity.', noRequests:'No requests to display.', noAttendanceMonth:'No records for this month.',
   noEmployees:'No employees found.', noPayrollEmployees:'No employees.', requestLeaveEarly:'Leave early', requestDayOff:'Day off',
-  requestWeekendWork:'Weekend work', requestOvertime:'Overtime request', requestComplaint:'Complaint', requestOther:'Other', fillLoginFields:'Enter email/username and password.',
+  requestWeekendWork:'Weekend work', requestComplaint:'Complaint', requestOther:'Other', fillLoginFields:'Enter email/username and password.',
   loginError:'Incorrect email/username or password.', loginUnexpectedError:'An error occurred during sign in.', welcomeUser:'Welcome',
   loggedOut:'You logged out successfully.', accessDenied:'You do not have access to this page.', employeeNameEmailRequired:'Name, username and email are required.',
   duplicateEmail:'This email already exists.', duplicateUsername:'This username already exists.', employeeUpdated:'Employee updated successfully.',
@@ -103,7 +103,7 @@ LANGUAGES.en.strings = {
   confirmDelete:'Are you sure you want to delete', employeeDeleted:'Employee deleted successfully.', employeeDeleteError:'Employee was not deleted.',
   requestDescriptionRequired:'Description is required.', requestSent:'Request sent successfully.', requestSendError:'Request was not sent.',
   requestApproved:'Request approved.', requestRejected:'Request rejected.', requestUpdateError:'Request was not updated.',
-  approvalPrompt:'Write an approval note (optional):', rejectionPrompt:'Write the rejection reason (optional):', adminResponse:'Admin response', overtimeNeedsApproval:'After 18:00 an admin approval is required for overtime.', overtimeRequestSent:'The overtime request was sent to admin.', overtimeReasonPrompt:'Write the reason for overtime:', accessHelpText:'For access help, contact the administrator. Do not share your password with anyone.',
+  approvalPrompt:'Write an approval note (optional):', rejectionPrompt:'Write the rejection reason (optional):', adminResponse:'Admin response',
   standardCheckinSuccess:'Check in saved successfully.', standardCheckoutSuccess:'Check out saved successfully.', autoCheckoutSuccess:'Automatic 5 PM checkout saved.',
   attendanceSaveError:'Attendance was not saved.', overtimeBeforeFive:'Overtime can start only after 5 PM.', overtimeNeedStandardDone:'Regular sessions must be closed first.',
   overtimeStartSuccess:'Overtime started successfully.', overtimeEndSuccess:'Overtime ended successfully.', overtimeAlreadyDone:'Today overtime is already completed.',
@@ -119,7 +119,7 @@ LANGUAGES.bs.strings = {
   loginWelcome:'Dobrodošli', loginSubtitle:'Prijavite se u sistem za upravljanje zaposlenima', loginIdentifierLabel:'Email ili korisničko ime',
   loginIdentifierPlaceholder:'Unesite email ili korisničko ime', password:'Lozinka', loginHelp:'Pomoć za pristup', rememberMe:'Zapamti me na ovom uređaju',
   login:'Prijava', loginLoading:'Prijavljivanje...', demoInfo:'Prijavite se emailom ili korisničkim imenom.', standardSchedule:'Redovno radno vrijeme: 08:00 - 17:00',
-  overtimeRule:'Sistem automatski računa radne sate i isplatu iz evidencije prisustva.', panelProfessional:'Profesionalni panel', employees:'Zaposleni',
+  overtimeRule:'Prekovremeni rad se plaća prema stopi dodijeljenoj zaposleniku.', panelProfessional:'Profesionalni panel', employees:'Zaposleni',
   requests:'Zahtjevi', payroll:'Plate', attendance:'Prisustvo', logout:'Odjava', newRequest:'Novi zahtjev', salaryDueThisMonth:'Plata za isplatu',
   bankDueThisMonth:'Plata za banku', pendingRequests:'Zahtjevi na čekanju', salaryChart:'Grafikon plata', salaryChartHint:'Za isplatu ovog mjeseca',
   quickInfo:'Brze informacije', todayStatusTitle:'Današnji status', overtimeTodayTitle:'Prekovremeni danas', overtimePayTodayTitle:'Prekovremena isplata danas',
@@ -138,13 +138,13 @@ LANGUAGES.bs.strings = {
   inactive:'Neaktivan', pending:'Na čekanju', approved:'Odobreno', rejected:'Odbijeno', paid:'Plaćeno', unpaid:'Neplaćeno', debtFree:'Bez duga', debtOpen:'Postoji dug',
   noRecentActivity:'Nema nedavnih aktivnosti.', noRequests:'Nema zahtjeva za prikaz.', noAttendanceMonth:'Nema evidencije za ovaj mjesec.', noEmployees:'Nema pronađenih zaposlenih.',
   noPayrollEmployees:'Nema zaposlenih.', requestLeaveEarly:'Raniji odlazak', requestDayOff:'Slobodan dan', requestWeekendWork:'Vikend rad',
-  requestOvertime:'Zahtjev za prekovremeni rad', requestComplaint:'Žalba', requestOther:'Ostalo', fillLoginFields:'Unesite email/korisničko ime i lozinku.', loginError:'Pogrešan email/korisničko ime ili lozinka.',
+  requestComplaint:'Žalba', requestOther:'Ostalo', fillLoginFields:'Unesite email/korisničko ime i lozinku.', loginError:'Pogrešan email/korisničko ime ili lozinka.',
   loginUnexpectedError:'Došlo je do greške pri prijavi.', welcomeUser:'Dobrodošli', loggedOut:'Uspješno ste se odjavili.', accessDenied:'Nemate pristup ovoj stranici.',
   employeeNameEmailRequired:'Ime, korisničko ime i email su obavezni.', duplicateEmail:'Ovaj email već postoji.', duplicateUsername:'Ovo korisničko ime već postoji.',
   employeeUpdated:'Zaposleni je uspješno ažuriran.', employeeAdded:'Zaposleni je uspješno dodan.', employeeSaveError:'Zaposleni nije sačuvan.',
   employeeDeleteSelf:'Ne možete obrisati sami sebe.', confirmDelete:'Da li ste sigurni da želite obrisati', employeeDeleted:'Zaposleni je uspješno obrisan.',
   employeeDeleteError:'Zaposleni nije obrisan.', requestDescriptionRequired:'Opis je obavezan.', requestSent:'Zahtjev je uspješno poslan.', requestSendError:'Zahtjev nije poslan.',
-  requestApproved:'Zahtjev je odobren.', requestRejected:'Zahtjev je odbijen.', requestUpdateError:'Zahtjev nije ažuriran.', approvalPrompt:'Napišite poruku odobrenja (opcionalno):', overtimeNeedsApproval:'Nakon 18:00 potrebno je odobrenje administratora za prekovremeni rad.', overtimeRequestSent:'Zahtjev za prekovremeni rad je poslan administratoru.', overtimeReasonPrompt:'Napišite razlog za prekovremeni rad:', accessHelpText:'Za pomoć pri pristupu kontaktirajte administratora. Ne dijelite lozinku ni sa kim.',
+  requestApproved:'Zahtjev je odobren.', requestRejected:'Zahtjev je odbijen.', requestUpdateError:'Zahtjev nije ažuriran.', approvalPrompt:'Napišite poruku odobrenja (opcionalno):',
   rejectionPrompt:'Napišite razlog odbijanja (opcionalno):', adminResponse:'Odgovor administratora', standardCheckinSuccess:'Check in uspješno sačuvan.',
   standardCheckoutSuccess:'Check out uspješno sačuvan.', autoCheckoutSuccess:'Automatski check-out u 17:00 je sačuvan.', attendanceSaveError:'Prisustvo nije sačuvano.',
   overtimeBeforeFive:'Prekovremeni rad može početi tek nakon 17:00.', overtimeNeedStandardDone:'Redovne sesije moraju prvo biti zatvorene.', overtimeStartSuccess:'Prekovremeni rad je uspješno pokrenut.',
@@ -234,7 +234,7 @@ function bindEvents() {
   document.getElementById('exportAttendanceBtn')?.addEventListener('click', exportAttendance);
   document.getElementById('mobileMenuBtn')?.addEventListener('click', toggleMobileMenu);
   document.getElementById('mobileMenuClose')?.addEventListener('click', toggleMobileMenu);
-  document.getElementById('forgotPasswordBtn')?.addEventListener('click', () => showToast(t('accessHelpText'), 'info'));
+  document.getElementById('forgotPasswordBtn')?.addEventListener('click', () => showToast('Për qasje kontakto administratorin. Kredencialet nuk shfaqen në sistem.', 'info'));
   document.getElementById('toggleLoginPassword')?.addEventListener('click', () => togglePassword('loginPassword', 'toggleLoginPassword'));
   document.getElementById('toggleEmployeePassword')?.addEventListener('click', () => togglePassword('employeePassword', 'toggleEmployeePassword'));
   document.getElementById('requestType')?.addEventListener('change', updateRequestFormUi);
@@ -634,8 +634,10 @@ function renderSalaryChart() {
   const labels = employees.map(e => e.full_name);
   const dueData = employees.map(e => getPayrollForEmployee(e).dueGross);
   const fullData = employees.map(e => getPayrollForEmployee(e).fullGross);
+  if (!els.salaryChart) return;
   if (state.chart) state.chart.destroy();
   const ctx = els.salaryChart.getContext('2d');
+  if (!ctx) return;
   state.chart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -696,39 +698,6 @@ function setButtonDisabled(btn) {
   btn.disabled = true;
 }
 
-function getApprovedOvertimeRequest(userId, dateStr) {
-  return state.requests.find(r => r.user_id === userId && r.type === 'overtime' && r.status === 'approved' && r.request_date === dateStr);
-}
-function getPendingOvertimeRequest(userId, dateStr) {
-  return state.requests.find(r => r.user_id === userId && r.type === 'overtime' && r.status === 'pending' && r.request_date === dateStr);
-}
-async function ensureOvertimeApproval(today) {
-  const now = new Date();
-  const six = new Date(`${today}T18:00:00`);
-  if (now < six) return true;
-  const approved = getApprovedOvertimeRequest(state.currentUser.id, today);
-  if (approved) return true;
-  const pending = getPendingOvertimeRequest(state.currentUser.id, today);
-  if (pending) {
-    showToast(t('overtimeNeedsApproval'), 'info');
-    return false;
-  }
-  const reason = window.prompt(t('overtimeReasonPrompt'), '');
-  if (!reason || !reason.trim()) return false;
-  const { error } = await state.supabase.from('requests').insert({
-    user_id: state.currentUser.id,
-    type: 'overtime',
-    request_date: today,
-    hours_requested: 0,
-    description: reason.trim(),
-    status: 'pending'
-  });
-  if (error) throw error;
-  await refreshAllData();
-  showToast(t('overtimeRequestSent'), 'info');
-  return false;
-}
-
 async function handleStandardAttendance() {
   try {
     const today = currentDateString();
@@ -764,7 +733,7 @@ async function handleStandardAttendance() {
     await refreshAllData();
   } catch (error) {
     console.error(error);
-    showToast(error?.message ? `${t('attendanceSaveError')} ${error.message}` : t('attendanceSaveError'), 'error');
+    showToast(`${t('attendanceSaveError')} ${error?.message ? '- ' + error.message : ''}`, 'error');
   }
 }
 
@@ -785,9 +754,16 @@ async function handleOvertimeAttendance() {
       showToast(t('overtimeEndSuccess'));
     } else {
       const five = new Date(`${today}T17:00:00`);
+      const six = new Date(`${today}T18:00:00`);
       if (now < five) return showToast(t('overtimeBeforeFive'), 'error');
-      const allowed = await ensureOvertimeApproval(today);
-      if (!allowed) return;
+      if (now >= six && !hasApprovedOvertimeRequest(state.currentUser.id, today)) {
+        const reason = window.prompt('Shkruaj arsyen pse po bën check in pas orës 18:00:', '')?.trim();
+        if (!reason) return showToast('Arsyeja është e detyrueshme për punë pas orës 18:00.', 'error');
+        await createOvertimeApprovalRequest(today, reason);
+        showToast('Kërkesa për orë shtesë iu dërgua adminit. Prit aprovimin.', 'info');
+        await refreshAllData();
+        return;
+      }
       const { error } = await state.supabase.from('attendance_sessions').insert({
         user_id: state.currentUser.id,
         work_date: today,
@@ -801,7 +777,7 @@ async function handleOvertimeAttendance() {
     await refreshAllData();
   } catch (error) {
     console.error(error);
-    showToast(error?.message ? `${t('attendanceSaveError')} ${error.message}` : t('attendanceSaveError'), 'error');
+    showToast(`${t('attendanceSaveError')} ${error?.message ? '- ' + error.message : ''}`, 'error');
   }
 }
 
@@ -833,6 +809,23 @@ function isWorkdayAllowed(userId, dateStr) {
 }
 function hasApprovedWeekendRequest(userId, dateStr) {
   return state.requests.some(r => r.user_id === userId && r.type === 'weekend_work' && r.status === 'approved' && r.request_date === dateStr);
+}
+function hasApprovedOvertimeRequest(userId, dateStr) {
+  return state.requests.some(r => r.user_id === userId && r.type === 'overtime' && r.status === 'approved' && r.request_date === dateStr);
+}
+
+async function createOvertimeApprovalRequest(dateStr, reason) {
+  const payload = {
+    user_id: state.currentUser.id,
+    type: 'overtime',
+    request_date: dateStr,
+    hours_requested: 0,
+    description: reason,
+    status: 'pending',
+    admin_response: ''
+  };
+  const { error } = await state.supabase.from('requests').insert(payload);
+  if (error) throw error;
 }
 function getApprovedHourDeduction(userId, dateStr) {
   return state.requests
@@ -1019,7 +1012,7 @@ async function handleEmployeeSubmit(event) {
       if (error) throw error;
       showToast(t('employeeUpdated'));
     } else {
-      if (!password) return showToast('Fjalëkalimi është i detyrueshëm për punonjësin e ri.', 'error');
+      if (!password) return showToast('Fjalëkalimi është i detyrueshëm.', 'error');
       payload.password_hash = await hashPassword(password);
       const { error } = await state.supabase.from('employees').insert(payload);
       if (error) throw error;
@@ -1029,7 +1022,7 @@ async function handleEmployeeSubmit(event) {
     await refreshAllData();
   } catch (error) {
     console.error(error);
-    showToast(error?.message ? `${t('employeeSaveError')} ${error.message}` : t('employeeSaveError'), 'error');
+    showToast(`${t('employeeSaveError')} ${error?.message ? '- ' + error.message : ''}`, 'error');
   }
 }
 
@@ -1172,7 +1165,7 @@ function getRequestTypeLabel(type) {
     leave_early: t('requestLeaveEarly'),
     day_off: t('requestDayOff'),
     weekend_work: t('requestWeekendWork'),
-    overtime: t('requestOvertime'),
+    overtime: 'Orë shtesë',
     complaint: t('requestComplaint'),
     other: t('requestOther')
   })[type] || type;
