@@ -81,9 +81,9 @@
       </form>
 
       <div class="mt-6 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-600 space-y-1">
-        <div data-i18n="demoInfo">Hyr me email ose username.</div>
+        <div data-i18n="demoInfo">Përdor email ose username-in e llogarisë suaj.</div>
         <div data-i18n="standardSchedule">Orari normal: 08:00 - 17:00</div>
-        <div data-i18n="overtimeRule">Sistemi llogarit automatikisht orët e punës dhe pagesën sipas regjistrimeve.</div>
+        <div data-i18n="overtimeRule">Çdo kërkesë për punë jashtë orarit verifikohet nga administrata.</div>
       </div>
     </div>
   </section>
@@ -253,8 +253,8 @@
                 <option value="Prodhim">Prodhim</option>
                 <option value="Montim">Montim</option>
                 <option value="Shitje">Shitje</option>
-                <option value="Administrata">Administrata</option>
-                <option value="Arkitekt/e">Arkitekt/e</option>
+                <option value="Zyra">Zyra</option>
+                <option value="Magazinë">Magazinë</option>
               </select>
             </div>
             <div class="overflow-x-auto scrollbar">
@@ -376,6 +376,7 @@
               <option value="leave_early" data-i18n="requestLeaveEarly">Lëshim herët</option>
               <option value="day_off" data-i18n="requestDayOff">Ditë pushimi</option>
               <option value="weekend_work" data-i18n="requestWeekendWork">Punë në vikend</option>
+              <option value="overtime">Orë shtesë</option>
               <option value="complaint" data-i18n="requestComplaint">Ankesë</option>
               <option value="other" data-i18n="requestOther">Tjetër</option>
             </select>
@@ -428,11 +429,11 @@
           <div>
             <label class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="departmentCol">Departamenti</label>
             <select id="employeeDepartment" class="w-full rounded-2xl border border-slate-200 px-4 py-3.5 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
-                <option value="Prodhim">Prodhim</option>
-                <option value="Montim">Montim</option>
-                <option value="Shitje">Shitje</option>
-                <option value="Administrata">Administrata</option>
-                <option value="Arkitekt/e">Arkitekt/e</option>
+              <option value="Prodhim">Prodhim</option>
+              <option value="Montim">Montim</option>
+              <option value="Shitje">Shitje</option>
+              <option value="Zyra">Zyra</option>
+              <option value="Magazinë">Magazinë</option>
             </select>
           </div>
           <div>
