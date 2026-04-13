@@ -1,5 +1,5 @@
-const SUPABASE_URL = "https://nwhtnuuwijwsuraintux.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_XyOE8tSdywP1F8K3x7STnA_Bavtz8gD";
+const SUPABASE_URL = "https://djfrnrecdpcuuyvleygs.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_G0RYA8eg_3uhJK0NBqKTaA_doy0r-cM";
 
 const DEFAULT_OVERTIME_RATE = 5;
 const DEFAULT_SHIFT_START = '08:00';
