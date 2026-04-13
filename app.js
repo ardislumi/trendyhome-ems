@@ -85,6 +85,7 @@ async function initApp() {
   bindEvents();
   applyLanguage(false);
   setMonthLabel();
+  showLogin();
 
   if (!isSupabaseConfigured()) {
     showConfigBanner('Shto SUPABASE_URL dhe SUPABASE_ANON_KEY në app.js dhe ekzekuto SQL schema e re.');
@@ -212,6 +213,10 @@ function enhanceUi() {
   cacheElements();
 }
 
+function showMainApp() {
+  els.loginScreen.classList.add('hidden');
+  els.mainApp.classList.remove('hidden');
+}
 function bindEvents() {
   els.loginForm?.addEventListener('submit', handleLogin);
   els.employeeForm?.addEventListener('submit', handleEmployeeSubmit);
