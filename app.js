@@ -4,58 +4,130 @@ const SUPABASE_ANON_KEY = "sb_publishable_G0RYA8eg_3uhJK0NBqKTaA_doy0r-cM";
 const DEFAULT_OVERTIME_RATE = 5;
 const DEFAULT_SHIFT_START = '08:00';
 const DEFAULT_SHIFT_END = '17:00';
-const AFTERNOON_SHIFT = { start: '11:00', end: '19:00', label: 'Masdite' };
-const MORNING_SHIFT = { start: '08:00', end: '17:00', label: 'Paradite' };
+const FIRST_SATURDAY_SHIFT_START = '08:00';
+const FIRST_SATURDAY_SHIFT_END = '17:00';
+const FIRST_SATURDAY_CHECKIN_FROM = '07:58';
+const CHECKIN_EARLY_MINUTES = 5;
+
 const LANGUAGES = {
-  sq: { code: 'sq-AL', name: 'Shqip', strings: {
-    appName: 'WorkFlow EMS Pro', loginWelcome: 'Mirësevini', loginSubtitle: 'Hyni në sistemin e menaxhimit të punonjësve',
-    loginIdentifierLabel: 'Email ose username', loginIdentifierPlaceholder: 'Shkruaj email-in ose username-in', password: 'Fjalëkalimi',
-    loginHelp: 'Ndihmë për qasje', rememberMe: 'Më mbaj mend në këtë pajisje', login: 'Hyni', dashboard: 'Dashboard', employees: 'Punonjësit',
-    requests: 'Kërkesat', payroll: 'Pagat', attendance: 'Pjesëmarrja', logout: 'Dilni', panelProfessional: 'Panel profesional', panel: 'Panel',
-    quickInfo: 'Informacion i shpejtë', todayStatusTitle: 'Statusi i sotëm', activeMonthTitle: 'Muaji aktiv', accountTypeTitle: 'Lloji i llogarisë',
-    overtimeTodayTitle: 'Orë shtesë sot', overtimePayTodayTitle: 'Pagesë shtesë sot', newRequest: 'Kërkesë e Re', standardCheckIn: 'Check In',
-    standardCheckOut: 'Check Out', overtimeCheckIn: 'OT Check In', overtimeCheckOut: 'OT Check Out', completedToday: 'Përfunduar sot',
-    totalEmployees: 'Total punonjësish', hoursThisMonth: 'Orë këtë muaj', salaryThisMonth: 'Paga këtë muaj', pendingRequests: 'Kërkesa në pritje',
-    recentActivity: 'Aktiviteti i fundit', noRecentActivity: 'Nuk ka aktivitet të fundit.', noRequests: 'Nuk ka kërkesa për t’u shfaqur.',
-    employeesTitle: 'Menaxhimi i Punonjësve', employeesSubtitle: 'Shtoni, editoni, fshini dhe filtroni punonjësit', addEmployee: 'Shto Punonjës',
-    searchEmployeePlaceholder: 'Kërko sipas emrit, username ose email-it', allDepartments: 'Të gjitha departamentet', employeeCol: 'Punonjësi',
-    departmentCol: 'Departamenti', salaryHourCol: 'Paga / orë', statusCol: 'Statusi', actionsCol: 'Veprime', requestsTitle: 'Kërkesat dhe Ankesat',
-    requestsSubtitle: 'Punonjësi dërgon kërkesa, admini i aprovon ose i refuzon', payrollTitle: 'Pagat',
-    payrollSubtitle: 'Llogaritje automatike sipas orëve, bankës, cash dhe mungesave', summary: 'Përmbledhje', totalPayroll: 'Total pagash',
-    totalHours: 'Orë totale', averageSalary: 'Paga mesatare', payrollDetails: 'Detaje pagash', grossSalary: 'Paga bruto',
-    attendanceTitle: 'Pjesëmarrja', attendanceSubtitle: 'Check in/out të shumta, eksport CSV dhe llogaritje mujore', export: 'Eksporto',
-    date: 'Data', checkIn: 'Check In', checkOut: 'Check Out', totalHoursCol: 'Orë totale', overtimeHoursCol: 'Orë shtesë', overtimePayCol: 'Pagesë OT',
-    menu: 'Menu', requestNewTitle: 'Kërkesë e Re', requestNewSubtitle: 'Dërgo një kërkesë ose ankesë për adminin', requestType: 'Lloji i kërkesës',
-    requestDescription: 'Përshkrimi', requestDescriptionPlaceholder: 'Shkruaj arsyen e kërkesës', cancel: 'Anulo', send: 'Dërgo',
-    employeeModalAdd: 'Shto Punonjës', employeeModalEdit: 'Edito Punonjësin', employeeModalSubtitle: 'Krijo ose përditëso një punonjës',
-    fullName: 'Emri i plotë', username: 'Username', email: 'Email', salaryPerHour: 'Paga për orë (€)', role: 'Roli', newPassword: 'Fjalëkalimi i ri',
-    save: 'Ruaj', standardSchedule: 'Orari standard: 08:00 - 17:00', overtimeRule: 'Orët shtesë llogariten sipas normës së punonjësit.', demoInfo: 'Mund të hyni me email ose username.',
-    adminRole: 'Administrator', employeeRole: 'Punonjës', noAttendanceMonth: 'Nuk ka regjistrime për këtë muaj.', noEmployees: 'Nuk u gjet asnjë punonjës.',
-    noPayrollEmployees: 'Nuk ka punonjës.', active: 'Aktiv', inactive: 'Jo aktiv', pending: 'Në pritje', approved: 'Aprovuar', rejected: 'Refuzuar',
-    complete: 'Kompletuar', atWork: 'Në punë', absent: 'Mungon', overtimeOpen: 'OT aktive', payrollReady: 'Për llogaritje', noHours: 'Pa orë',
-    requestLeaveEarly: 'Lëshim herët nga puna', requestDayOff: 'Ditë pushimi', requestComplaint: 'Ankesë', requestOther: 'Tjetër', requestWeekendWork: 'Punë në vikend',
-    requestShiftChange: 'Ndryshim orari', fillLoginFields: 'Plotëso email/username dhe fjalëkalimin.', loginError: 'Email/username ose fjalëkalim i pasaktë.',
-    loginUnexpectedError: 'Ndodhi një gabim gjatë hyrjes.', welcomeUser: 'Mirësevini', loginLoading: 'Duke hyrë...',
-    loginHelpToast: 'Për demo: admin / admin@company.com dhe employee / employee@company.com.', accessDenied: 'Nuk keni qasje në këtë faqe.', loggedOut: 'U çkyçët me sukses.',
-    todayNoCheckin: 'Nuk keni bërë check in sot.', todayWorkingSince: 'Në punë që nga', todayFinished: 'Përfunduar', activeEmployeesLabel: 'Punonjës aktivë',
-    standardCheckinSuccess: 'Check in u regjistrua me sukses.', standardCheckoutSuccess: 'Check out u regjistrua me sukses.', attendanceSaveError: 'Nuk u ruajt pjesëmarrja.',
-    overtimeStartSuccess: 'Orët shtesë filluan me sukses.', overtimeEndSuccess: 'Orët shtesë u mbyllën me sukses.', noDataExport: 'Nuk ka të dhëna për eksport.',
-    employeeNameEmailRequired: 'Emri, username dhe email-i janë të detyrueshëm.', duplicateEmail: 'Ky email ekziston tashmë.', duplicateUsername: 'Ky username ekziston tashmë.',
-    employeeUpdated: 'Punonjësi u përditësua me sukses.', employeeAdded: 'Punonjësi u shtua me sukses.', employeeSaveError: 'Nuk u ruajt punonjësi.',
-    employeeDeleteSelf: 'Nuk mund ta fshini vetveten.', confirmDelete: 'A je i sigurt që dëshiron ta fshish', employeeDeleted: 'Punonjësi u fshi me sukses.',
-    employeeDeleteError: 'Nuk u fshi punonjësi.', requestDescriptionRequired: 'Përshkrimi është i detyrueshëm.', requestSent: 'Kërkesa u dërgua me sukses.',
-    requestSendError: 'Nuk u dërgua kërkesa.', requestApproved: 'Kërkesa u aprovua.', requestRejected: 'Kërkesa u refuzua.', requestUpdateError: 'Nuk u përditësua kërkesa.',
-    approvalPrompt: 'Shkruaj mesazh aprovimi (opsionale):', rejectionPrompt: 'Shkruaj arsyen e refuzimit (opsionale):', adminResponse: 'Përgjigjja e adminit',
-    savedLanguage: 'Gjuha u ndryshua.', paid: 'E paguar', unpaid: 'Pa paguar', markPaid: 'Konfirmo pagën', salaryPaidSuccess: 'Paga u konfirmua me sukses.',
-    salaryPaidError: 'Nuk u konfirmua paga.', paidAt: 'Paguar më', analyticsTitle: 'Analitika', analyticsAdminCaption: 'Shumat mujore sipas punonjësit', analyticsEmployeeCaption: '7 ditët e fundit',
-    salaryDue: 'Paga për t’u dhënë', bankSalary: 'Paga në bankë', cashSalary: 'Paga cash', fullSalary: 'Rroga e plotë', deduction: 'Mungesë / zbritje', overtimeRate: 'Norma OT €/orë',
-    shiftStart: 'Fillimi i orarit', shiftEnd: 'Mbarimi i orarit', bankSalaryField: 'Paga në bankë (€)', paymentMethod: 'Mënyra e pagesës', paymentCash: 'Cash', paymentBank: 'Bankë',
-    paymentMixed: 'Përzier', requestedDate: 'Data e kërkesës', requestedShift: 'Orari i kërkuar', shiftMorning: 'Paradite (08:00-17:00)', shiftAfternoon: 'Masdite (11:00-19:00)',
-    chartMode: 'Grafiku', chartTotal: 'Totale', chartBank: 'Bankë', chartCash: 'Cash', sessions: 'Hyrje/Dalje', schedule: 'Orari', unknownUser: 'Përdorues i panjohur',
-    exportFilename: 'attendance-report', requestDateRequired: 'Zgjedhe datën për këtë kërkesë.', bankPart: 'Bankë', cashPart: 'Cash'
-  }},
-  en: { code: 'en-US', name: 'English', strings: {} },
-  bs: { code: 'bs-BA', name: 'Bosanski', strings: {} },
+  sq: {
+    code: 'sq-AL',
+    strings: {
+      appName: 'TrendyHome EMS',
+      loginWelcome: 'Mirësevini',
+      loginSubtitle: 'Hyni në sistemin e menaxhimit të punonjësve',
+      loginIdentifierLabel: 'Username',
+      loginIdentifierPlaceholder: 'Shkruaj username',
+      password: 'Fjalëkalimi',
+      rememberMe: 'Më mbaj mend në këtë pajisje',
+      loginHelp: 'Ndihmë për qasje',
+      login: 'Hyni',
+      loginLoading: 'Duke hyrë...',
+      logout: 'Dilni',
+      dashboard: 'Dashboard',
+      employees: 'Punonjësit',
+      requests: 'Kërkesat',
+      payroll: 'Pagat',
+      attendance: 'Pjesëmarrja',
+      panelProfessional: 'Panel profesional',
+      panel: 'Panel',
+      newRequest: 'Kërkesë e Re',
+      totalEmployees: 'Total punonjësish',
+      hoursThisMonth: 'Orë këtë muaj',
+      salaryThisMonth: 'Paga këtë muaj',
+      pendingRequests: 'Kërkesa në pritje',
+      recentActivity: 'Aktiviteti i fundit',
+      quickInfo: 'Informacion i shpejtë',
+      todayStatusTitle: 'Statusi i sotëm',
+      overtimeTodayTitle: 'Orë shtesë sot',
+      overtimePayTodayTitle: 'Pagesë shtesë sot',
+      activeMonthTitle: 'Muaji aktiv',
+      accountTypeTitle: 'Lloji i llogarisë',
+      standardSchedule: 'Orari normal: 08:00 - 17:00',
+      overtimeRule: 'Orët shtesë llogariten sipas shtesës së punonjësit.',
+      demoInfo: 'Mund të hyni me username.',
+      adminRole: 'Administrator',
+      employeeRole: 'Punonjës',
+      active: 'Aktiv',
+      inactive: 'Jo aktiv',
+      pending: 'Në pritje',
+      approved: 'Aprovuar',
+      rejected: 'Refuzuar',
+      paid: 'E paguar',
+      unpaid: 'Pa paguar',
+      atWork: 'Në punë',
+      complete: 'Përfunduar',
+      absent: 'Mungon',
+      overtimeOpen: 'OT aktive',
+      holiday: 'Festë',
+      dayOff: 'Pushim',
+      loginError: 'Username ose fjalëkalim i pasaktë.',
+      loginUnexpectedError: 'Ndodhi një gabim gjatë hyrjes.',
+      fillLoginFields: 'Plotëso username dhe fjalëkalimin.',
+      loginHelpToast: 'Për demo: admin / employee. Fjalëkalimet janë ato të SQL-it të futur.',
+      welcomeUser: 'Mirësevini',
+      accessDenied: 'Nuk keni qasje në këtë faqe.',
+      loggedOut: 'U çkyçët me sukses.',
+      noRecentActivity: 'Nuk ka aktivitet të fundit.',
+      noEmployees: 'Nuk u gjet asnjë punonjës.',
+      noRequests: 'Nuk ka kërkesa për t’u shfaqur.',
+      noPayrollEmployees: 'Nuk ka punonjës.',
+      noAttendanceMonth: 'Nuk ka regjistrime për këtë muaj.',
+      employeeUpdated: 'Punonjësi u përditësua me sukses.',
+      employeeAdded: 'Punonjësi u shtua me sukses.',
+      employeeDeleted: 'Punonjësi u fshi me sukses.',
+      employeeDeleteError: 'Nuk u fshi punonjësi.',
+      employeeDeleteSelf: 'Nuk mund ta fshini vetveten.',
+      employeeSaveError: 'Nuk u ruajt punonjësi.',
+      confirmDelete: 'A je i sigurt që dëshiron ta fshish',
+      requestDescriptionRequired: 'Përshkrimi është i detyrueshëm.',
+      requestDateRequired: 'Duhet ta zgjedhësh datën.',
+      requestSent: 'Kërkesa u dërgua me sukses.',
+      requestSendError: 'Nuk u dërgua kërkesa.',
+      requestApproved: 'Kërkesa u aprovua.',
+      requestRejected: 'Kërkesa u refuzua.',
+      requestUpdateError: 'Nuk u përditësua kërkesa.',
+      standardCheckinSuccess: 'Check in u regjistrua me sukses.',
+      standardCheckoutSuccess: 'Check out u regjistrua me sukses.',
+      overtimeStartSuccess: 'Orët shtesë filluan me sukses.',
+      overtimeEndSuccess: 'Orët shtesë u mbyllën me sukses.',
+      attendanceSaveError: 'Nuk u ruajt pjesëmarrja.',
+      noDataExport: 'Nuk ka të dhëna për eksport.',
+      salaryPaidSuccess: 'Paga u konfirmua me sukses.',
+      salaryPaidError: 'Nuk u konfirmua paga.',
+      holidaySaved: 'Dita pushim / festa u ruajt me sukses.',
+      holidaySaveError: 'Nuk u ruajt festa.',
+      holidayDeleted: 'Festa u fshi me sukses.',
+      holidayDeleteError: 'Nuk u fshi festa.',
+      dayOffSaved: 'Pushimi individual u ruajt me sukses.',
+      dayOffSaveError: 'Nuk u ruajt pushimi individual.',
+      dayOffDeleted: 'Pushimi individual u fshi me sukses.',
+      dayOffDeleteError: 'Nuk u fshi pushimi individual.',
+      workdaysSaved: 'Ditët e punës u ruajtën me sukses.',
+      workdaysSaveError: 'Nuk u ruajtën ditët e punës.',
+      messageSent: 'Mesazhi u dërgua me sukses.',
+      messageSendError: 'Nuk u dërgua mesazhi.',
+      messageMarkedRead: 'Mesazhi u shënua si i lexuar.',
+      notWorkingDay: 'Sot nuk është ditë pune për këtë punonjës.',
+      checkinTooEarly: 'Check in hapet vetëm 5 minuta para fillimit të orarit.',
+      fullDayLeaveBlocked: 'Për këtë datë është aprovuar mungesë ditore.',
+      partialLeaveBlocked: 'Për këtë datë / orar nuk lejohet check in.',
+      alreadyCheckedIn: 'Punonjësi tashmë është në punë.',
+      noOpenSession: 'Nuk ka check in të hapur.',
+      cannotStartOT: 'OT mund të fillojë vetëm pasi të përfundojë orari standard.',
+      cannotOTOnBlockedDay: 'Nuk lejohet OT në këtë ditë.',
+      savedLanguage: 'Gjuha u ndryshua.',
+      requestLeaveEarly: 'Lëshim më herët',
+      requestDayOff: 'Ditë pushimi',
+      requestWeekendWork: 'Punë në vikend',
+      requestComplaint: 'Ankesë',
+      requestOther: 'Tjetër',
+      requestShiftChange: 'Ndryshim orari',
+      exportFilename: 'attendance-report'
+    }
+  },
+  en: { code: 'en-US', strings: {} },
+  bs: { code: 'bs-BA', strings: {} }
 };
 LANGUAGES.en.strings = LANGUAGES.sq.strings;
 LANGUAGES.bs.strings = LANGUAGES.sq.strings;
@@ -67,13 +139,18 @@ const state = {
   requests: [],
   attendance: [],
   sessions: [],
+  holidays: [],
+  dayOffs: [],
+  monthlyWorkdays: [],
+  messages: [],
+  reviews: [],
   currentPage: 'dashboard',
   currentMonth: new Date().getMonth(),
   currentYear: new Date().getFullYear(),
   language: localStorage.getItem('ems_language') || 'sq',
   syncTimer: null,
   chart: null,
-  chartMode: 'total',
+  chartMode: 'total'
 };
 
 const els = {};
@@ -81,14 +158,13 @@ document.addEventListener('DOMContentLoaded', initApp);
 
 async function initApp() {
   cacheElements();
-  enhanceUi();
   bindEvents();
   applyLanguage(false);
   setMonthLabel();
   showLogin();
 
-  if (!isSupabaseConfigured()) {
-    showConfigBanner('Shto SUPABASE_URL dhe SUPABASE_ANON_KEY në app.js dhe ekzekuto SQL schema e re.');
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+    showConfigBanner('Vendos SUPABASE_URL dhe SUPABASE_ANON_KEY te app.js.');
     lucide.createIcons();
     return;
   }
@@ -108,137 +184,187 @@ async function initApp() {
         await afterLogin();
         return;
       }
-    } catch (error) { console.error(error); }
+    } catch (error) {
+      console.error(error);
+    }
   }
-  showLogin();
 }
 
 function cacheElements() {
-  [
-    'configBanner','loginScreen','mainApp','loginForm','loginIdentifier','loginPassword','rememberMe','loginSubmitBtn','forgotPasswordBtn',
-    'dashboardTitle','dashboardSubtitle','userName','userRole','userAvatar','menuEmployees','menuPayroll','mobileMenuEmployees','mobileMenuPayroll',
-    'requestBadge','recentActivity','requestsList','employeesTable','searchEmployee','filterDepartment','employeeForm','employeeModal','employeeModalTitle',
-    'employeeId','employeeName','employeeUsername','employeeEmail','employeeDepartment','employeeSalary','employeePassword','employeeRole',
-    'requestForm','requestModal','requestType','requestDescription','statTotalEmployees','statHoursThisMonth','statSalaryThisMonth','statPendingRequests',
-    'payrollTable','totalPayroll','totalHoursAll','avgSalary','attendanceTable','currentMonthDisplay','todayStatus','activeMonthLabel','accountTypeLabel',
-    'standardBtn','standardBtnText','standardBtnIcon','overtimeBtn','overtimeBtnText','overtimeBtnIcon','toast','mobileMenu',
-    'overtimeTodayHours','overtimeTodayPay','languageSwitcher','mobileLanguageSwitcher','dashboardChart','chartCaption',
-    'statSalaryDue','statBankSalary','chartMode','requestDate','requestShift','employeeFullSalary','employeeBankSalary','employeeOvertimeRate',
-    'employeeShiftStart','employeeShiftEnd','employeePaymentMethod'
-  ].forEach(id => { els[id] = document.getElementById(id); });
+  const ids = [
+    'configBanner',
+    'loginScreen',
+    'mainApp',
+    'loginForm',
+    'loginIdentifier',
+    'loginPassword',
+    'rememberMe',
+    'loginSubmitBtn',
+    'forgotPasswordBtn',
+    'toggleLoginPassword',
+    'dashboardTitle',
+    'dashboardSubtitle',
+    'userName',
+    'userRole',
+    'userAvatar',
+    'menuEmployees',
+    'menuPayroll',
+    'menuHolidays',
+    'menuMessages',
+    'mobileMenuEmployees',
+    'mobileMenuPayroll',
+    'mobileMenuHolidays',
+    'mobileMenuMessages',
+    'requestBadge',
+    'recentActivity',
+    'requestsList',
+    'employeesTable',
+    'searchEmployee',
+    'filterDepartment',
+    'employeeForm',
+    'employeeModal',
+    'employeeModalTitle',
+    'employeeId',
+    'employeeName',
+    'employeeUsername',
+    'employeeDepartment',
+    'employeeRole',
+    'employeePassword',
+    'toggleEmployeePassword',
+    'employeeFullSalary',
+    'employeeBankSalary',
+    'employeeOvertimeRate',
+    'employeeShiftStart',
+    'employeeShiftEnd',
+    'employeePaymentMethod',
+    'requestForm',
+    'requestModal',
+    'requestType',
+    'requestDescription',
+    'requestDate',
+    'requestShift',
+    'requestStartTime',
+    'requestEndTime',
+    'requestHours',
+    'requestEntireDay',
+    'statTotalEmployees',
+    'statHoursThisMonth',
+    'statSalaryThisMonth',
+    'statPendingRequests',
+    'statSalaryDue',
+    'statBankSalary',
+    'payrollTable',
+    'totalPayroll',
+    'totalHoursAll',
+    'avgSalary',
+    'attendanceTable',
+    'currentMonthDisplay',
+    'todayStatus',
+    'activeMonthLabel',
+    'accountTypeLabel',
+    'standardBtn',
+    'standardBtnText',
+    'standardBtnIcon',
+    'overtimeBtn',
+    'overtimeBtnText',
+    'overtimeBtnIcon',
+    'toast',
+    'mobileMenu',
+    'mobileMenuBtn',
+    'mobileMenuClose',
+    'logoutBtn',
+    'mobileLogoutBtn',
+    'newRequestBtn',
+    'openEmployeeModalBtn',
+    'openHolidayModalBtn',
+    'openGlobalHolidayModalBtn',
+    'openEmployeeDayOffModalBtn',
+    'openWorkdayConfigModalBtn',
+    'openMessageModalBtn',
+    'overtimeTodayHours',
+    'overtimeTodayPay',
+    'languageSwitcher',
+    'mobileLanguageSwitcher',
+    'dashboardChart',
+    'chartCaption',
+    'chartMode',
+    'prevMonthBtn',
+    'nextMonthBtn',
+    'exportAttendanceBtn',
+    'globalHolidayModal',
+    'globalHolidayForm',
+    'holidayTitle',
+    'holidayDate',
+    'holidayPaid',
+    'employeeDayOffModal',
+    'employeeDayOffForm',
+    'dayOffEmployeeId',
+    'dayOffDate',
+    'dayOffReason',
+    'dayOffPaid',
+    'workdayConfigModal',
+    'workdayConfigForm',
+    'workYear',
+    'workMonth',
+    'expectedWorkDays',
+    'holidaysList',
+    'employeeDayOffList',
+    'monthlyWorkdaysList',
+    'messageModal',
+    'messageForm',
+    'messageRecipients',
+    'messageType',
+    'messageRating',
+    'messageSubject',
+    'messageText',
+    'messagesList',
+    'employeeRatingsList',
+    'overallRatingValue',
+    'unreadMessagesCount',
+    'totalReviewsCount'
+  ];
+  ids.forEach(id => { els[id] = document.getElementById(id); });
 }
 
-function enhanceUi() {
-  const statsGrid = document.querySelector('#dashboard .grid.grid-cols-1.sm\\:grid-cols-2.xl\\:grid-cols-4');
-  if (statsGrid && !document.getElementById('statSalaryDue')) {
-    statsGrid.className = 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-6 gap-5 mb-8';
-    statsGrid.insertAdjacentHTML('beforeend', `
-      <div class="bg-white rounded-3xl p-6 card-shadow card-hover"><div class="flex items-center justify-between mb-5"><div class="w-14 h-14 rounded-2xl bg-cyan-50 flex items-center justify-center"><i data-lucide="hand-coins" class="w-7 h-7 text-cyan-600"></i></div></div><p id="statSalaryDue" class="text-3xl font-extrabold">€0</p><p class="text-slate-500 mt-1" data-i18n="salaryDue">Paga për t’u dhënë</p></div>
-      <div class="bg-white rounded-3xl p-6 card-shadow card-hover"><div class="flex items-center justify-between mb-5"><div class="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center"><i data-lucide="building-2" class="w-7 h-7 text-emerald-600"></i></div></div><p id="statBankSalary" class="text-3xl font-extrabold">€0</p><p class="text-slate-500 mt-1" data-i18n="bankSalary">Paga në bankë</p></div>
-    `);
-  }
-
-  const chartHeader = document.querySelector('#dashboardChart')?.closest('.bg-white')?.querySelector('.flex.items-center.justify-between');
-  if (chartHeader && !document.getElementById('chartMode')) {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'flex items-center gap-2';
-    wrapper.innerHTML = `
-      <label class="text-sm text-slate-500" data-i18n="chartMode">Grafiku</label>
-      <select id="chartMode" class="rounded-2xl border border-slate-200 px-3 py-2 text-sm outline-none">
-        <option value="total" data-i18n="chartTotal">Totale</option>
-        <option value="bank" data-i18n="chartBank">Bankë</option>
-        <option value="cash" data-i18n="chartCash">Cash</option>
-      </select>`;
-    chartHeader.appendChild(wrapper);
-  }
-
-  const requestForm = document.getElementById('requestForm');
-  if (requestForm && !document.getElementById('requestDate')) {
-    const descriptionBlock = document.getElementById('requestDescription')?.closest('div');
-    descriptionBlock?.insertAdjacentHTML('beforebegin', `
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label for="requestDate" class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="requestedDate">Data e kërkesës</label>
-          <input id="requestDate" type="date" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
-        </div>
-        <div>
-          <label for="requestShift" class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="requestedShift">Orari i kërkuar</label>
-          <select id="requestShift" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
-            <option value="">-</option>
-            <option value="morning" data-i18n="shiftMorning">Paradite (08:00-17:00)</option>
-            <option value="afternoon" data-i18n="shiftAfternoon">Masdite (11:00-19:00)</option>
-          </select>
-        </div>
-      </div>`);
-  }
-
-  const requestType = document.getElementById('requestType');
-  if (requestType && !requestType.querySelector('option[value="shift_change"]')) {
-    requestType.insertAdjacentHTML('beforeend', `<option value="shift_change" data-i18n="requestShiftChange">Ndryshim orari</option>`);
-  }
-
-  const employeeGrid = document.querySelector('#employeeForm .grid.grid-cols-1.md\\:grid-cols-2.gap-4');
-  if (employeeGrid && !document.getElementById('employeeOvertimeRate')) {
-    employeeGrid.insertAdjacentHTML('beforeend', `
-      <div>
-        <label for="employeeFullSalary" class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="fullSalary">Rroga e plotë</label>
-        <input id="employeeFullSalary" type="number" min="0" step="0.01" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
-      </div>
-      <div>
-        <label for="employeeBankSalary" class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="bankSalaryField">Paga në bankë (€)</label>
-        <input id="employeeBankSalary" type="number" min="0" step="0.01" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
-      </div>
-      <div>
-        <label for="employeeOvertimeRate" class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="overtimeRate">Norma OT €/orë</label>
-        <input id="employeeOvertimeRate" type="number" min="0" step="0.01" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
-      </div>
-      <div>
-        <label for="employeePaymentMethod" class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="paymentMethod">Mënyra e pagesës</label>
-        <select id="employeePaymentMethod" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
-          <option value="cash" data-i18n="paymentCash">Cash</option>
-          <option value="bank" data-i18n="paymentBank">Bankë</option>
-          <option value="mixed" data-i18n="paymentMixed">Përzier</option>
-        </select>
-      </div>
-      <div>
-        <label for="employeeShiftStart" class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="shiftStart">Fillimi i orarit</label>
-        <input id="employeeShiftStart" type="time" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
-      </div>
-      <div>
-        <label for="employeeShiftEnd" class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="shiftEnd">Mbarimi i orarit</label>
-        <input id="employeeShiftEnd" type="time" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
-      </div>
-    `);
-  }
-  cacheElements();
-}
-
-function showMainApp() {
-  els.loginScreen.classList.add('hidden');
-  els.mainApp.classList.remove('hidden');
-}
 function bindEvents() {
   els.loginForm?.addEventListener('submit', handleLogin);
   els.employeeForm?.addEventListener('submit', handleEmployeeSubmit);
   els.requestForm?.addEventListener('submit', handleRequestSubmit);
-  document.getElementById('logoutBtn')?.addEventListener('click', logout);
-  document.getElementById('mobileLogoutBtn')?.addEventListener('click', logout);
-  document.getElementById('newRequestBtn')?.addEventListener('click', () => openModal('requestModal'));
-  document.getElementById('openEmployeeModalBtn')?.addEventListener('click', () => openEmployeeModal());
-  document.getElementById('standardBtn')?.addEventListener('click', handleStandardAttendance);
-  document.getElementById('overtimeBtn')?.addEventListener('click', handleOvertimeAttendance);
-  document.getElementById('prevMonthBtn')?.addEventListener('click', () => changeMonth(-1));
-  document.getElementById('nextMonthBtn')?.addEventListener('click', () => changeMonth(1));
-  document.getElementById('exportAttendanceBtn')?.addEventListener('click', exportAttendance);
-  document.getElementById('mobileMenuBtn')?.addEventListener('click', toggleMobileMenu);
-  document.getElementById('mobileMenuClose')?.addEventListener('click', toggleMobileMenu);
-  document.getElementById('forgotPasswordBtn')?.addEventListener('click', () => showToast(t('loginHelpToast'), 'info'));
-  document.getElementById('toggleLoginPassword')?.addEventListener('click', () => togglePassword('loginPassword', 'toggleLoginPassword'));
-  document.getElementById('toggleEmployeePassword')?.addEventListener('click', () => togglePassword('employeePassword', 'toggleEmployeePassword'));
+  els.globalHolidayForm?.addEventListener('submit', handleGlobalHolidaySubmit);
+  els.employeeDayOffForm?.addEventListener('submit', handleEmployeeDayOffSubmit);
+  els.workdayConfigForm?.addEventListener('submit', handleWorkdayConfigSubmit);
+  els.messageForm?.addEventListener('submit', handleMessageSubmit);
+
+  els.logoutBtn?.addEventListener('click', logout);
+  els.mobileLogoutBtn?.addEventListener('click', logout);
+  els.newRequestBtn?.addEventListener('click', () => openModal('requestModal'));
+  els.openEmployeeModalBtn?.addEventListener('click', () => openEmployeeModal());
+  els.openHolidayModalBtn?.addEventListener('click', () => openModal('globalHolidayModal'));
+  els.openGlobalHolidayModalBtn?.addEventListener('click', () => openModal('globalHolidayModal'));
+  els.openEmployeeDayOffModalBtn?.addEventListener('click', () => openModal('employeeDayOffModal'));
+  els.openWorkdayConfigModalBtn?.addEventListener('click', () => openModal('workdayConfigModal'));
+  els.openMessageModalBtn?.addEventListener('click', () => openModal('messageModal'));
+
+  els.standardBtn?.addEventListener('click', handleStandardAttendance);
+  els.overtimeBtn?.addEventListener('click', handleOvertimeAttendance);
+
+  els.prevMonthBtn?.addEventListener('click', () => changeMonth(-1));
+  els.nextMonthBtn?.addEventListener('click', () => changeMonth(1));
+  els.exportAttendanceBtn?.addEventListener('click', exportAttendance);
+
+  els.mobileMenuBtn?.addEventListener('click', toggleMobileMenu);
+  els.mobileMenuClose?.addEventListener('click', toggleMobileMenu);
+
+  els.forgotPasswordBtn?.addEventListener('click', () => showToast(t('loginHelpToast'), 'info'));
+  els.toggleLoginPassword?.addEventListener('click', () => togglePassword('loginPassword', 'toggleLoginPassword'));
+  els.toggleEmployeePassword?.addEventListener('click', () => togglePassword('employeePassword', 'toggleEmployeePassword'));
+
   els.searchEmployee?.addEventListener('input', renderEmployees);
   els.filterDepartment?.addEventListener('change', renderEmployees);
-  els.chartMode?.addEventListener('change', e => { state.chartMode = e.target.value; renderDashboardChart(); });
-  els.requestType?.addEventListener('change', updateRequestFieldVisibility);
+  els.chartMode?.addEventListener('change', e => {
+    state.chartMode = e.target.value;
+    renderDashboardChart();
+  });
 
   [els.languageSwitcher, els.mobileLanguageSwitcher].forEach(select => {
     select?.addEventListener('change', event => {
@@ -249,53 +375,109 @@ function bindEvents() {
   });
 
   document.querySelectorAll('.nav-btn').forEach(btn => btn.addEventListener('click', () => navigateTo(btn.dataset.page)));
-  document.querySelectorAll('.mobile-nav-btn').forEach(btn => btn.addEventListener('click', () => { navigateTo(btn.dataset.mobilePage); toggleMobileMenu(); }));
-  document.querySelectorAll('.close-modal-btn').forEach(btn => btn.addEventListener('click', () => closeModal(btn.dataset.close)));
+  document.querySelectorAll('.mobile-nav-btn').forEach(btn => btn.addEventListener('click', () => {
+    navigateTo(btn.dataset.mobilePage);
+    toggleMobileMenu();
+  }));
+
+  document.querySelectorAll('.close-modal-btn').forEach(btn => {
+    btn.addEventListener('click', () => closeModal(btn.dataset.close));
+  });
 
   window.addEventListener('click', event => {
-    if (event.target?.id === 'requestModal') closeModal('requestModal');
-    if (event.target?.id === 'employeeModal') closeModal('employeeModal');
+    [
+      'requestModal',
+      'employeeModal',
+      'globalHolidayModal',
+      'employeeDayOffModal',
+      'workdayConfigModal',
+      'messageModal'
+    ].forEach(id => {
+      if (event.target?.id === id) closeModal(id);
+    });
   });
+
+  window.openEmployeeModal = openEmployeeModal;
+  window.deleteEmployee = deleteEmployee;
+  window.updateRequestStatus = updateRequestStatus;
+  window.markSalaryPaid = markSalaryPaid;
+  window.deleteHoliday = deleteHoliday;
+  window.deleteEmployeeDayOff = deleteEmployeeDayOff;
+  window.markMessageRead = markMessageRead;
 }
 
-function t(key) { return LANGUAGES[state.language]?.strings?.[key] || LANGUAGES.sq.strings[key] || key; }
-function getLocale() { return LANGUAGES[state.language]?.code || 'sq-AL'; }
-function isSupabaseConfigured() { return SUPABASE_URL && SUPABASE_ANON_KEY; }
-function showConfigBanner(message) { els.configBanner.textContent = message; els.configBanner.classList.remove('hidden'); }
-function hideConfigBanner() { els.configBanner.classList.add('hidden'); }
+function t(key) {
+  return LANGUAGES[state.language]?.strings?.[key] || LANGUAGES.sq.strings[key] || key;
+}
 
 function applyLanguage(showMessage = false) {
   document.documentElement.lang = state.language;
-  [els.languageSwitcher, els.mobileLanguageSwitcher].forEach(select => { if (select) select.value = state.language; });
-  if (els.chartMode) els.chartMode.value = state.chartMode;
-  document.querySelectorAll('[data-i18n]').forEach(node => { node.textContent = t(node.dataset.i18n); });
-  document.querySelectorAll('[data-i18n-placeholder]').forEach(node => { node.placeholder = t(node.dataset.i18nPlaceholder); });
+  [els.languageSwitcher, els.mobileLanguageSwitcher].forEach(select => {
+    if (select) select.value = state.language;
+  });
   document.title = t('appName');
-  updateRequestFieldVisibility();
-  if (state.currentUser) { applyRoleUi(); renderEverything(); }
-  else setMonthLabel();
-  lucide.createIcons();
+  document.querySelectorAll('[data-i18n]').forEach(node => {
+    node.textContent = t(node.dataset.i18n);
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(node => {
+    node.placeholder = t(node.dataset.i18nPlaceholder);
+  });
   if (showMessage) showToast(t('savedLanguage'), 'info');
+  if (state.currentUser) renderEverything();
+  lucide.createIcons();
+}
+
+function showConfigBanner(message) {
+  if (!els.configBanner) return;
+  els.configBanner.textContent = message;
+  els.configBanner.classList.remove('hidden');
+}
+
+function hideConfigBanner() {
+  els.configBanner?.classList.add('hidden');
+}
+
+function showLogin() {
+  els.loginScreen?.classList.remove('hidden');
+  els.mainApp?.classList.add('hidden');
+}
+
+function showMainApp() {
+  els.loginScreen?.classList.add('hidden');
+  els.mainApp?.classList.remove('hidden');
 }
 
 async function handleLogin(event) {
   event.preventDefault();
-  const identifier = els.loginIdentifier.value.trim().toLowerCase();
-  const password = els.loginPassword.value;
+  const identifier = String(els.loginIdentifier?.value || '').trim().toLowerCase();
+  const password = String(els.loginPassword?.value || '');
+
   if (!identifier || !password) return showToast(t('fillLoginFields'), 'error');
+
   setButtonLoading(els.loginSubmitBtn, true, t('loginLoading'));
   try {
     const passwordHash = await hashPassword(password);
-    const { data, error } = await state.supabase.from('employees').select('*').eq('password_hash', passwordHash).eq('active', true);
+    const { data, error } = await state.supabase
+      .from('employees')
+      .select('*')
+      .eq('password_hash', passwordHash)
+      .eq('active', true);
+
     if (error) throw error;
-    const user = (data || []).map(normalizeEmployee).find(item => [item.email, item.username].map(v => String(v || '').toLowerCase()).includes(identifier));
+
+    const user = (data || []).map(normalizeEmployee).find(item =>
+      String(item.username || '').toLowerCase() === identifier
+    );
+
     if (!user) return showToast(t('loginError'), 'error');
+
     state.currentUser = user;
     localStorage.setItem('ems_current_user_id', user.id);
-    if (els.rememberMe.checked) localStorage.setItem('ems_remembered_identifier', identifier);
+    if (els.rememberMe?.checked) localStorage.setItem('ems_remembered_identifier', identifier);
     else localStorage.removeItem('ems_remembered_identifier');
+
     await afterLogin();
-    showToast(`${t('welcomeUser')}, ${user.full_name}!`);
+    showToast(`${t('welcomeUser')}, ${user.full_name}!`, 'success');
   } catch (error) {
     console.error(error);
     showToast(t('loginUnexpectedError'), 'error');
@@ -315,17 +497,37 @@ async function afterLogin() {
 
 function applyRoleUi() {
   const isAdmin = state.currentUser?.role === 'admin';
-  els.userName.textContent = state.currentUser.full_name;
-  els.userRole.textContent = isAdmin ? t('adminRole') : t('employeeRole');
-  els.userAvatar.textContent = getAvatarText(state.currentUser.full_name);
-  els.dashboardTitle.textContent = isAdmin ? `${t('dashboard')} - ${t('adminRole')}` : t('dashboard');
-  els.dashboardSubtitle.textContent = isAdmin ? t('payrollSubtitle') : `${t('standardSchedule')} · ${t('overtimeRule')}`;
-  els.accountTypeLabel.textContent = isAdmin ? t('adminRole') : t('employeeRole');
-  [els.menuEmployees, els.menuPayroll, els.mobileMenuEmployees, els.mobileMenuPayroll].forEach(el => el?.classList.toggle('hidden', !isAdmin));
+  if (els.userName) els.userName.textContent = state.currentUser?.full_name || '-';
+  if (els.userRole) els.userRole.textContent = isAdmin ? t('adminRole') : t('employeeRole');
+  if (els.userAvatar) els.userAvatar.textContent = getAvatarText(state.currentUser?.full_name || '');
+
+  if (els.dashboardTitle) {
+    els.dashboardTitle.textContent = isAdmin ? `${t('dashboard')} - ${t('adminRole')}` : t('dashboard');
+  }
+  if (els.dashboardSubtitle) {
+    els.dashboardSubtitle.textContent = isAdmin
+      ? 'Menaxhim i plotë i pagave, pjesëmarrjes dhe kërkesave'
+      : `${t('standardSchedule')} · ${t('overtimeRule')}`;
+  }
+  if (els.accountTypeLabel) els.accountTypeLabel.textContent = isAdmin ? t('adminRole') : t('employeeRole');
+
+  [els.menuEmployees, els.menuPayroll, els.menuHolidays, els.mobileMenuEmployees, els.mobileMenuPayroll, els.mobileMenuHolidays]
+    .forEach(el => el?.classList.toggle('hidden', !isAdmin));
+  [els.menuMessages, els.mobileMenuMessages].forEach(el => el?.classList.remove('hidden'));
 }
 
 async function refreshAllData() {
-  await Promise.all([fetchEmployees(), fetchRequests(), fetchAttendance(), fetchSessions()]);
+  await Promise.all([
+    fetchEmployees(),
+    fetchRequests(),
+    fetchAttendance(),
+    fetchSessions(),
+    fetchHolidays(),
+    fetchDayOffs(),
+    fetchMonthlyWorkdays(),
+    fetchMessages(),
+    fetchReviews()
+  ]);
   await syncAttendanceRules();
   renderEverything();
 }
@@ -334,43 +536,111 @@ async function fetchEmployees() {
   const { data, error } = await state.supabase.from('employees').select('*').order('created_at', { ascending: true });
   if (error) throw error;
   state.employees = (data || []).map(normalizeEmployee);
+
   if (state.currentUser) {
     const current = state.employees.find(item => item.id === state.currentUser.id);
     if (current) state.currentUser = current;
   }
 }
+
 async function fetchRequests() {
   const { data, error } = await state.supabase.from('requests').select('*').order('created_at', { ascending: false });
   if (error) throw error;
   state.requests = data || [];
 }
+
 async function fetchAttendance() {
   const { data, error } = await state.supabase.from('attendance').select('*').order('work_date', { ascending: false });
   if (error) throw error;
   state.attendance = (data || []).map(normalizeAttendance);
 }
+
 async function fetchSessions() {
   const { data, error } = await state.supabase.from('attendance_sessions').select('*').order('check_in', { ascending: false });
   if (error) throw error;
   state.sessions = (data || []).map(normalizeSession);
 }
 
-async function syncAttendanceRules() {
-  const now = new Date();
-  const updates = [];
-  for (const session of state.sessions.filter(item => !item.check_out)) {
-    if (session.session_type !== 'standard') continue;
-    const schedule = getEffectiveSchedule(session.user_id, session.work_date);
-    const shiftEnd = combineDateTime(session.work_date, schedule.end);
-    if (now >= shiftEnd) {
-      updates.push(closeSession(session.id, shiftEnd.toISOString(), true));
+async function fetchHolidays() {
+  const { data, error } = await state.supabase.from('company_holidays').select('*').order('holiday_date', { ascending: false });
+  if (error) throw error;
+  state.holidays = data || [];
+}
+
+async function fetchDayOffs() {
+  const { data, error } = await state.supabase.from('employee_day_offs').select('*').order('off_date', { ascending: false });
+  if (error) throw error;
+  state.dayOffs = data || [];
+}
+
+async function fetchMonthlyWorkdays() {
+  const { data, error } = await state.supabase
+    .from('monthly_workday_settings')
+    .select('*')
+    .order('work_year', { ascending: false })
+    .order('work_month', { ascending: true });
+  if (error) throw error;
+  state.monthlyWorkdays = data || [];
+}
+
+async function fetchMessages() {
+  const { data, error } = await state.supabase.from('employee_messages').select('*').order('created_at', { ascending: false });
+  if (error) throw error;
+  state.messages = data || [];
+}
+
+async function fetchReviews() {
+  const { data, error } = await state.supabase.from('employee_reviews').select('*').order('created_at', { ascending: false });
+  if (error) throw error;
+  state.reviews = data || [];
+}
+
+async function fetchUserById(id) {
+  const { data, error } = await state.supabase.from('employees').select('*').eq('id', id).maybeSingle();
+  if (error) throw error;
+  return data ? normalizeEmployee(data) : null;
+}
+
+function startSyncTimer() {
+  if (state.syncTimer) clearInterval(state.syncTimer);
+  state.syncTimer = setInterval(async () => {
+    try {
+      await refreshAllData();
+    } catch (error) {
+      console.error(error);
     }
+  }, 60000);
+}
+
+function logout() {
+  state.currentUser = null;
+  if (state.syncTimer) clearInterval(state.syncTimer);
+  localStorage.removeItem('ems_current_user_id');
+  showLogin();
+  showToast(t('loggedOut'), 'success');
+}
+
+function navigateTo(page) {
+  if (!state.currentUser) return;
+  if ((page === 'employees' || page === 'payroll' || page === 'holidays') && state.currentUser.role !== 'admin') {
+    return showToast(t('accessDenied'), 'error');
   }
-  if (updates.length) {
-    await Promise.all(updates);
-    await fetchSessions();
-    await fetchAttendance();
-  }
+
+  state.currentPage = page;
+
+  document.querySelectorAll('.page-view').forEach(view => {
+    view.classList.toggle('active', view.id === page);
+  });
+
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.classList.toggle('nav-active', btn.dataset.page === page);
+  });
+
+  renderEverything();
+}
+
+function toggleMobileMenu() {
+  els.mobileMenu?.classList.toggle('hidden');
 }
 
 function renderEverything() {
@@ -381,379 +651,639 @@ function renderEverything() {
   renderPayroll();
   renderAttendance();
   renderDashboardChart();
+  renderHolidays();
+  renderEmployeeDayOffs();
+  renderMonthlyWorkdays();
+  renderMessages();
+  renderEmployeeRatings();
+  populateEmployeeSelects();
   updateStandardButton();
   updateOvertimeButton();
+  setMonthLabel();
   lucide.createIcons();
 }
 
-function showLogin() { els.loginScreen.classList.remove('hidden'); els.mainApp.classList.add('hidden'); }
-function showMainApp() { els.loginScreen.classList.add('hidden'); els.mainApp.classList.remove('hidden'); }
-function logout() {
-  state.currentUser = null;
-  if (state.syncTimer) clearInterval(state.syncTimer);
-  localStorage.removeItem('ems_current_user_id');
-  showLogin();
-  showToast(t('loggedOut'));
-}
+function populateEmployeeSelects() {
+  const employees = getEmployeeUsers();
+  if (els.dayOffEmployeeId) {
+    els.dayOffEmployeeId.innerHTML = employees.map(employee =>
+      `<option value="${employee.id}">${escapeHtml(employee.full_name)} (${escapeHtml(employee.username)})</option>`
+    ).join('');
+  }
 
-function startSyncTimer() {
-  if (state.syncTimer) clearInterval(state.syncTimer);
-  state.syncTimer = setInterval(async () => {
-    try {
-      await refreshAllData();
-    } catch (error) { console.error(error); }
-  }, 60000);
+  if (els.messageRecipients) {
+    const allOption = `<option value="__all__">Të gjithë punonjësit</option>`;
+    els.messageRecipients.innerHTML = allOption + employees.map(employee =>
+      `<option value="${employee.id}">${escapeHtml(employee.full_name)} (${escapeHtml(employee.username)})</option>`
+    ).join('');
+  }
 }
-
-function navigateTo(page) {
-  if ((page === 'employees' || page === 'payroll') && state.currentUser.role !== 'admin') return showToast(t('accessDenied'), 'error');
-  state.currentPage = page;
-  document.querySelectorAll('.page-view').forEach(view => view.classList.toggle('active', view.id === page));
-  document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.toggle('nav-active', btn.dataset.page === page));
-  renderEverything();
-}
-function toggleMobileMenu() { els.mobileMenu.classList.toggle('hidden'); }
 
 function updateDashboardStats() {
   const employees = getEmployeeUsers();
   const visibleEmployees = state.currentUser.role === 'admin' ? employees : [state.currentUser];
   const pendingRequests = getVisibleRequests().filter(item => item.status === 'pending').length;
   const payrolls = visibleEmployees.map(employee => getPayrollForEmployee(employee, state.currentMonth, state.currentYear));
+
   const totalHours = payrolls.reduce((sum, item) => sum + item.totalHours, 0);
   const totalEarned = payrolls.reduce((sum, item) => sum + item.salaryDue, 0);
   const totalBank = payrolls.reduce((sum, item) => sum + item.bankDue, 0);
-  const totalSalaryDue = payrolls.reduce((sum, item) => sum + item.salaryDue, 0);
 
-  els.statTotalEmployees.textContent = String(employees.length);
-  els.statHoursThisMonth.textContent = `${totalHours.toFixed(2)}h`;
-  els.statSalaryThisMonth.textContent = `€${totalEarned.toFixed(2)}`;
-  if (els.statSalaryDue) els.statSalaryDue.textContent = `€${totalSalaryDue.toFixed(2)}`;
+  if (els.statTotalEmployees) els.statTotalEmployees.textContent = String(employees.length);
+  if (els.statHoursThisMonth) els.statHoursThisMonth.textContent = `${totalHours.toFixed(2)}h`;
+  if (els.statSalaryThisMonth) els.statSalaryThisMonth.textContent = `€${totalEarned.toFixed(2)}`;
+  if (els.statSalaryDue) els.statSalaryDue.textContent = `€${totalEarned.toFixed(2)}`;
   if (els.statBankSalary) els.statBankSalary.textContent = `€${totalBank.toFixed(2)}`;
-  els.statPendingRequests.textContent = String(pendingRequests);
-  els.activeMonthLabel.textContent = formatMonthYear(state.currentYear, state.currentMonth);
+  if (els.statPendingRequests) els.statPendingRequests.textContent = String(pendingRequests);
+  if (els.activeMonthLabel) els.activeMonthLabel.textContent = formatMonthYear(state.currentYear, state.currentMonth);
 
-  if (pendingRequests > 0) {
+  if (pendingRequests > 0 && els.requestBadge) {
     els.requestBadge.textContent = String(pendingRequests);
     els.requestBadge.classList.remove('hidden');
   } else {
-    els.requestBadge.classList.add('hidden');
+    els.requestBadge?.classList.add('hidden');
   }
 
   const todaySummary = getTodaySummaryForCurrentUser();
   if (state.currentUser.role === 'admin') {
-    const activeNow = getEmployeeUsers().filter(employee => getOpenSession(employee.id)).length;
-    els.todayStatus.textContent = `${t('activeEmployeesLabel')}: ${activeNow}`;
+    const activeNow = getEmployeeUsers().filter(employee => !!getOpenSession(employee.id)).length;
+    if (els.todayStatus) els.todayStatus.textContent = `Punonjës aktivë: ${activeNow}`;
   } else if (!todaySummary) {
-    els.todayStatus.textContent = t('todayNoCheckin');
+    if (els.todayStatus) els.todayStatus.textContent = 'Nuk ka check in sot.';
   } else if (todaySummary.status === 'overtime_open') {
-    els.todayStatus.textContent = `${t('overtimeOpen')} · ${formatTime(todaySummary.last_check_out || todaySummary.first_check_in)}`;
+    if (els.todayStatus) els.todayStatus.textContent = `OT aktive · ${formatTime(todaySummary.last_check_out || todaySummary.first_check_in)}`;
   } else if (todaySummary.status === 'at_work') {
     const open = getOpenSession(state.currentUser.id, 'standard');
-    els.todayStatus.textContent = `${t('todayWorkingSince')} ${open ? formatTime(open.check_in) : ''}`.trim();
+    if (els.todayStatus) els.todayStatus.textContent = open ? `Në punë që nga ${formatTime(open.check_in)}` : t('atWork');
   } else {
-    els.todayStatus.textContent = `${t('todayFinished')}: ${Number(todaySummary.total_hours || 0).toFixed(2)}h`;
+    if (els.todayStatus) els.todayStatus.textContent = `Përfunduar: ${Number(todaySummary.total_hours || 0).toFixed(2)}h`;
   }
-  els.overtimeTodayHours.textContent = `${Number(todaySummary?.overtime_hours || 0).toFixed(2)}h`;
-  els.overtimeTodayPay.textContent = `€${Number(todaySummary?.overtime_pay || 0).toFixed(2)}`;
+
+  if (els.overtimeTodayHours) els.overtimeTodayHours.textContent = `${Number(todaySummary?.overtime_hours || 0).toFixed(2)}h`;
+  if (els.overtimeTodayPay) els.overtimeTodayPay.textContent = `€${Number(todaySummary?.overtime_pay || 0).toFixed(2)}`;
+
+  const visibleMessages = getVisibleMessages();
+  if (els.unreadMessagesCount) els.unreadMessagesCount.textContent = String(visibleMessages.filter(m => !m.is_read).length);
+  if (els.totalReviewsCount) els.totalReviewsCount.textContent = String(getVisibleReviews().length);
+  if (els.overallRatingValue) {
+    const avg = getAverageRatingForVisibleEmployees();
+    els.overallRatingValue.textContent = avg.toFixed(1);
+  }
 }
 
 function renderRecentActivity() {
-  const items = [...getVisibleRequests().slice(0, 4), ...getVisibleAttendanceForCurrentView().slice(0, 3).map(item => ({ __attendance: true, ...item }))]
-    .sort((a, b) => new Date(b.created_at || b.work_date) - new Date(a.created_at || a.work_date))
+  if (!els.recentActivity) return;
+
+  const items = [
+    ...getVisibleRequests().slice(0, 4).map(item => ({ type: 'request', data: item })),
+    ...getVisibleAttendanceForCurrentView().slice(0, 4).map(item => ({ type: 'attendance', data: item })),
+    ...getVisibleMessages().slice(0, 3).map(item => ({ type: 'message', data: item }))
+  ]
+    .sort((a, b) => new Date(getSortDate(b)) - new Date(getSortDate(a)))
     .slice(0, 6);
-  if (!items.length) return els.recentActivity.innerHTML = emptyState(t('noRecentActivity'));
+
+  if (!items.length) {
+    els.recentActivity.innerHTML = emptyState(t('noRecentActivity'));
+    return;
+  }
 
   els.recentActivity.innerHTML = items.map(item => {
-    if (item.__attendance) {
-      const user = getUserById(item.user_id);
-      return `<div class="flex items-start gap-4 rounded-2xl border border-slate-200 p-4"><div class="w-12 h-12 rounded-full bg-violet-50 text-violet-700 flex items-center justify-center font-bold">${getAvatarText(user?.full_name || '')}</div><div class="flex-1"><div class="font-bold text-slate-900">${escapeHtml(user?.full_name || t('unknownUser'))}</div><p class="text-sm text-slate-500">${formatDate(item.work_date)} · ${Number(item.total_hours || 0).toFixed(2)}h · ${item.total_sessions || 0} ${t('sessions')}</p></div><span class="text-xs px-2.5 py-1 rounded-full ${getAttendanceStatusClass(item.status)}">${getAttendanceStatusLabel(item.status)}</span></div>`;
+    if (item.type === 'attendance') {
+      const row = item.data;
+      const user = getUserById(row.user_id);
+      return `
+        <div class="flex items-start gap-4 rounded-2xl border border-slate-200 p-4">
+          <div class="w-12 h-12 rounded-full bg-violet-50 text-violet-700 flex items-center justify-center font-bold">
+            ${getAvatarText(user?.full_name || '')}
+          </div>
+          <div class="flex-1">
+            <div class="font-bold text-slate-900">${escapeHtml(user?.full_name || '-')}</div>
+            <p class="text-sm text-slate-500">${formatDate(row.work_date)} · ${Number(row.total_hours || 0).toFixed(2)}h</p>
+          </div>
+          <span class="text-xs px-2.5 py-1 rounded-full ${getAttendanceStatusClass(row.status)}">${getAttendanceStatusLabel(row.status)}</span>
+        </div>
+      `;
     }
-    const user = getUserById(item.user_id);
-    const status = getStatusMeta(item.status);
-    const extra = item.requested_date ? ` · ${formatDate(item.requested_date)}${item.requested_shift ? ` · ${getRequestedShiftLabel(item.requested_shift)}` : ''}` : '';
-    return `<div class="flex items-start gap-4 rounded-2xl border border-slate-200 p-4"><div class="w-12 h-12 rounded-full bg-blue-50 text-blue-700 flex items-center justify-center font-bold">${getAvatarText(user?.full_name || '')}</div><div class="flex-1 min-w-0"><div class="flex flex-wrap items-center gap-2 mb-1"><p class="font-bold text-slate-900 truncate">${escapeHtml(user?.full_name || t('unknownUser'))}</p><span class="text-xs px-2.5 py-1 rounded-full ${status.className}">${status.label}</span></div><p class="text-sm text-slate-500">${getRequestTypeLabel(item.type)}${extra} · ${escapeHtml(item.description || '')}</p></div><div class="text-right text-xs text-slate-400 whitespace-nowrap">${formatDateTime(item.created_at)}</div></div>`;
+
+    if (item.type === 'message') {
+      const row = item.data;
+      const sender = getUserById(row.sender_id);
+      return `
+        <div class="flex items-start gap-4 rounded-2xl border border-slate-200 p-4">
+          <div class="w-12 h-12 rounded-full bg-blue-50 text-blue-700 flex items-center justify-center font-bold">
+            ${getAvatarText(sender?.full_name || 'A')}
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <p class="font-bold text-slate-900">${escapeHtml(row.subject || 'Mesazh')}</p>
+              ${row.rating ? `<span class="text-amber-500 font-semibold">${'★'.repeat(Number(row.rating))}</span>` : ''}
+            </div>
+            <p class="text-sm text-slate-500 line-clamp-2">${escapeHtml(row.message_text || '')}</p>
+          </div>
+          <div class="text-xs text-slate-400">${formatDateTime(row.created_at)}</div>
+        </div>
+      `;
+    }
+
+    const row = item.data;
+    const user = getUserById(row.user_id);
+    const status = getStatusMeta(row.status);
+
+    return `
+      <div class="flex items-start gap-4 rounded-2xl border border-slate-200 p-4">
+        <div class="w-12 h-12 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
+          ${getAvatarText(user?.full_name || '')}
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 flex-wrap">
+            <p class="font-bold text-slate-900">${escapeHtml(user?.full_name || '-')}</p>
+            <span class="text-xs px-2.5 py-1 rounded-full ${status.className}">${status.label}</span>
+          </div>
+          <p class="text-sm text-slate-500">${getRequestTypeLabel(row.type)} · ${escapeHtml(row.description || '')}</p>
+        </div>
+        <div class="text-xs text-slate-400">${formatDateTime(row.created_at)}</div>
+      </div>
+    `;
   }).join('');
 }
 
 function renderEmployees() {
-  if (state.currentUser.role !== 'admin') return;
-  const search = els.searchEmployee.value.trim().toLowerCase();
-  const department = els.filterDepartment.value;
+  if (!els.employeesTable || state.currentUser.role !== 'admin') return;
+
+  const search = String(els.searchEmployee?.value || '').trim().toLowerCase();
+  const department = String(els.filterDepartment?.value || '');
+
   let employees = [...state.employees];
-  if (search) employees = employees.filter(employee => [employee.full_name, employee.email, employee.username].some(v => String(v || '').toLowerCase().includes(search)));
-  if (department) employees = employees.filter(employee => employee.department === department);
-  if (!employees.length) return els.employeesTable.innerHTML = `<tr><td colspan="8" class="px-6 py-10 text-center text-slate-400">${t('noEmployees')}</td></tr>`;
+  if (search) {
+    employees = employees.filter(employee =>
+      [employee.full_name, employee.username, employee.department]
+        .some(value => String(value || '').toLowerCase().includes(search))
+    );
+  }
+  if (department) {
+    employees = employees.filter(employee => employee.department === department);
+  }
+
+  if (!employees.length) {
+    els.employeesTable.innerHTML = `<tr><td colspan="9" class="px-6 py-10 text-center text-slate-400">${t('noEmployees')}</td></tr>`;
+    return;
+  }
 
   els.employeesTable.innerHTML = employees.map(employee => {
     const payroll = getPayrollForEmployee(employee, state.currentMonth, state.currentYear);
+    const rating = getAverageRatingForEmployee(employee.id);
     const activeClass = employee.active ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-600';
-    return `<tr class="hover:bg-slate-50 align-top">
-      <td class="px-6 py-4"><div class="flex items-center gap-3"><div class="w-11 h-11 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-700">${getAvatarText(employee.full_name)}</div><div><p class="font-semibold text-slate-900">${escapeHtml(employee.full_name)}</p><p class="text-sm text-slate-500">${escapeHtml(employee.email)}</p></div></div></td>
-      <td class="px-6 py-4 text-sm text-slate-600">${escapeHtml(employee.department || '-')}</td>
-      <td class="px-6 py-4 text-sm text-slate-600">${escapeHtml(employee.username || '-')}</td>
-      <td class="px-6 py-4 text-sm text-slate-600">€${employee.salary_per_hour.toFixed(2)}<div class="text-xs text-slate-400">OT €${employee.overtime_rate.toFixed(2)}</div></td>
-      <td class="px-6 py-4 text-sm text-slate-600">${employee.shift_start} - ${employee.shift_end}<div class="text-xs text-slate-400">${t('fullSalary')}: €${employee.full_month_salary.toFixed(2)}</div></td>
-      <td class="px-6 py-4 text-sm text-slate-600">${t(employee.payment_method === 'bank' ? 'paymentBank' : employee.payment_method === 'mixed' ? 'paymentMixed' : 'paymentCash')}<div class="text-xs text-slate-400">${t('bankSalary')}: €${employee.bank_salary.toFixed(2)}</div></td>
-      <td class="px-6 py-4"><span class="inline-flex px-2.5 py-1 rounded-full ${activeClass}">${employee.active ? t('active') : t('inactive')}</span><div class="text-xs text-slate-400 mt-2">${t('salaryDue')}: €${payroll.salaryDue.toFixed(2)}</div></td>
-      <td class="px-6 py-4 text-right"><div class="flex justify-end gap-2"><button onclick="openEmployeeModal('${employee.id}')" class="rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold hover:bg-slate-50">Edito</button><button onclick="deleteEmployee('${employee.id}')" class="rounded-xl bg-rose-50 text-rose-600 px-3 py-2 text-sm font-semibold hover:bg-rose-100">Fshij</button></div></td>
-    </tr>`;
+
+    return `
+      <tr class="hover:bg-slate-50 align-top">
+        <td class="px-6 py-4">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-700">
+              ${getAvatarText(employee.full_name)}
+            </div>
+            <div>
+              <p class="font-semibold text-slate-900">${escapeHtml(employee.full_name)}</p>
+              <p class="text-sm text-slate-500">${escapeHtml(employee.role === 'admin' ? 'Administrator' : 'Punonjës')}</p>
+            </div>
+          </div>
+        </td>
+        <td class="px-6 py-4 text-sm text-slate-600">${escapeHtml(employee.department || '-')}</td>
+        <td class="px-6 py-4 text-sm text-slate-600">${escapeHtml(employee.username || '-')}</td>
+        <td class="px-6 py-4 text-sm text-slate-600">${employee.shift_start} - ${employee.shift_end}</td>
+        <td class="px-6 py-4 text-sm text-slate-600">
+          €${employee.full_month_salary.toFixed(2)}
+          <div class="text-xs text-slate-400">Shtesa OT: €${employee.overtime_rate.toFixed(2)}</div>
+        </td>
+        <td class="px-6 py-4 text-sm text-slate-600">
+          ${getPaymentMethodLabel(employee.payment_method)}
+          <div class="text-xs text-slate-400">Bankë: €${employee.bank_salary.toFixed(2)}</div>
+        </td>
+        <td class="px-6 py-4 text-sm text-slate-600">
+          <div class="font-semibold text-amber-500">${renderStars(rating)}</div>
+          <div class="text-xs text-slate-400">${rating.toFixed(1)} / 5</div>
+        </td>
+        <td class="px-6 py-4">
+          <span class="inline-flex px-2.5 py-1 rounded-full ${activeClass}">
+            ${employee.active ? t('active') : t('inactive')}
+          </span>
+          <div class="text-xs text-slate-400 mt-2">Për t’u dhënë: €${payroll.salaryDue.toFixed(2)}</div>
+        </td>
+        <td class="px-6 py-4 text-right">
+          <div class="flex justify-end gap-2">
+            <button onclick="openEmployeeModal('${employee.id}')" class="rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold hover:bg-slate-50">Edito</button>
+            <button onclick="deleteEmployee('${employee.id}')" class="rounded-xl bg-rose-50 text-rose-600 px-3 py-2 text-sm font-semibold hover:bg-rose-100">Fshij</button>
+          </div>
+        </td>
+      </tr>
+    `;
   }).join('');
 }
 
 function renderRequests() {
+  if (!els.requestsList) return;
+
   const requests = getVisibleRequests();
-  if (!requests.length) return els.requestsList.innerHTML = emptyState(t('noRequests'));
+  if (!requests.length) {
+    els.requestsList.innerHTML = emptyState(t('noRequests'));
+    return;
+  }
+
   els.requestsList.innerHTML = requests.map(item => {
     const user = getUserById(item.user_id);
     const status = getStatusMeta(item.status);
-    const requestMeta = [item.requested_date ? formatDate(item.requested_date) : '', item.requested_shift ? getRequestedShiftLabel(item.requested_shift) : ''].filter(Boolean).join(' · ');
-    return `<div class="bg-white rounded-3xl card-shadow p-6"><div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4"><div class="flex items-start gap-4"><div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-700">${getAvatarText(user?.full_name || '')}</div><div><div class="flex flex-wrap items-center gap-2"><h3 class="text-lg font-bold text-slate-900">${escapeHtml(user?.full_name || t('unknownUser'))}</h3><span class="px-2.5 py-1 rounded-full text-xs ${status.className}">${status.label}</span></div><p class="text-sm text-slate-500 mt-1">${getRequestTypeLabel(item.type)}${requestMeta ? ` · ${requestMeta}` : ''}</p><p class="text-slate-700 mt-3 whitespace-pre-wrap">${escapeHtml(item.description || '')}</p>${item.admin_response ? `<div class="mt-3 text-sm rounded-2xl bg-slate-50 border border-slate-200 p-3"><span class="font-semibold">${t('adminResponse')}:</span> ${escapeHtml(item.admin_response)}</div>` : ''}</div></div><div class="text-sm text-slate-400 whitespace-nowrap">${formatDateTime(item.created_at)}</div></div>${state.currentUser.role === 'admin' && item.status === 'pending' ? `<div class="mt-5 flex flex-wrap gap-3"><button onclick="updateRequestStatus(${item.id}, 'approved')" class="rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 font-semibold">Aprovo</button><button onclick="updateRequestStatus(${item.id}, 'rejected')" class="rounded-2xl bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 font-semibold">Refuzo</button></div>` : ''}</div>`;
+
+    const meta = [
+      item.requested_date ? formatDate(item.requested_date) : '',
+      item.affects_entire_day ? 'Krejt ditën' : '',
+      item.start_time ? `Nga ${item.start_time}` : '',
+      item.end_time ? `Deri ${item.end_time}` : '',
+      item.hours_requested ? `${Number(item.hours_requested).toFixed(1)} orë` : ''
+    ].filter(Boolean).join(' · ');
+
+    return `
+      <div class="bg-white rounded-3xl card-shadow p-6">
+        <div class="flex flex-col xl:flex-row xl:items-start xl:justify-between gap-4">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-700">
+              ${getAvatarText(user?.full_name || '')}
+            </div>
+            <div>
+              <div class="flex flex-wrap items-center gap-2">
+                <h3 class="text-lg font-bold text-slate-900">${escapeHtml(user?.full_name || '-')}</h3>
+                <span class="px-2.5 py-1 rounded-full text-xs ${status.className}">${status.label}</span>
+              </div>
+              <p class="text-sm text-slate-500 mt-1">${getRequestTypeLabel(item.type)}${meta ? ` · ${meta}` : ''}</p>
+              <p class="text-slate-700 mt-3 whitespace-pre-wrap">${escapeHtml(item.description || '')}</p>
+              ${item.admin_response ? `
+                <div class="mt-3 text-sm rounded-2xl bg-slate-50 border border-slate-200 p-3">
+                  <span class="font-semibold">Përgjigjja e adminit:</span> ${escapeHtml(item.admin_response)}
+                </div>` : ''}
+            </div>
+          </div>
+
+          <div class="text-sm text-slate-400 whitespace-nowrap">${formatDateTime(item.created_at)}</div>
+        </div>
+
+        ${state.currentUser.role === 'admin' && item.status === 'pending' ? `
+          <div class="mt-5 flex flex-wrap gap-3">
+            <button onclick="updateRequestStatus(${item.id}, 'approved')" class="rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 font-semibold">Aprovo</button>
+            <button onclick="updateRequestStatus(${item.id}, 'rejected')" class="rounded-2xl bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 font-semibold">Refuzo</button>
+          </div>` : ''}
+      </div>
+    `;
   }).join('');
 }
 
 function renderPayroll() {
-  if (state.currentUser.role !== 'admin') return;
+  if (state.currentUser.role !== 'admin' || !els.payrollTable) return;
+
   const employees = getEmployeeUsers();
-  if (!employees.length) return els.payrollTable.innerHTML = `<tr><td colspan="11" class="px-6 py-10 text-center text-slate-400">${t('noPayrollEmployees')}</td></tr>`;
+  if (!employees.length) {
+    els.payrollTable.innerHTML = `<tr><td colspan="11" class="px-6 py-10 text-center text-slate-400">${t('noPayrollEmployees')}</td></tr>`;
+    return;
+  }
+
   const payrollRows = employees.map(employee => getPayrollForEmployee(employee, state.currentMonth, state.currentYear));
   const totalPayroll = payrollRows.reduce((sum, item) => sum + item.salaryDue, 0);
   const totalHours = payrollRows.reduce((sum, item) => sum + item.totalHours, 0);
-  els.totalPayroll.textContent = `€${totalPayroll.toFixed(2)}`;
-  els.totalHoursAll.textContent = `${totalHours.toFixed(2)}h`;
-  els.avgSalary.textContent = `€${(payrollRows.length ? totalPayroll / payrollRows.length : 0).toFixed(2)}`;
+
+  if (els.totalPayroll) els.totalPayroll.textContent = `€${totalPayroll.toFixed(2)}`;
+  if (els.totalHoursAll) els.totalHoursAll.textContent = `${totalHours.toFixed(2)}h`;
+  if (els.avgSalary) els.avgSalary.textContent = `€${(payrollRows.length ? totalPayroll / payrollRows.length : 0).toFixed(2)}`;
 
   els.payrollTable.innerHTML = payrollRows.map(row => {
     const paid = isSalaryPaidForMonth(row.employee, state.currentMonth, state.currentYear);
     const paidLabel = paid ? `${t('paid')}${row.employee.salary_paid_at ? ` · ${formatDate(row.employee.salary_paid_at)}` : ''}` : t('unpaid');
     const paidClass = paid ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700';
-    return `<tr class="hover:bg-slate-50 align-top">
-      <td class="px-6 py-4"><div class="font-semibold text-slate-900">${escapeHtml(row.employee.full_name)}</div><div class="text-sm text-slate-500">${escapeHtml(row.employee.department || '-')}</div></td>
-      <td class="px-6 py-4 text-sm text-slate-600">${row.employee.shift_start} - ${row.employee.shift_end}</td>
-      <td class="px-6 py-4 text-sm text-slate-600">${row.regularHours.toFixed(2)}h<div class="text-xs text-slate-400">€${row.regularPay.toFixed(2)}</div></td>
-      <td class="px-6 py-4 text-sm text-slate-600">${row.overtimeHours.toFixed(2)}h<div class="text-xs text-slate-400">€${row.overtimePay.toFixed(2)}</div></td>
-      <td class="px-6 py-4 text-sm font-semibold text-slate-900">€${row.salaryDue.toFixed(2)}</td>
-      <td class="px-6 py-4 text-sm text-slate-600">€${row.bankDue.toFixed(2)}</td>
-      <td class="px-6 py-4 text-sm text-slate-600">€${row.cashDue.toFixed(2)}</td>
-      <td class="px-6 py-4 text-sm text-slate-600">€${row.fullSalary.toFixed(2)}</td>
-      <td class="px-6 py-4 text-sm ${row.deduction > 0 ? 'text-rose-600 font-semibold' : 'text-emerald-600'}">€${row.deduction.toFixed(2)}</td>
-      <td class="px-6 py-4"><span class="inline-flex px-2.5 py-1 rounded-full text-xs ${paidClass}">${paidLabel}</span></td>
-      <td class="px-6 py-4 text-right">${paid ? '' : `<button onclick="confirmSalaryPaid('${row.employee.id}')" class="rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 text-sm font-semibold">${t('markPaid')}</button>`}</td>
-    </tr>`;
+
+    return `
+      <tr class="hover:bg-slate-50 align-top">
+        <td class="px-6 py-4">
+          <div class="font-semibold text-slate-900">${escapeHtml(row.employee.full_name)}</div>
+          <div class="text-sm text-slate-500">${escapeHtml(row.employee.department || '-')}</div>
+        </td>
+        <td class="px-6 py-4 text-sm text-slate-600">${row.workedDays.toFixed(0)} / ${row.expectedDays}</td>
+        <td class="px-6 py-4 text-sm text-slate-600">${row.regularHours.toFixed(2)}h</td>
+        <td class="px-6 py-4 text-sm text-slate-600">${row.overtimeHours.toFixed(2)}h<div class="text-xs text-slate-400">€${row.overtimePay.toFixed(2)}</div></td>
+        <td class="px-6 py-4 text-sm font-semibold text-slate-900">€${row.salaryDue.toFixed(2)}</td>
+        <td class="px-6 py-4 text-sm text-slate-600">€${row.bankDue.toFixed(2)}</td>
+        <td class="px-6 py-4 text-sm text-slate-600">€${row.cashDue.toFixed(2)}</td>
+        <td class="px-6 py-4 text-sm text-slate-600">€${row.fullSalary.toFixed(2)}</td>
+        <td class="px-6 py-4 text-sm text-slate-600">€${row.deduction.toFixed(2)}</td>
+        <td class="px-6 py-4">
+          <span class="px-2.5 py-1 rounded-full text-xs ${paidClass}">${paidLabel}</span>
+        </td>
+        <td class="px-6 py-4 text-right">
+          <button onclick="markSalaryPaid('${row.employee.id}')" class="rounded-2xl bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 text-sm font-semibold">
+            Konfirmo pagën
+          </button>
+        </td>
+      </tr>
+    `;
   }).join('');
 }
 
 function renderAttendance() {
-  const summaries = getVisibleAttendanceForCurrentView();
-  if (!summaries.length) return els.attendanceTable.innerHTML = `<tr><td colspan="8" class="px-6 py-10 text-center text-slate-400">${t('noAttendanceMonth')}</td></tr>`;
-  els.attendanceTable.innerHTML = summaries.map(item => {
-    const user = getUserById(item.user_id);
-    const sessions = getSessionsForDay(item.user_id, item.work_date)
-      .map(session => `${session.session_type === 'overtime' ? 'OT ' : ''}${formatTime(session.check_in)}${session.check_out ? ` - ${formatTime(session.check_out)}` : ' - ...'}`)
-      .join('<br>');
-    const payroll = getPayrollForEmployee(user, new Date(`${item.work_date}T00:00:00`).getMonth(), new Date(`${item.work_date}T00:00:00`).getFullYear());
-    const dailyPay = Number(item.regular_hours || 0) * Number(user?.salary_per_hour || 0) + Number(item.overtime_pay || 0);
-    return `<tr class="hover:bg-slate-50 align-top">
-      <td class="px-6 py-4"><div class="font-semibold text-slate-900">${state.currentUser.role === 'admin' ? escapeHtml(user?.full_name || '-') : formatDate(item.work_date)}</div><div class="text-sm text-slate-500">${state.currentUser.role === 'admin' ? formatDate(item.work_date) : (user?.shift_start || '-') + ' - ' + (user?.shift_end || '-')}</div></td>
-      <td class="px-6 py-4 text-sm text-slate-600 leading-6">${sessions || '-'}</td>
-      <td class="px-6 py-4 text-sm text-slate-600">${Number(item.regular_hours || 0).toFixed(2)}h</td>
-      <td class="px-6 py-4 text-sm text-slate-600">${Number(item.overtime_hours || 0).toFixed(2)}h</td>
-      <td class="px-6 py-4 text-sm text-slate-900 font-semibold">${Number(item.total_hours || 0).toFixed(2)}h</td>
-      <td class="px-6 py-4 text-sm text-slate-600">€${dailyPay.toFixed(2)}</td>
-      <td class="px-6 py-4 text-sm text-slate-600">${user?.shift_start || '-'} - ${user?.shift_end || '-'}</td>
-      <td class="px-6 py-4"><span class="inline-flex px-2.5 py-1 rounded-full text-xs ${getAttendanceStatusClass(item.status)}">${getAttendanceStatusLabel(item.status)}</span></td>
-    </tr>`;
+  if (!els.attendanceTable) return;
+
+  const rows = getVisibleAttendanceForCurrentView();
+  if (!rows.length) {
+    els.attendanceTable.innerHTML = `<tr><td colspan="8" class="px-6 py-10 text-center text-slate-400">${t('noAttendanceMonth')}</td></tr>`;
+    return;
+  }
+
+  els.attendanceTable.innerHTML = rows.map(row => {
+    const user = getUserById(row.user_id);
+    const sessions = getSessionsForDay(row.user_id, row.work_date);
+    const dailyPay = getDailyPay(row.user_id, row.work_date, row);
+
+    const sessionText = sessions.length
+      ? sessions.map(session => {
+          const prefix = session.session_type === 'overtime' ? 'OT ' : '';
+          return `${prefix}${formatTime(session.check_in)}${session.check_out ? ` - ${formatTime(session.check_out)}` : ' - ...'}`;
+        }).join('<br>')
+      : '-';
+
+    const schedule = getEffectiveSchedule(row.user_id, row.work_date);
+
+    return `
+      <tr class="hover:bg-slate-50 align-top">
+        <td class="px-6 py-4">
+          <div class="font-semibold text-slate-900">${escapeHtml(user?.full_name || '-')}</div>
+          <div class="text-sm text-slate-500">${formatDate(row.work_date)}</div>
+        </td>
+        <td class="px-6 py-4 text-sm text-slate-600">${sessionText}</td>
+        <td class="px-6 py-4 text-sm text-slate-600">${Number(row.regular_hours || 0).toFixed(2)}h</td>
+        <td class="px-6 py-4 text-sm text-slate-600">${Number(row.overtime_hours || 0).toFixed(2)}h</td>
+        <td class="px-6 py-4 text-sm text-slate-600">${Number(row.total_hours || 0).toFixed(2)}h</td>
+        <td class="px-6 py-4 text-sm text-slate-600">€${dailyPay.toFixed(2)}</td>
+        <td class="px-6 py-4 text-sm text-slate-600">${schedule.start} - ${schedule.end}</td>
+        <td class="px-6 py-4">
+          <span class="px-2.5 py-1 rounded-full text-xs ${getAttendanceStatusClass(row.status)}">${getAttendanceStatusLabel(row.status)}</span>
+        </td>
+      </tr>
+    `;
   }).join('');
 }
 
+function renderHolidays() {
+  if (!els.holidaysList) return;
+  if (!state.holidays.length) {
+    els.holidaysList.innerHTML = emptyState('Nuk ka festa të ruajtura.');
+    return;
+  }
+
+  els.holidaysList.innerHTML = state.holidays.map(item => `
+    <div class="rounded-2xl border border-slate-200 p-4 flex items-start justify-between gap-4">
+      <div>
+        <div class="font-semibold text-slate-900">${escapeHtml(item.title)}</div>
+        <div class="text-sm text-slate-500">${formatDate(item.holiday_date)} · ${item.is_paid ? 'E paguar' : 'Pa pagesë'}</div>
+      </div>
+      ${state.currentUser.role === 'admin' ? `
+        <button onclick="deleteHoliday(${item.id})" class="rounded-xl bg-rose-50 text-rose-600 px-3 py-2 text-sm font-semibold hover:bg-rose-100">
+          Fshij
+        </button>` : ''}
+    </div>
+  `).join('');
+}
+
+function renderEmployeeDayOffs() {
+  if (!els.employeeDayOffList) return;
+  if (!state.dayOffs.length) {
+    els.employeeDayOffList.innerHTML = emptyState('Nuk ka pushime individuale.');
+    return;
+  }
+
+  els.employeeDayOffList.innerHTML = state.dayOffs.map(item => {
+    const user = getUserById(item.user_id);
+    return `
+      <div class="rounded-2xl border border-slate-200 p-4 flex items-start justify-between gap-4">
+        <div>
+          <div class="font-semibold text-slate-900">${escapeHtml(user?.full_name || '-')}</div>
+          <div class="text-sm text-slate-500">${formatDate(item.off_date)} · ${item.is_paid ? 'E paguar' : 'Pa pagesë'}</div>
+          ${item.reason ? `<div class="text-sm text-slate-600 mt-1">${escapeHtml(item.reason)}</div>` : ''}
+        </div>
+        ${state.currentUser.role === 'admin' ? `
+          <button onclick="deleteEmployeeDayOff(${item.id})" class="rounded-xl bg-rose-50 text-rose-600 px-3 py-2 text-sm font-semibold hover:bg-rose-100">
+            Fshij
+          </button>` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+function renderMonthlyWorkdays() {
+  if (!els.monthlyWorkdaysList) return;
+
+  const rows = state.monthlyWorkdays
+    .filter(item => item.work_year === state.currentYear)
+    .sort((a, b) => a.work_month - b.work_month);
+
+  if (!rows.length) {
+    els.monthlyWorkdaysList.innerHTML = emptyState('Nuk ka konfigurim për ditët e punës.');
+    return;
+  }
+
+  els.monthlyWorkdaysList.innerHTML = rows.map(item => `
+    <div class="rounded-2xl border border-slate-200 p-4">
+      <div class="font-semibold text-slate-900">${formatMonthName(item.work_month - 1)} ${item.work_year}</div>
+      <div class="text-sm text-slate-500 mt-1">${item.expected_work_days} ditë pune</div>
+    </div>
+  `).join('');
+}
+
+function renderMessages() {
+  if (!els.messagesList) return;
+  const messages = getVisibleMessages();
+
+  if (!messages.length) {
+    els.messagesList.innerHTML = emptyState('Nuk ka mesazhe.');
+    return;
+  }
+
+  els.messagesList.innerHTML = messages.map(message => {
+    const sender = getUserById(message.sender_id);
+    const recipient = getUserById(message.recipient_id);
+    const badgeClass =
+      message.message_type === 'warning' ? 'bg-rose-50 text-rose-700' :
+      message.message_type === 'praise' ? 'bg-emerald-50 text-emerald-700' :
+      'bg-blue-50 text-blue-700';
+
+    return `
+      <div class="rounded-2xl border border-slate-200 p-4">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="px-2.5 py-1 rounded-full text-xs ${badgeClass}">
+                ${message.message_type === 'warning' ? 'Vrejtje' : message.message_type === 'praise' ? 'Lavdërim' : 'Informues'}
+              </span>
+              ${message.rating ? `<span class="text-amber-500 font-semibold">${renderStars(message.rating)}</span>` : ''}
+            </div>
+            <div class="font-semibold text-slate-900 mt-2">${escapeHtml(message.subject || 'Mesazh')}</div>
+            <div class="text-sm text-slate-500 mt-1">
+              Nga: ${escapeHtml(sender?.full_name || 'Admin')} · Për: ${escapeHtml(recipient?.full_name || '-')}
+            </div>
+            <p class="text-sm text-slate-700 mt-3 whitespace-pre-wrap">${escapeHtml(message.message_text || '')}</p>
+          </div>
+          <div class="text-right">
+            <div class="text-xs text-slate-400">${formatDateTime(message.created_at)}</div>
+            ${state.currentUser.role !== 'admin' && !message.is_read ? `
+              <button onclick="markMessageRead(${message.id})" class="mt-3 rounded-xl bg-slate-900 text-white px-3 py-2 text-sm font-semibold hover:bg-slate-800">
+                Lexuar
+              </button>` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderEmployeeRatings() {
+  if (!els.employeeRatingsList) return;
+
+  const employees = getEmployeeUsers()
+    .map(employee => ({
+      employee,
+      avg: getAverageRatingForEmployee(employee.id),
+      count: state.reviews.filter(r => r.employee_id === employee.id).length
+    }))
+    .sort((a, b) => b.avg - a.avg);
+
+  if (!employees.length) {
+    els.employeeRatingsList.innerHTML = emptyState('Nuk ka vlerësime.');
+    return;
+  }
+
+  els.employeeRatingsList.innerHTML = employees.map(item => `
+    <div class="rounded-2xl border border-slate-200 p-4 flex items-center justify-between gap-4">
+      <div>
+        <div class="font-semibold text-slate-900">${escapeHtml(item.employee.full_name)}</div>
+        <div class="text-sm text-slate-500">${escapeHtml(item.employee.department || '-')}</div>
+      </div>
+      <div class="text-right">
+        <div class="text-amber-500 font-semibold">${renderStars(item.avg)}</div>
+        <div class="text-sm text-slate-500">${item.avg.toFixed(1)} / 5 · ${item.count} vlerësime</div>
+      </div>
+    </div>
+  `).join('');
+}
+
 function renderDashboardChart() {
-  const ctx = els.dashboardChart.getContext('2d');
-  if (state.chart) state.chart.destroy();
+  if (!els.dashboardChart) return;
+
+  const labels = [];
+  const values = [];
+
   if (state.currentUser.role === 'admin') {
     const employees = getEmployeeUsers();
-    const labels = employees.map(item => item.full_name);
-    const data = employees.map(employee => {
+    employees.forEach(employee => {
       const payroll = getPayrollForEmployee(employee, state.currentMonth, state.currentYear);
-      return state.chartMode === 'bank' ? payroll.bankDue : state.chartMode === 'cash' ? payroll.cashDue : payroll.salaryDue;
+      labels.push(employee.full_name);
+      values.push(
+        state.chartMode === 'bank' ? payroll.bankDue :
+        state.chartMode === 'cash' ? payroll.cashDue :
+        payroll.salaryDue
+      );
     });
-    els.chartCaption.textContent = `${t('analyticsAdminCaption')} · ${t(state.chartMode === 'bank' ? 'chartBank' : state.chartMode === 'cash' ? 'chartCash' : 'chartTotal')}`;
-    state.chart = new Chart(ctx, {
-      type: 'bar',
-      data: { labels, datasets: [{ label: els.chartCaption.textContent, data, borderRadius: 14 }] },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
-    });
+    if (els.chartCaption) {
+      els.chartCaption.textContent =
+        state.chartMode === 'bank' ? 'Shumat në bankë sipas punonjësit' :
+        state.chartMode === 'cash' ? 'Shumat cash sipas punonjësit' :
+        'Shumat mujore sipas punonjësit';
+    }
   } else {
-    const labels = [...Array(7)].map((_, idx) => {
-      const date = new Date(); date.setDate(date.getDate() - (6 - idx));
-      return date.toLocaleDateString(getLocale(), { day: '2-digit', month: '2-digit' });
+    const last7 = getLastSevenDaysAttendance(state.currentUser.id);
+    last7.forEach(item => {
+      labels.push(formatDate(item.work_date));
+      values.push(Number(item.total_hours || 0));
     });
-    const data = [...Array(7)].map((_, idx) => {
-      const date = new Date(); date.setDate(date.getDate() - (6 - idx));
-      const key = getLocalDateString(date);
-      const summary = state.attendance.find(item => item.user_id === state.currentUser.id && item.work_date === key);
-      return Number(summary?.total_hours || 0);
-    });
-    els.chartCaption.textContent = t('analyticsEmployeeCaption');
-    state.chart = new Chart(ctx, {
-      type: 'line',
-      data: { labels, datasets: [{ label: t('hoursThisMonth'), data, tension: 0.35, fill: false }] },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
-    });
+    if (els.chartCaption) els.chartCaption.textContent = '7 ditët e fundit';
   }
+
+  if (state.chart) state.chart.destroy();
+  state.chart = new Chart(els.dashboardChart, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: state.currentUser.role === 'admin' ? 'Shuma (€)' : 'Orë',
+        data: values,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
 }
 
-function openEmployeeModal(id = null) {
-  els.employeeForm.reset();
-  els.employeeId.value = '';
-  els.employeeModalTitle.textContent = id ? t('employeeModalEdit') : t('employeeModalAdd');
-  if (id) {
-    const employee = getUserById(id);
-    if (!employee) return;
-    els.employeeId.value = employee.id;
-    els.employeeName.value = employee.full_name || '';
-    els.employeeUsername.value = employee.username || '';
-    els.employeeEmail.value = employee.email || '';
-    els.employeeDepartment.value = employee.department || 'Administrata';
-    els.employeeSalary.value = employee.salary_per_hour || 0;
-    els.employeeRole.value = employee.role || 'employee';
-    if (els.employeeFullSalary) els.employeeFullSalary.value = employee.full_month_salary || 0;
-    if (els.employeeBankSalary) els.employeeBankSalary.value = employee.bank_salary || 0;
-    if (els.employeeOvertimeRate) els.employeeOvertimeRate.value = employee.overtime_rate || DEFAULT_OVERTIME_RATE;
-    if (els.employeeShiftStart) els.employeeShiftStart.value = employee.shift_start || DEFAULT_SHIFT_START;
-    if (els.employeeShiftEnd) els.employeeShiftEnd.value = employee.shift_end || DEFAULT_SHIFT_END;
-    if (els.employeePaymentMethod) els.employeePaymentMethod.value = employee.payment_method || 'cash';
+function updateStandardButton() {
+  if (!state.currentUser || !els.standardBtn) return;
+
+  const openStandard = getOpenSession(state.currentUser.id, 'standard');
+  const today = getTodaySummaryForCurrentUser();
+
+  els.standardBtn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700', 'bg-rose-600', 'hover:bg-rose-700');
+
+  if (openStandard) {
+    els.standardBtn.classList.add('bg-rose-600', 'hover:bg-rose-700');
+    els.standardBtnText.textContent = 'Check Out';
+    els.standardBtnIcon.setAttribute('data-lucide', 'log-out');
+  } else if (today && ['complete', 'holiday', 'day_off'].includes(today.status)) {
+    els.standardBtn.classList.add('bg-slate-400');
+    els.standardBtnText.textContent = 'I përfunduar';
+    els.standardBtnIcon.setAttribute('data-lucide', 'check-check');
   } else {
-    if (els.employeeOvertimeRate) els.employeeOvertimeRate.value = DEFAULT_OVERTIME_RATE;
-    if (els.employeeShiftStart) els.employeeShiftStart.value = DEFAULT_SHIFT_START;
-    if (els.employeeShiftEnd) els.employeeShiftEnd.value = DEFAULT_SHIFT_END;
-    if (els.employeePaymentMethod) els.employeePaymentMethod.value = 'cash';
+    els.standardBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+    els.standardBtnText.textContent = 'Check In';
+    els.standardBtnIcon.setAttribute('data-lucide', 'log-in');
   }
-  openModal('employeeModal');
+
+  lucide.createIcons();
 }
 
-async function handleEmployeeSubmit(event) {
-  event.preventDefault();
-  const id = els.employeeId.value || null;
-  const full_name = els.employeeName.value.trim();
-  const username = els.employeeUsername.value.trim();
-  const email = els.employeeEmail.value.trim().toLowerCase();
-  const password = els.employeePassword.value.trim();
-  if (!full_name || !username || !email) return showToast(t('employeeNameEmailRequired'), 'error');
-  const duplicateEmail = state.employees.find(employee => (employee.email || '').toLowerCase() === email && employee.id !== id);
-  if (duplicateEmail) return showToast(t('duplicateEmail'), 'error');
-  const duplicateUsername = state.employees.find(employee => (employee.username || '').toLowerCase() === username.toLowerCase() && employee.id !== id);
-  if (duplicateUsername) return showToast(t('duplicateUsername'), 'error');
-  try {
-    const payload = {
-      full_name, username, email,
-      department: els.employeeDepartment.value,
-      salary_per_hour: Number(els.employeeSalary.value || 0),
-      overtime_rate: Number(els.employeeOvertimeRate?.value || DEFAULT_OVERTIME_RATE),
-      full_month_salary: Number(els.employeeFullSalary?.value || 0),
-      bank_salary: Number(els.employeeBankSalary?.value || 0),
-      payment_method: els.employeePaymentMethod?.value || 'cash',
-      shift_start: els.employeeShiftStart?.value || DEFAULT_SHIFT_START,
-      shift_end: els.employeeShiftEnd?.value || DEFAULT_SHIFT_END,
-      role: els.employeeRole.value,
-      avatar: getAvatarText(full_name),
-    };
-    if (password) payload.password_hash = await hashPassword(password);
+function updateOvertimeButton() {
+  if (!state.currentUser || !els.overtimeBtn) return;
 
-    const query = id ? state.supabase.from('employees').update(payload).eq('id', id) : state.supabase.from('employees').insert({ ...payload, password_hash: payload.password_hash || await hashPassword('123456') });
-    const { error } = await query;
-    if (error) throw error;
-    await fetchEmployees();
-    closeModal('employeeModal');
-    renderEverything();
-    showToast(id ? t('employeeUpdated') : t('employeeAdded'));
-  } catch (error) {
-    console.error(error);
-    showToast(t('employeeSaveError'), 'error');
+  const openOt = getOpenSession(state.currentUser.id, 'overtime');
+  els.overtimeBtn.classList.remove('bg-violet-600', 'hover:bg-violet-700', 'bg-rose-600', 'hover:bg-rose-700');
+
+  if (openOt) {
+    els.overtimeBtn.classList.add('bg-rose-600', 'hover:bg-rose-700');
+    els.overtimeBtnText.textContent = 'Orë shtesë: Check Out';
+    els.overtimeBtnIcon.setAttribute('data-lucide', 'timer-off');
+  } else {
+    els.overtimeBtn.classList.add('bg-violet-600', 'hover:bg-violet-700');
+    els.overtimeBtnText.textContent = 'Orë shtesë: Check In';
+    els.overtimeBtnIcon.setAttribute('data-lucide', 'timer');
   }
-}
 
-async function deleteEmployee(id) {
-  if (id === state.currentUser.id) return showToast(t('employeeDeleteSelf'), 'error');
-  const employee = getUserById(id);
-  if (!employee) return;
-  if (!confirm(`${t('confirmDelete')} ${employee.full_name}?`)) return;
-  try {
-    const { error } = await state.supabase.from('employees').delete().eq('id', id);
-    if (error) throw error;
-    await refreshAllData();
-    showToast(t('employeeDeleted'));
-  } catch (error) {
-    console.error(error);
-    showToast(t('employeeDeleteError'), 'error');
-  }
-}
-
-function updateRequestFieldVisibility() {
-  const isShiftRequest = els.requestType?.value === 'shift_change';
-  const dateWrap = els.requestDate?.closest('div');
-  const shiftWrap = els.requestShift?.closest('div');
-  if (dateWrap) dateWrap.parentElement.style.display = isShiftRequest ? '' : 'none';
-  if (shiftWrap) shiftWrap.style.display = isShiftRequest ? '' : 'none';
-}
-
-async function handleRequestSubmit(event) {
-  event.preventDefault();
-  const description = els.requestDescription.value.trim();
-  const type = els.requestType.value;
-  if (!description) return showToast(t('requestDescriptionRequired'), 'error');
-  if (type === 'shift_change' && !els.requestDate.value) return showToast(t('requestDateRequired'), 'error');
-  try {
-    const payload = {
-      user_id: state.currentUser.id,
-      type,
-      description,
-      requested_date: type === 'shift_change' ? els.requestDate.value : null,
-      requested_shift: type === 'shift_change' ? (els.requestShift.value || null) : null,
-    };
-    const { error } = await state.supabase.from('requests').insert(payload);
-    if (error) throw error;
-    await fetchRequests();
-    closeModal('requestModal');
-    renderRequests();
-    showToast(t('requestSent'));
-  } catch (error) {
-    console.error(error);
-    showToast(t('requestSendError'), 'error');
-  }
-}
-
-async function updateRequestStatus(requestId, action) {
-  if (state.currentUser?.role !== 'admin') return;
-  const request = state.requests.find(item => String(item.id) === String(requestId));
-  if (!request) return;
-  const admin_response = prompt(action === 'approved' ? t('approvalPrompt') : t('rejectionPrompt')) || '';
-  try {
-    const { error } = await state.supabase.from('requests').update({
-      status: action,
-      admin_response,
-      decided_at: new Date().toISOString(),
-      decided_by: state.currentUser.id,
-    }).eq('id', requestId);
-    if (error) throw error;
-    await fetchRequests();
-    renderEverything();
-    showToast(action === 'approved' ? t('requestApproved') : t('requestRejected'));
-  } catch (error) {
-    console.error(error);
-    showToast(t('requestUpdateError'), 'error');
-  }
+  lucide.createIcons();
 }
 
 async function handleStandardAttendance() {
   try {
-    const open = getOpenSession(state.currentUser.id, 'standard');
-    if (open) {
-      await closeSession(open.id, new Date().toISOString(), false);
-      showToast(t('standardCheckoutSuccess'));
-    } else {
-      await startSession('standard');
-      showToast(t('standardCheckinSuccess'));
+    const userId = state.currentUser.id;
+    const now = new Date();
+    const today = getDateString(now);
+
+    const openStandard = getOpenSession(userId, 'standard');
+    if (openStandard) {
+      await closeSession(openStandard.id, now.toISOString(), false);
+      await refreshAllData();
+      showToast(t('standardCheckoutSuccess'), 'success');
+      return;
     }
+
+    const validation = canUserCheckIn(userId, now, 'standard');
+    if (!validation.ok) return showToast(validation.message, 'error');
+
+    await createSession(userId, today, 'standard', now.toISOString());
     await refreshAllData();
+    showToast(t('standardCheckinSuccess'), 'success');
   } catch (error) {
     console.error(error);
     showToast(t('attendanceSaveError'), 'error');
@@ -762,73 +1292,212 @@ async function handleStandardAttendance() {
 
 async function handleOvertimeAttendance() {
   try {
-    const open = getOpenSession(state.currentUser.id, 'overtime');
-    if (open) {
-      await closeSession(open.id, new Date().toISOString(), false);
-      showToast(t('overtimeEndSuccess'));
-    } else {
-      await startSession('overtime');
-      showToast(t('overtimeStartSuccess'));
+    const userId = state.currentUser.id;
+    const now = new Date();
+    const today = getDateString(now);
+
+    const openOt = getOpenSession(userId, 'overtime');
+    if (openOt) {
+      await closeSession(openOt.id, now.toISOString(), false);
+      await refreshAllData();
+      showToast(t('overtimeEndSuccess'), 'success');
+      return;
     }
+
+    const validation = canUserCheckIn(userId, now, 'overtime');
+    if (!validation.ok) return showToast(validation.message, 'error');
+
+    const standardSummary = getAttendanceRecord(userId, today);
+    const schedule = getEffectiveSchedule(userId, today);
+    const shiftEnd = combineDateTime(today, schedule.end);
+
+    if (!standardSummary || new Date(now) < shiftEnd) {
+      return showToast(t('cannotStartOT'), 'error');
+    }
+
+    await createSession(userId, today, 'overtime', now.toISOString());
     await refreshAllData();
+    showToast(t('overtimeStartSuccess'), 'success');
   } catch (error) {
     console.error(error);
     showToast(t('attendanceSaveError'), 'error');
   }
 }
 
-function updateStandardButton() {
-  const open = getOpenSession(state.currentUser?.id, 'standard');
-  els.standardBtnText.textContent = open ? t('standardCheckOut') : t('standardCheckIn');
-  els.standardBtnIcon.setAttribute('data-lucide', open ? 'log-out' : 'log-in');
-}
-function updateOvertimeButton() {
-  const open = getOpenSession(state.currentUser?.id, 'overtime');
-  els.overtimeBtnText.textContent = open ? t('overtimeCheckOut') : t('overtimeCheckIn');
-  els.overtimeBtnIcon.setAttribute('data-lucide', open ? 'log-out' : 'timer');
+function canUserCheckIn(userId, currentDate, sessionType = 'standard') {
+  const workDate = getDateString(currentDate);
+  const dayStatus = getDayStatus(userId, workDate);
+  const schedule = getEffectiveSchedule(userId, workDate);
+
+  if (sessionType === 'standard') {
+    if (!dayStatus.isWorkingDay) return { ok: false, message: t('notWorkingDay') };
+    if (dayStatus.fullDayBlocked) return { ok: false, message: t('fullDayLeaveBlocked') };
+    if (dayStatus.partialBlocked) return { ok: false, message: t('partialLeaveBlocked') };
+
+    const allowedCheckinStart = combineDateTime(workDate, dayStatus.isFirstSaturday ? FIRST_SATURDAY_CHECKIN_FROM : subtractMinutesFromTime(schedule.start, CHECKIN_EARLY_MINUTES));
+    if (currentDate < allowedCheckinStart) return { ok: false, message: t('checkinTooEarly') };
+
+    if (getOpenSession(userId, 'standard')) return { ok: false, message: t('alreadyCheckedIn') };
+  }
+
+  if (sessionType === 'overtime') {
+    if (dayStatus.fullDayBlocked || !dayStatus.isWorkingDay) return { ok: false, message: t('cannotOTOnBlockedDay') };
+  }
+
+  return { ok: true };
 }
 
-async function startSession(sessionType) {
+async function syncAttendanceRules() {
   const now = new Date();
-  const work_date = getLocalDateString(now);
+  const updates = [];
+
+  for (const session of state.sessions.filter(item => !item.check_out)) {
+    if (session.session_type !== 'standard') continue;
+    const dayStatus = getDayStatus(session.user_id, session.work_date);
+    const schedule = getEffectiveSchedule(session.user_id, session.work_date);
+    const shiftEnd = combineDateTime(session.work_date, dayStatus.isFirstSaturday ? FIRST_SATURDAY_SHIFT_END : schedule.end);
+
+    if (now >= shiftEnd) {
+      updates.push(closeSession(session.id, shiftEnd.toISOString(), true));
+    }
+  }
+
+  if (updates.length) {
+    await Promise.all(updates);
+    await fetchSessions();
+    await fetchAttendance();
+  }
+
+  await ensureHolidayAndDayOffAttendanceRows();
+}
+
+async function ensureHolidayAndDayOffAttendanceRows() {
+  const updates = [];
+  const relevantDates = [
+    ...state.holidays.map(h => ({ type: 'holiday', date: h.holiday_date })),
+    ...state.dayOffs.map(d => ({ type: 'day_off', date: d.off_date, user_id: d.user_id }))
+  ];
+
+  for (const entry of relevantDates) {
+    if (entry.type === 'holiday') {
+      for (const employee of getEmployeeUsers()) {
+        const existing = getAttendanceRecord(employee.id, entry.date);
+        if (!existing) {
+          updates.push(
+            state.supabase.from('attendance').insert({
+              user_id: employee.id,
+              work_date: entry.date,
+              status: 'holiday',
+              total_hours: 0,
+              regular_hours: 0,
+              overtime_hours: 0,
+              overtime_pay: 0,
+              total_sessions: 0,
+              auto_checked_out: false
+            })
+          );
+        }
+      }
+    } else {
+      const existing = getAttendanceRecord(entry.user_id, entry.date);
+      if (!existing) {
+        updates.push(
+          state.supabase.from('attendance').insert({
+            user_id: entry.user_id,
+            work_date: entry.date,
+            status: 'day_off',
+            total_hours: 0,
+            regular_hours: 0,
+            overtime_hours: 0,
+            overtime_pay: 0,
+            total_sessions: 0,
+            auto_checked_out: false
+          })
+        );
+      }
+    }
+  }
+
+  if (updates.length) {
+    await Promise.all(updates);
+    await fetchAttendance();
+  }
+}
+
+async function createSession(userId, workDate, sessionType, checkInIso) {
   const { error } = await state.supabase.from('attendance_sessions').insert({
-    user_id: state.currentUser.id,
-    work_date,
+    user_id: userId,
+    work_date: workDate,
     session_type: sessionType,
-    check_in: now.toISOString(),
+    check_in: checkInIso
   });
   if (error) throw error;
-  await fetchSessions();
-  await rebuildAttendanceSummary(state.currentUser.id, work_date);
+  await recalculateAttendance(userId, workDate);
 }
 
 async function closeSession(sessionId, checkoutIso, autoCheckedOut = false) {
   const session = state.sessions.find(item => item.id === sessionId);
   if (!session) return;
-  const workedHours = calculateHours(session.check_in, checkoutIso);
-  const { error } = await state.supabase.from('attendance_sessions').update({
-    check_out: checkoutIso,
-    worked_hours: workedHours,
-    auto_checked_out: autoCheckedOut,
-  }).eq('id', sessionId);
+
+  const checkIn = new Date(session.check_in);
+  const checkOut = new Date(checkoutIso);
+  const workedHours = Math.max(0, (checkOut - checkIn) / 36e5);
+
+  const { error } = await state.supabase
+    .from('attendance_sessions')
+    .update({
+      check_out: checkoutIso,
+      worked_hours: round2(workedHours),
+      auto_checked_out: autoCheckedOut
+    })
+    .eq('id', sessionId);
+
   if (error) throw error;
-  await fetchSessions();
-  await rebuildAttendanceSummary(session.user_id, session.work_date, autoCheckedOut);
+  await recalculateAttendance(session.user_id, session.work_date);
 }
 
-async function rebuildAttendanceSummary(userId, workDate, autoCheckedOut = false) {
-  const daySessions = getSessionsForDay(userId, workDate);
-  if (!daySessions.length) return;
-  const regularHours = sum(daySessions.filter(item => item.session_type === 'standard' && item.check_out).map(item => item.worked_hours));
-  const overtimeHours = sum(daySessions.filter(item => item.session_type === 'overtime' && item.check_out).map(item => item.worked_hours));
-  const employee = getUserById(userId) || await fetchUserById(userId);
-  const overtimePay = Number((overtimeHours * Number(employee?.overtime_rate || DEFAULT_OVERTIME_RATE)).toFixed(2));
-  const firstCheckIn = daySessions.reduce((min, session) => !min || new Date(session.check_in) < new Date(min) ? session.check_in : min, null);
-  const completedSessions = daySessions.filter(item => item.check_out);
-  const lastCheckOut = completedSessions.reduce((max, session) => !max || new Date(session.check_out) > new Date(max) ? session.check_out : max, null);
-  const openStandard = daySessions.some(item => item.session_type === 'standard' && !item.check_out);
-  const openOvertime = daySessions.some(item => item.session_type === 'overtime' && !item.check_out);
-  const status = openOvertime ? 'overtime_open' : openStandard ? 'at_work' : 'complete';
+async function recalculateAttendance(userId, workDate) {
+  const sessions = state.sessions
+    .filter(item => item.user_id === userId && item.work_date === workDate)
+    .map(item => ({ ...item }));
+
+  const { data: freshSessions, error: freshError } = await state.supabase
+    .from('attendance_sessions')
+    .select('*')
+    .eq('user_id', userId)
+    .eq('work_date', workDate)
+    .order('check_in', { ascending: true });
+
+  if (freshError) throw freshError;
+
+  const normalized = (freshSessions || []).map(normalizeSession);
+  const standardSessions = normalized.filter(s => s.session_type === 'standard');
+  const overtimeSessions = normalized.filter(s => s.session_type === 'overtime');
+
+  const firstCheckIn = normalized[0]?.check_in || null;
+  const lastClosed = [...normalized].filter(s => s.check_out).sort((a, b) => new Date(b.check_out) - new Date(a.check_out))[0];
+  const lastCheckOut = lastClosed?.check_out || null;
+
+  const regularHours = round2(standardSessions.reduce((sum, s) => sum + Number(s.worked_hours || 0), 0));
+  const overtimeHours = round2(overtimeSessions.reduce((sum, s) => sum + Number(s.worked_hours || 0), 0));
+  const overtimeRate = getUserById(userId)?.overtime_rate || DEFAULT_OVERTIME_RATE;
+  const overtimePay = round2(overtimeHours * overtimeRate);
+  const totalHours = round2(regularHours + overtimeHours);
+
+  let status = 'present';
+  const hasOpenStandard = standardSessions.some(s => !s.check_out);
+  const hasOpenOt = overtimeSessions.some(s => !s.check_out);
+  const dayStatus = getDayStatus(userId, workDate);
+
+  if (dayStatus.isHoliday) status = 'holiday';
+  else if (dayStatus.isDayOff) status = 'day_off';
+  else if (hasOpenOt) status = 'overtime_open';
+  else if (hasOpenStandard) status = 'at_work';
+  else if (!normalized.length) status = 'absent';
+  else status = 'complete';
+
+  const existing = getAttendanceRecord(userId, workDate);
+
   const payload = {
     user_id: userId,
     work_date: workDate,
@@ -836,50 +1505,709 @@ async function rebuildAttendanceSummary(userId, workDate, autoCheckedOut = false
     last_check_out: lastCheckOut,
     regular_hours: regularHours,
     overtime_hours: overtimeHours,
-    total_hours: Number((regularHours + overtimeHours).toFixed(2)),
+    total_hours: totalHours,
     overtime_pay: overtimePay,
-    total_sessions: daySessions.length,
-    auto_checked_out: autoCheckedOut || daySessions.some(item => item.auto_checked_out),
-    status,
+    total_sessions: normalized.length,
+    auto_checked_out: normalized.some(s => s.auto_checked_out),
+    status
   };
-  const { error } = await state.supabase.from('attendance').upsert(payload, { onConflict: 'user_id,work_date' });
-  if (error) throw error;
+
+  if (existing) {
+    const { error } = await state.supabase.from('attendance').update(payload).eq('id', existing.id);
+    if (error) throw error;
+  } else {
+    const { error } = await state.supabase.from('attendance').insert(payload);
+    if (error) throw error;
+  }
+
+  await fetchSessions();
   await fetchAttendance();
 }
 
-function changeMonth(step) {
-  state.currentMonth += step;
-  if (state.currentMonth < 0) { state.currentMonth = 11; state.currentYear -= 1; }
-  if (state.currentMonth > 11) { state.currentMonth = 0; state.currentYear += 1; }
-  setMonthLabel();
-  renderEverything();
+async function handleEmployeeSubmit(event) {
+  event.preventDefault();
+
+  const id = String(els.employeeId?.value || '').trim();
+  const full_name = String(els.employeeName?.value || '').trim();
+  const username = String(els.employeeUsername?.value || '').trim();
+  const password = String(els.employeePassword?.value || '').trim();
+
+  if (!full_name || !username) {
+    showToast('Emri dhe username janë të detyrueshëm.', 'error');
+    return;
+  }
+
+  try {
+    const payload = {
+      full_name,
+      username,
+      role: els.employeeRole?.value || 'employee',
+      department: els.employeeDepartment?.value || '',
+      overtime_rate: Number(els.employeeOvertimeRate?.value || DEFAULT_OVERTIME_RATE),
+      full_month_salary: Number(els.employeeFullSalary?.value || 0),
+      bank_salary: Number(els.employeeBankSalary?.value || 0),
+      payment_method: els.employeePaymentMethod?.value || 'cash',
+      shift_start: els.employeeShiftStart?.value || DEFAULT_SHIFT_START,
+      shift_end: els.employeeShiftEnd?.value || DEFAULT_SHIFT_END,
+      avatar: getAvatarText(full_name)
+    };
+
+    if (password) payload.password_hash = await hashPassword(password);
+
+    let error;
+    if (id) {
+      ({ error } = await state.supabase.from('employees').update(payload).eq('id', id));
+    } else {
+      if (!payload.password_hash) payload.password_hash = await hashPassword('123456');
+      ({ error } = await state.supabase.from('employees').insert(payload));
+    }
+
+    if (error) throw error;
+
+    await fetchEmployees();
+    closeModal('employeeModal');
+    renderEverything();
+    showToast(id ? t('employeeUpdated') : t('employeeAdded'), 'success');
+  } catch (error) {
+    console.error(error);
+    showToast(t('employeeSaveError'), 'error');
+  }
 }
-function setMonthLabel() { els.currentMonthDisplay.textContent = formatMonthYear(state.currentYear, state.currentMonth); }
+
+function openEmployeeModal(id = '') {
+  if (!els.employeeForm) return;
+
+  els.employeeForm.reset();
+  if (els.employeeId) els.employeeId.value = '';
+  if (els.employeeModalTitle) els.employeeModalTitle.textContent = id ? 'Edito Punonjësin' : 'Shto Punonjës';
+
+  if (id) {
+    const employee = getUserById(id);
+    if (!employee) return;
+
+    els.employeeId.value = employee.id;
+    els.employeeName.value = employee.full_name || '';
+    els.employeeUsername.value = employee.username || '';
+    els.employeeDepartment.value = employee.department || '';
+    els.employeeRole.value = employee.role || 'employee';
+    els.employeeFullSalary.value = employee.full_month_salary || 0;
+    els.employeeBankSalary.value = employee.bank_salary || 0;
+    els.employeeOvertimeRate.value = employee.overtime_rate || DEFAULT_OVERTIME_RATE;
+    els.employeePaymentMethod.value = employee.payment_method || 'cash';
+    els.employeeShiftStart.value = employee.shift_start || DEFAULT_SHIFT_START;
+    els.employeeShiftEnd.value = employee.shift_end || DEFAULT_SHIFT_END;
+  } else {
+    if (els.employeeOvertimeRate) els.employeeOvertimeRate.value = DEFAULT_OVERTIME_RATE;
+    if (els.employeeShiftStart) els.employeeShiftStart.value = DEFAULT_SHIFT_START;
+    if (els.employeeShiftEnd) els.employeeShiftEnd.value = DEFAULT_SHIFT_END;
+  }
+
+  openModal('employeeModal');
+}
+
+async function deleteEmployee(id) {
+  if (id === state.currentUser.id) return showToast(t('employeeDeleteSelf'), 'error');
+
+  const employee = getUserById(id);
+  if (!employee) return;
+  if (!confirm(`${t('confirmDelete')} ${employee.full_name}?`)) return;
+
+  try {
+    const { error } = await state.supabase.from('employees').delete().eq('id', id);
+    if (error) throw error;
+
+    await refreshAllData();
+    showToast(t('employeeDeleted'), 'success');
+  } catch (error) {
+    console.error(error);
+    showToast(t('employeeDeleteError'), 'error');
+  }
+}
+
+async function handleRequestSubmit(event) {
+  event.preventDefault();
+
+  const description = String(els.requestDescription?.value || '').trim();
+  const type = String(els.requestType?.value || 'other');
+  const requestedDate = els.requestDate?.value || null;
+  const startTime = els.requestStartTime?.value || null;
+  const endTime = els.requestEndTime?.value || null;
+  const hoursRequested = Number(els.requestHours?.value || 0);
+  const affectsEntireDay = !!els.requestEntireDay?.checked;
+  const requestedShift = els.requestShift?.value || null;
+
+  if (!description) return showToast(t('requestDescriptionRequired'), 'error');
+  if (!requestedDate) return showToast(t('requestDateRequired'), 'error');
+
+  try {
+    const payload = {
+      user_id: state.currentUser.id,
+      type,
+      description,
+      requested_date: requestedDate,
+      start_time: startTime,
+      end_time: endTime,
+      hours_requested: hoursRequested,
+      affects_entire_day: affectsEntireDay,
+      requested_shift: requestedShift
+    };
+
+    const { error } = await state.supabase.from('requests').insert(payload);
+    if (error) throw error;
+
+    await fetchRequests();
+    closeModal('requestModal');
+    renderEverything();
+    showToast(t('requestSent'), 'success');
+  } catch (error) {
+    console.error(error);
+    showToast(t('requestSendError'), 'error');
+  }
+}
+
+async function updateRequestStatus(id, status) {
+  try {
+    const adminResponse = prompt(status === 'approved' ? 'Mesazh aprovimi (opsionale):' : 'Arsye refuzimi (opsionale):') || '';
+
+    const { error } = await state.supabase
+      .from('requests')
+      .update({
+        status,
+        admin_response: adminResponse,
+        decided_at: new Date().toISOString(),
+        decided_by: state.currentUser.id
+      })
+      .eq('id', id);
+
+    if (error) throw error;
+
+    await fetchRequests();
+    await ensureHolidayAndDayOffAttendanceRows();
+    renderEverything();
+    showToast(status === 'approved' ? t('requestApproved') : t('requestRejected'), 'success');
+  } catch (error) {
+    console.error(error);
+    showToast(t('requestUpdateError'), 'error');
+  }
+}
+
+async function handleGlobalHolidaySubmit(event) {
+  event.preventDefault();
+  try {
+    const payload = {
+      title: String(els.holidayTitle?.value || '').trim(),
+      holiday_date: els.holidayDate?.value || null,
+      applies_to_all: true,
+      is_paid: !!els.holidayPaid?.checked
+    };
+
+    if (!payload.title || !payload.holiday_date) {
+      showToast('Plotëso emrin e festës dhe datën.', 'error');
+      return;
+    }
+
+    const { error } = await state.supabase.from('company_holidays').insert(payload);
+    if (error) throw error;
+
+    await fetchHolidays();
+    await ensureHolidayAndDayOffAttendanceRows();
+    closeModal('globalHolidayModal');
+    renderEverything();
+    showToast(t('holidaySaved'), 'success');
+  } catch (error) {
+    console.error(error);
+    showToast(t('holidaySaveError'), 'error');
+  }
+}
+
+async function deleteHoliday(id) {
+  try {
+    const { error } = await state.supabase.from('company_holidays').delete().eq('id', id);
+    if (error) throw error;
+    await fetchHolidays();
+    renderEverything();
+    showToast(t('holidayDeleted'), 'success');
+  } catch (error) {
+    console.error(error);
+    showToast(t('holidayDeleteError'), 'error');
+  }
+}
+
+async function handleEmployeeDayOffSubmit(event) {
+  event.preventDefault();
+  try {
+    const payload = {
+      user_id: els.dayOffEmployeeId?.value || '',
+      off_date: els.dayOffDate?.value || null,
+      reason: String(els.dayOffReason?.value || '').trim(),
+      is_paid: !!els.dayOffPaid?.checked
+    };
+
+    if (!payload.user_id || !payload.off_date) {
+      showToast('Zgjedhe punonjësin dhe datën.', 'error');
+      return;
+    }
+
+    const { error } = await state.supabase.from('employee_day_offs').insert(payload);
+    if (error) throw error;
+
+    await fetchDayOffs();
+    await ensureHolidayAndDayOffAttendanceRows();
+    closeModal('employeeDayOffModal');
+    renderEverything();
+    showToast(t('dayOffSaved'), 'success');
+  } catch (error) {
+    console.error(error);
+    showToast(t('dayOffSaveError'), 'error');
+  }
+}
+
+async function deleteEmployeeDayOff(id) {
+  try {
+    const { error } = await state.supabase.from('employee_day_offs').delete().eq('id', id);
+    if (error) throw error;
+    await fetchDayOffs();
+    renderEverything();
+    showToast(t('dayOffDeleted'), 'success');
+  } catch (error) {
+    console.error(error);
+    showToast(t('dayOffDeleteError'), 'error');
+  }
+}
+
+async function handleWorkdayConfigSubmit(event) {
+  event.preventDefault();
+  try {
+    const work_year = Number(els.workYear?.value || state.currentYear);
+    const work_month = Number(els.workMonth?.value || 1);
+    const expected_work_days = Number(els.expectedWorkDays?.value || 0);
+
+    const existing = state.monthlyWorkdays.find(item => item.work_year === work_year && item.work_month === work_month);
+
+    let error;
+    if (existing) {
+      ({ error } = await state.supabase
+        .from('monthly_workday_settings')
+        .update({ expected_work_days })
+        .eq('id', existing.id));
+    } else {
+      ({ error } = await state.supabase
+        .from('monthly_workday_settings')
+        .insert({ work_year, work_month, expected_work_days }));
+    }
+
+    if (error) throw error;
+
+    await fetchMonthlyWorkdays();
+    closeModal('workdayConfigModal');
+    renderEverything();
+    showToast(t('workdaysSaved'), 'success');
+  } catch (error) {
+    console.error(error);
+    showToast(t('workdaysSaveError'), 'error');
+  }
+}
+
+async function handleMessageSubmit(event) {
+  event.preventDefault();
+
+  try {
+    const selected = Array.from(els.messageRecipients?.selectedOptions || []).map(opt => opt.value);
+    if (!selected.length) {
+      showToast('Zgjedh të paktën një marrës.', 'error');
+      return;
+    }
+
+    let recipients = selected.includes('__all__')
+      ? getEmployeeUsers().map(employee => employee.id)
+      : selected;
+
+    recipients = [...new Set(recipients)];
+
+    const subject = String(els.messageSubject?.value || '').trim();
+    const message_text = String(els.messageText?.value || '').trim();
+    const message_type = String(els.messageType?.value || 'info');
+    const rating = els.messageRating?.value ? Number(els.messageRating.value) : null;
+
+    if (!subject || !message_text) {
+      showToast('Titulli dhe mesazhi janë të detyrueshëm.', 'error');
+      return;
+    }
+
+    const inserts = recipients.map(recipientId => ({
+      sender_id: state.currentUser.id,
+      recipient_id: recipientId,
+      subject,
+      message_type,
+      message_text,
+      rating
+    }));
+
+    const { data, error } = await state.supabase.from('employee_messages').insert(inserts).select();
+    if (error) throw error;
+
+    if (rating) {
+      const reviewInserts = (data || []).map(row => ({
+        employee_id: row.recipient_id,
+        message_id: row.id,
+        rating,
+        note: subject
+      }));
+      const { error: reviewError } = await state.supabase.from('employee_reviews').insert(reviewInserts);
+      if (reviewError) throw reviewError;
+    }
+
+    await fetchMessages();
+    await fetchReviews();
+    closeModal('messageModal');
+    renderEverything();
+    showToast(t('messageSent'), 'success');
+  } catch (error) {
+    console.error(error);
+    showToast(t('messageSendError'), 'error');
+  }
+}
+
+async function markMessageRead(id) {
+  try {
+    const { error } = await state.supabase.from('employee_messages').update({ is_read: true }).eq('id', id);
+    if (error) throw error;
+    await fetchMessages();
+    renderEverything();
+    showToast(t('messageMarkedRead'), 'success');
+  } catch (error) {
+    console.error(error);
+    showToast('Nuk u shënua si i lexuar.', 'error');
+  }
+}
+
+async function markSalaryPaid(employeeId) {
+  try {
+    const monthKey = getMonthKey(state.currentYear, state.currentMonth);
+    const { error } = await state.supabase
+      .from('employees')
+      .update({
+        salary_paid_month: monthKey,
+        salary_paid_at: new Date().toISOString(),
+        salary_paid_by: state.currentUser.id
+      })
+      .eq('id', employeeId);
+
+    if (error) throw error;
+    await fetchEmployees();
+    renderEverything();
+    showToast(t('salaryPaidSuccess'), 'success');
+  } catch (error) {
+    console.error(error);
+    showToast(t('salaryPaidError'), 'error');
+  }
+}
+
+function getPayrollForEmployee(employee, monthIndex, year) {
+  const monthRows = state.attendance.filter(item => {
+    const d = new Date(`${item.work_date}T00:00:00`);
+    return item.user_id === employee.id && d.getMonth() === monthIndex && d.getFullYear() === year;
+  });
+
+  const expectedDays = getExpectedWorkDays(year, monthIndex, employee.id);
+  const workedDayRows = monthRows.filter(row =>
+    ['complete', 'at_work', 'overtime_open'].includes(row.status) && Number(row.regular_hours || 0) > 0
+  );
+
+  const paidHolidayDays = countPaidHolidayDaysForMonth(employee.id, year, monthIndex);
+  const paidDayOffDays = countPaidDayOffDaysForMonth(employee.id, year, monthIndex);
+  const approvedFullDayLeaveDays = countApprovedFullDayLeavesForMonth(employee.id, year, monthIndex);
+
+  const countedDays = workedDayRows.length + paidHolidayDays + paidDayOffDays + approvedFullDayLeaveDays;
+  const dailyRate = expectedDays > 0 ? Number(employee.full_month_salary || 0) / expectedDays : 0;
+
+  const basePay = round2(Math.min(countedDays, expectedDays) * dailyRate);
+  const fullSalary = Number(employee.full_month_salary || 0);
+
+  const regularHours = round2(monthRows.reduce((sum, item) => sum + Number(item.regular_hours || 0), 0));
+  const overtimeHours = round2(monthRows.reduce((sum, item) => sum + Number(item.overtime_hours || 0), 0));
+  const overtimePay = round2(monthRows.reduce((sum, item) => sum + Number(item.overtime_pay || 0), 0));
+  const salaryDue = round2(basePay + overtimePay);
+  const deduction = round2(Math.max(0, fullSalary - basePay));
+
+  const configuredBank = Number(employee.bank_salary || 0);
+  const bankDue =
+    employee.payment_method === 'bank' ? salaryDue :
+    employee.payment_method === 'mixed' ? Math.min(configuredBank, salaryDue) :
+    0;
+
+  const cashDue = round2(Math.max(0, salaryDue - bankDue));
+
+  return {
+    employee,
+    expectedDays,
+    workedDays: countedDays,
+    regularHours,
+    overtimeHours,
+    totalHours: round2(regularHours + overtimeHours),
+    overtimePay,
+    salaryDue,
+    bankDue: round2(bankDue),
+    cashDue,
+    fullSalary,
+    deduction
+  };
+}
+
+function getExpectedWorkDays(year, monthIndex, employeeId) {
+  const configured = state.monthlyWorkdays.find(item =>
+    item.work_year === year && item.work_month === monthIndex + 1
+  );
+  if (configured) return Number(configured.expected_work_days || 0);
+
+  let count = 0;
+  const totalDays = new Date(year, monthIndex + 1, 0).getDate();
+
+  for (let day = 1; day <= totalDays; day++) {
+    const date = new Date(year, monthIndex, day);
+    const dateString = getDateString(date);
+    const status = getDayStatus(employeeId, dateString);
+    if (status.isWorkingDay && !status.fullDayBlocked) count++;
+  }
+
+  return count;
+}
+
+function getDailyPay(userId, workDate, attendanceRow = null) {
+  const employee = getUserById(userId);
+  if (!employee) return 0;
+
+  const row = attendanceRow || getAttendanceRecord(userId, workDate);
+  if (!row) return 0;
+
+  const expectedDays = getExpectedWorkDays(new Date(`${workDate}T00:00:00`).getFullYear(), new Date(`${workDate}T00:00:00`).getMonth(), userId);
+  const dailyRate = expectedDays > 0 ? Number(employee.full_month_salary || 0) / expectedDays : 0;
+
+  const paidStatuses = ['complete', 'at_work', 'overtime_open'];
+  const regularPay = (paidStatuses.includes(row.status) && Number(row.regular_hours || 0) > 0) ? dailyRate : 0;
+  const dayOffPaid = isPaidDayOff(userId, workDate) ? dailyRate : 0;
+  const holidayPaid = isPaidHoliday(workDate) ? dailyRate : 0;
+
+  return round2(Math.max(regularPay, dayOffPaid, holidayPaid) + Number(row.overtime_pay || 0));
+}
+
+function getDayStatus(userId, workDate) {
+  const date = new Date(`${workDate}T00:00:00`);
+  const day = date.getDay();
+  const isFirstSaturday = day === 6 && date.getDate() <= 7;
+
+  const holiday = state.holidays.find(item => item.holiday_date === workDate);
+  const dayOff = state.dayOffs.find(item => item.user_id === userId && item.off_date === workDate);
+
+  const approvedRequests = state.requests.filter(item =>
+    item.user_id === userId &&
+    item.status === 'approved' &&
+    item.requested_date === workDate
+  );
+
+  const hasApprovedWeekendWork = approvedRequests.some(r => r.type === 'weekend_work');
+  const fullDayLeave = approvedRequests.some(r =>
+    (r.type === 'day_off' || r.type === 'leave_early') && r.affects_entire_day
+  );
+
+  let isWorkingDay = true;
+  if (holiday) isWorkingDay = false;
+  else if (dayOff) isWorkingDay = false;
+  else if (day === 0) isWorkingDay = false;
+  else if (day === 6 && !isFirstSaturday && !hasApprovedWeekendWork) isWorkingDay = false;
+
+  return {
+    isHoliday: !!holiday,
+    isDayOff: !!dayOff,
+    isFirstSaturday,
+    isWorkingDay,
+    fullDayBlocked: !!holiday || !!dayOff || fullDayLeave,
+    partialBlocked: false
+  };
+}
+
+function getEffectiveSchedule(userId, workDate) {
+  const employee = getUserById(userId) || {};
+  const dayStatus = getDayStatus(userId, workDate);
+
+  if (dayStatus.isFirstSaturday) {
+    return { start: FIRST_SATURDAY_SHIFT_START, end: FIRST_SATURDAY_SHIFT_END };
+  }
+
+  const shiftChange = state.requests.find(item =>
+    item.user_id === userId &&
+    item.status === 'approved' &&
+    item.type === 'shift_change' &&
+    item.requested_date === workDate &&
+    item.requested_shift
+  );
+
+  if (shiftChange?.requested_shift === 'afternoon') return { start: '11:00', end: '19:00' };
+  if (shiftChange?.requested_shift === 'morning') return { start: '08:00', end: '17:00' };
+
+  return {
+    start: employee.shift_start || DEFAULT_SHIFT_START,
+    end: employee.shift_end || DEFAULT_SHIFT_END
+  };
+}
+
+function getOpenSession(userId, sessionType = null) {
+  return state.sessions.find(item =>
+    item.user_id === userId &&
+    !item.check_out &&
+    (sessionType ? item.session_type === sessionType : true)
+  );
+}
+
+function getAttendanceRecord(userId, workDate) {
+  return state.attendance.find(item => item.user_id === userId && item.work_date === workDate);
+}
+
+function getSessionsForDay(userId, workDate) {
+  return state.sessions
+    .filter(item => item.user_id === userId && item.work_date === workDate)
+    .sort((a, b) => new Date(a.check_in) - new Date(b.check_in));
+}
+
+function getTodaySummaryForCurrentUser() {
+  if (!state.currentUser) return null;
+  return getAttendanceRecord(state.currentUser.id, getDateString(new Date()));
+}
+
+function getEmployeeUsers() {
+  return state.employees.filter(employee => employee.role === 'employee' || employee.role === 'admin');
+}
+
+function getUserById(id) {
+  return state.employees.find(item => item.id === id) || null;
+}
+
+function getVisibleRequests() {
+  return state.requests.filter(item => state.currentUser.role === 'admin' || item.user_id === state.currentUser.id);
+}
+
+function getVisibleMessages() {
+  return state.messages.filter(item => state.currentUser.role === 'admin' || item.recipient_id === state.currentUser.id);
+}
+
+function getVisibleReviews() {
+  if (state.currentUser.role === 'admin') return state.reviews;
+  return state.reviews.filter(item => item.employee_id === state.currentUser.id);
+}
+
+function getVisibleAttendanceForCurrentView() {
+  return state.attendance.filter(item => {
+    const date = new Date(`${item.work_date}T00:00:00`);
+    const monthMatch = date.getMonth() === state.currentMonth && date.getFullYear() === state.currentYear;
+    const roleMatch = state.currentUser.role === 'admin' || item.user_id === state.currentUser.id;
+    return monthMatch && roleMatch;
+  }).sort((a, b) => new Date(b.work_date) - new Date(a.work_date));
+}
+
+function getAverageRatingForEmployee(employeeId) {
+  const rows = state.reviews.filter(item => item.employee_id === employeeId);
+  if (!rows.length) return 0;
+  return rows.reduce((sum, item) => sum + Number(item.rating || 0), 0) / rows.length;
+}
+
+function getAverageRatingForVisibleEmployees() {
+  const rows = getVisibleReviews();
+  if (!rows.length) return 0;
+  return rows.reduce((sum, item) => sum + Number(item.rating || 0), 0) / rows.length;
+}
+
+function countPaidHolidayDaysForMonth(userId, year, monthIndex) {
+  return state.holidays.filter(item => {
+    const d = new Date(`${item.holiday_date}T00:00:00`);
+    return d.getFullYear() === year && d.getMonth() === monthIndex && item.is_paid;
+  }).length;
+}
+
+function countPaidDayOffDaysForMonth(userId, year, monthIndex) {
+  return state.dayOffs.filter(item => {
+    const d = new Date(`${item.off_date}T00:00:00`);
+    return item.user_id === userId && d.getFullYear() === year && d.getMonth() === monthIndex && item.is_paid;
+  }).length;
+}
+
+function countApprovedFullDayLeavesForMonth(userId, year, monthIndex) {
+  return state.requests.filter(item => {
+    if (item.user_id !== userId || item.status !== 'approved' || !item.requested_date || !item.affects_entire_day) return false;
+    const d = new Date(`${item.requested_date}T00:00:00`);
+    return d.getFullYear() === year && d.getMonth() === monthIndex && (item.type === 'day_off' || item.type === 'leave_early');
+  }).length;
+}
+
+function isPaidHoliday(workDate) {
+  return !!state.holidays.find(item => item.holiday_date === workDate && item.is_paid);
+}
+
+function isPaidDayOff(userId, workDate) {
+  return !!state.dayOffs.find(item => item.user_id === userId && item.off_date === workDate && item.is_paid);
+}
+
+function isSalaryPaidForMonth(employee, monthIndex, year) {
+  return String(employee.salary_paid_month || '') === getMonthKey(year, monthIndex);
+}
+
+function getLastSevenDaysAttendance(userId) {
+  const now = new Date();
+  const rows = [];
+
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date(now);
+    date.setDate(now.getDate() - i);
+    const key = getDateString(date);
+    const row = getAttendanceRecord(userId, key) || {
+      work_date: key,
+      total_hours: 0
+    };
+    rows.push(row);
+  }
+
+  return rows;
+}
 
 function exportAttendance() {
   const rows = getVisibleAttendanceForCurrentView();
   if (!rows.length) return showToast(t('noDataExport'), 'info');
+
   const csvRows = [[
-    'Punonjesi','Data','Orari','Hyrje/Dalje','Ore normale','Ore shtese','Ore totale','Paga ditore','Statusi'
+    'Punonjesi',
+    'Data',
+    'Orari',
+    'Hyrje/Dalje',
+    'Ore normale',
+    'Ore shtese',
+    'Ore totale',
+    'Paga ditore',
+    'Statusi'
   ]];
+
   rows.forEach(row => {
     const user = getUserById(row.user_id);
-    const schedule = `${user?.shift_start || '-'} - ${user?.shift_end || '-'}`;
-    const sessions = getSessionsForDay(row.user_id, row.work_date).map(session => `${session.session_type === 'overtime' ? 'OT ' : ''}${formatTime(session.check_in)}${session.check_out ? `-${formatTime(session.check_out)}` : '-...'}`).join(' | ');
-    const dailyPay = Number(row.regular_hours || 0) * Number(user?.salary_per_hour || 0) + Number(row.overtime_pay || 0);
+    const schedule = getEffectiveSchedule(row.user_id, row.work_date);
+    const sessions = getSessionsForDay(row.user_id, row.work_date)
+      .map(session => `${session.session_type === 'overtime' ? 'OT ' : ''}${formatTime(session.check_in)}${session.check_out ? `-${formatTime(session.check_out)}` : '-.'}`)
+      .join(' | ');
+
     csvRows.push([
       user?.full_name || '-',
       formatDate(row.work_date),
-      schedule,
+      `${schedule.start} - ${schedule.end}`,
       sessions,
       Number(row.regular_hours || 0).toFixed(2),
       Number(row.overtime_hours || 0).toFixed(2),
       Number(row.total_hours || 0).toFixed(2),
-      dailyPay.toFixed(2),
+      getDailyPay(row.user_id, row.work_date, row).toFixed(2),
       getAttendanceStatusLabel(row.status)
     ]);
   });
-  const csvContent = csvRows.map(row => row.map(value => `"${String(value).replaceAll('"', '""')}"`).join(',')).join('\n');
+
+  const csvContent = csvRows
+    .map(row => row.map(value => `"${String(value).replaceAll('"', '""')}"`).join(','))
+    .join('\n');
+
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
@@ -891,21 +2219,262 @@ function exportAttendance() {
   URL.revokeObjectURL(url);
 }
 
-function openModal(id) { document.body.classList.add('modal-open'); const modal = document.getElementById(id); modal.classList.remove('hidden'); modal.classList.add('flex'); }
+function openModal(id) {
+  document.body.classList.add('modal-open');
+  const modal = document.getElementById(id);
+  if (!modal) return;
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+
 function closeModal(id) {
   document.body.classList.remove('modal-open');
   const modal = document.getElementById(id);
+  if (!modal) return;
   modal.classList.add('hidden');
   modal.classList.remove('flex');
-  if (id === 'requestModal') {
-    els.requestForm.reset();
-    updateRequestFieldVisibility();
-  }
-  if (id === 'employeeModal') els.employeeForm.reset();
+
+  if (id === 'requestModal') els.requestForm?.reset();
+  if (id === 'employeeModal') els.employeeForm?.reset();
+  if (id === 'globalHolidayModal') els.globalHolidayForm?.reset();
+  if (id === 'employeeDayOffModal') els.employeeDayOffForm?.reset();
+  if (id === 'workdayConfigModal') els.workdayConfigForm?.reset();
+  if (id === 'messageModal') els.messageForm?.reset();
 }
 
-function getEmployeeUsers() { return state.employees.filter(employee => employee.role === 'employee' || employee.role === 'admin'); }
-function getVisibleRequests() { return state.requests.filter(item => state.currentUser.role === 'admin' || item.user_id === state.currentUser.id); }
+function changeMonth(offset) {
+  state.currentMonth += offset;
+  if (state.currentMonth < 0) {
+    state.currentMonth = 11;
+    state.currentYear--;
+  }
+  if (state.currentMonth > 11) {
+    state.currentMonth = 0;
+    state.currentYear++;
+  }
+  setMonthLabel();
+  renderEverything();
+}
+
+function setMonthLabel() {
+  if (els.currentMonthDisplay) els.currentMonthDisplay.textContent = formatMonthYear(state.currentYear, state.currentMonth);
+  if (els.workYear && !els.workYear.value) els.workYear.value = state.currentYear;
+}
+
+function normalizeEmployee(item) {
+  return {
+    ...item,
+    overtime_rate: Number(item.overtime_rate || 0),
+    full_month_salary: Number(item.full_month_salary || 0),
+    bank_salary: Number(item.bank_salary || 0),
+    shift_start: item.shift_start || DEFAULT_SHIFT_START,
+    shift_end: item.shift_end || DEFAULT_SHIFT_END,
+    active: item.active !== false
+  };
+}
+
+function normalizeAttendance(item) {
+  return {
+    ...item,
+    regular_hours: Number(item.regular_hours || 0),
+    overtime_hours: Number(item.overtime_hours || 0),
+    total_hours: Number(item.total_hours || 0),
+    overtime_pay: Number(item.overtime_pay || 0),
+    total_sessions: Number(item.total_sessions || 0)
+  };
+}
+
+function normalizeSession(item) {
+  return {
+    ...item,
+    worked_hours: Number(item.worked_hours || 0)
+  };
+}
+
+function getStatusMeta(status) {
+  if (status === 'approved') return { label: t('approved'), className: 'status-approved' };
+  if (status === 'rejected') return { label: t('rejected'), className: 'status-rejected' };
+  return { label: t('pending'), className: 'status-pending' };
+}
+
+function getAttendanceStatusClass(status) {
+  switch (status) {
+    case 'complete': return 'bg-emerald-50 text-emerald-700';
+    case 'at_work': return 'bg-blue-50 text-blue-700';
+    case 'overtime_open': return 'bg-violet-50 text-violet-700';
+    case 'holiday': return 'bg-amber-50 text-amber-700';
+    case 'day_off': return 'bg-slate-100 text-slate-700';
+    case 'absent': return 'bg-rose-50 text-rose-700';
+    default: return 'bg-slate-100 text-slate-700';
+  }
+}
+
+function getAttendanceStatusLabel(status) {
+  switch (status) {
+    case 'complete': return t('complete');
+    case 'at_work': return t('atWork');
+    case 'overtime_open': return t('overtimeOpen');
+    case 'holiday': return t('holiday');
+    case 'day_off': return t('dayOff');
+    case 'absent': return t('absent');
+    default: return status || '-';
+  }
+}
+
+function getRequestTypeLabel(type) {
+  switch (type) {
+    case 'leave_early': return t('requestLeaveEarly');
+    case 'day_off': return t('requestDayOff');
+    case 'weekend_work': return t('requestWeekendWork');
+    case 'complaint': return t('requestComplaint');
+    case 'shift_change': return t('requestShiftChange');
+    default: return t('requestOther');
+  }
+}
+
+function getPaymentMethodLabel(method) {
+  switch (method) {
+    case 'bank': return 'Bankë';
+    case 'mixed': return 'Përzier';
+    default: return 'Cash';
+  }
+}
+
+function getSortDate(item) {
+  if (item.type === 'attendance') return item.data.work_date;
+  return item.data.created_at;
+}
+
+function getMonthKey(year, monthIndex) {
+  return `${year}-${String(monthIndex + 1).padStart(2, '0')}`;
+}
+
+function getDateString(date) {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function combineDateTime(dateString, timeString) {
+  return new Date(`${dateString}T${timeString}:00`);
+}
+
+function subtractMinutesFromTime(timeString, minutes) {
+  const [h, m] = String(timeString).split(':').map(Number);
+  const base = new Date(2000, 0, 1, h || 0, m || 0, 0);
+  base.setMinutes(base.getMinutes() - minutes);
+  return `${String(base.getHours()).padStart(2, '0')}:${String(base.getMinutes()).padStart(2, '0')}`;
+}
+
+function formatDate(value) {
+  if (!value) return '-';
+  const date = new Date(String(value).includes('T') ? value : `${value}T00:00:00`);
+  return date.toLocaleDateString('sq-AL', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+
+function formatDateTime(value) {
+  if (!value) return '-';
+  const date = new Date(value);
+  return date.toLocaleString('sq-AL', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+}
+
+function formatTime(value) {
+  if (!value) return '-';
+  const date = new Date(value);
+  return date.toLocaleTimeString('sq-AL', { hour: '2-digit', minute: '2-digit' });
+}
+
+function formatMonthYear(year, monthIndex) {
+  return new Date(year, monthIndex, 1).toLocaleDateString('sq-AL', { month: 'long', year: 'numeric' });
+}
+
+function formatMonthName(monthIndex) {
+  return new Date(2026, monthIndex, 1).toLocaleDateString('sq-AL', { month: 'long' });
+}
+
+function getAvatarText(name) {
+  return String(name || '?')
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map(part => part[0]?.toUpperCase() || '')
+    .join('') || '?';
+}
+
+function emptyState(text) {
+  return `<div class="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center text-slate-400">${escapeHtml(text)}</div>`;
+}
+
+function renderStars(value) {
+  const rounded = Math.round(Number(value || 0));
+  if (!rounded) return '☆☆☆☆☆';
+  return '★'.repeat(rounded) + '☆'.repeat(Math.max(0, 5 - rounded));
+}
+
+function showToast(message, type = 'success') {
+  if (!els.toast) return;
+  els.toast.textContent = message;
+  els.toast.className = `toast toast-${type}`;
+  els.toast.classList.remove('hidden');
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(() => {
+    els.toast.classList.add('hidden');
+  }, 3200);
+}
+
+function setButtonLoading(button, isLoading, label = '') {
+  if (!button) return;
+  button.disabled = isLoading;
+  if (isLoading) {
+    button.dataset.originalText = button.textContent;
+    button.textContent = label;
+    button.classList.add('opacity-70', 'cursor-not-allowed');
+  } else {
+    button.textContent = button.dataset.originalText || label;
+    button.classList.remove('opacity-70', 'cursor-not-allowed');
+  }
+}
+
+function togglePassword(inputId, buttonId) {
+  const input = document.getElementById(inputId);
+  const button = document.getElementById(buttonId);
+  if (!input || !button) return;
+
+  input.type = input.type === 'password' ? 'text' : 'password';
+  const icon = button.querySelector('i');
+  if (icon) {
+    icon.setAttribute('data-lucide', input.type === 'password' ? 'eye' : 'eye-off');
+    lucide.createIcons();
+  }
+}
+
+function round2(value) {
+  return Math.round(Number(value || 0) * 100) / 100;
+}
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+async function hashPassword(value) {
+  const msgUint8 = new TextEncoder().encode(String(value));
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
 function getVisibleAttendanceForCurrentView() {
   return state.attendance.filter(item => {
     const date = new Date(`${item.work_date}T00:00:00`);
@@ -914,133 +2483,375 @@ function getVisibleAttendanceForCurrentView() {
     return monthMatch && roleMatch;
   }).sort((a, b) => new Date(b.work_date) - new Date(a.work_date));
 }
-function getTodaySummaryForCurrentUser() {
-  const today = getLocalDateString(new Date());
-  return state.attendance.find(item => item.user_id === state.currentUser?.id && item.work_date === today) || null;
-}
-function getSessionsForDay(userId, workDate) {
-  return state.sessions.filter(item => item.user_id === userId && item.work_date === workDate).sort((a, b) => new Date(a.check_in) - new Date(b.check_in));
-}
-function getOpenSession(userId, sessionType = null) {
-  return state.sessions.find(item => item.user_id === userId && !item.check_out && (!sessionType || item.session_type === sessionType)) || null;
-}
-function getPayrollForEmployee(employee, month, year) {
-  const summaries = state.attendance.filter(item => item.user_id === employee.id && getMonthMatch(item.work_date, month, year));
-  const regularHours = sum(summaries.map(item => item.regular_hours));
-  const overtimeHours = sum(summaries.map(item => item.overtime_hours));
-  const overtimePay = sum(summaries.map(item => item.overtime_pay));
-  const regularPay = Number((regularHours * Number(employee.salary_per_hour || 0)).toFixed(2));
-  const salaryDue = Number((regularPay + overtimePay).toFixed(2));
-  const fullSalary = Number(employee.full_month_salary || 0);
-  const deduction = Number(Math.max(0, fullSalary - salaryDue).toFixed(2));
-  let bankDue = 0;
-  let cashDue = 0;
-  if (employee.payment_method === 'bank') bankDue = salaryDue;
-  else if (employee.payment_method === 'cash') cashDue = salaryDue;
-  else {
-    bankDue = Math.min(Number(employee.bank_salary || 0), salaryDue);
-    cashDue = Number((salaryDue - bankDue).toFixed(2));
-  }
-  return { employee, regularHours, overtimeHours, regularPay, overtimePay, totalHours: Number((regularHours + overtimeHours).toFixed(2)), salaryDue, fullSalary, deduction, bankDue: Number(bankDue.toFixed(2)), cashDue };
-}
-function getMonthMatch(workDate, month, year) { const date = new Date(`${workDate}T00:00:00`); return date.getMonth() === month && date.getFullYear() === year; }
-function getUserById(id) { return state.employees.find(employee => employee.id === id) || null; }
-async function fetchUserById(id) {
-  if (!state.supabase) return null;
-  const { data, error } = await state.supabase.from('employees').select('*').eq('id', id).maybeSingle();
-  if (error) throw error;
-  return data ? normalizeEmployee(data) : null;
-}
-function normalizeEmployee(employee) {
-  return {
-    ...employee,
-    salary_per_hour: Number(employee.salary_per_hour || 0),
-    overtime_rate: Number(employee.overtime_rate || DEFAULT_OVERTIME_RATE),
-    full_month_salary: Number(employee.full_month_salary || 0),
-    bank_salary: Number(employee.bank_salary || 0),
-    shift_start: employee.shift_start || DEFAULT_SHIFT_START,
-    shift_end: employee.shift_end || DEFAULT_SHIFT_END,
-    payment_method: employee.payment_method || 'cash',
-  };
-}
-function normalizeAttendance(row) {
-  return {
-    ...row,
-    regular_hours: Number(row.regular_hours || 0),
-    overtime_hours: Number(row.overtime_hours || 0),
-    total_hours: Number(row.total_hours || 0),
-    overtime_pay: Number(row.overtime_pay || 0),
-    total_sessions: Number(row.total_sessions || 0),
-  };
-}
-function normalizeSession(row) { return { ...row, worked_hours: Number(row.worked_hours || 0) }; }
-function getRequestTypeLabel(type) {
-  return ({ leave_early: t('requestLeaveEarly'), day_off: t('requestDayOff'), weekend_work: t('requestWeekendWork'), complaint: t('requestComplaint'), other: t('requestOther'), shift_change: t('requestShiftChange') })[type] || type;
-}
-function getRequestedShiftLabel(shift) { return shift === 'afternoon' ? t('shiftAfternoon') : t('shiftMorning'); }
-function getStatusMeta(status) { if (status === 'approved') return { label: t('approved'), className: 'status-approved' }; if (status === 'rejected') return { label: t('rejected'), className: 'status-rejected' }; return { label: t('pending'), className: 'status-pending' }; }
-function getAttendanceStatusLabel(status) {
-  return ({ complete: t('complete'), at_work: t('atWork'), overtime_open: t('overtimeOpen'), present: t('complete'), absent: t('absent') })[status] || t('absent');
-}
-function getAttendanceStatusClass(status) {
-  if (status === 'overtime_open') return 'bg-violet-50 text-violet-700';
-  if (status === 'at_work') return 'bg-amber-50 text-amber-700';
-  if (status === 'complete' || status === 'present') return 'bg-emerald-50 text-emerald-700';
-  return 'bg-slate-100 text-slate-600';
-}
-function formatDate(dateString) { return new Date(dateString).toLocaleDateString(getLocale(), { year: 'numeric', month: '2-digit', day: '2-digit' }); }
-function formatTime(dateString) { return new Date(dateString).toLocaleTimeString(getLocale(), { hour: '2-digit', minute: '2-digit' }); }
-function formatDateTime(dateString) { return new Date(dateString).toLocaleString(getLocale(), { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }); }
-function formatMonthYear(year, month) { return new Date(year, month, 1).toLocaleDateString(getLocale(), { month: 'long', year: 'numeric' }); }
-function getAvatarText(name = '') { return (name.trim().charAt(0) || 'U').toUpperCase(); }
-function setButtonLoading(button, isLoading, text) { button.disabled = isLoading; button.textContent = text; }
-function emptyState(message) { return `<div class="bg-white rounded-3xl card-shadow p-10 text-center text-slate-400">${escapeHtml(message)}</div>`; }
-function togglePassword(inputId, buttonId) {
-  const input = document.getElementById(inputId); const button = document.getElementById(buttonId); const icon = button.querySelector('i');
-  const show = input.type === 'password'; input.type = show ? 'text' : 'password'; icon.setAttribute('data-lucide', show ? 'eye-off' : 'eye'); lucide.createIcons();
-}
-function showToast(message, type = 'success') {
-  els.toast.textContent = message;
-  els.toast.className = 'fixed right-4 bottom-4 z-[60] max-w-sm text-white px-5 py-4 rounded-2xl shadow-2xl';
-  els.toast.classList.remove('hidden');
-  if (type === 'error') els.toast.classList.add('bg-rose-600'); else if (type === 'info') els.toast.classList.add('bg-blue-600'); else els.toast.classList.add('bg-slate-900');
-  clearTimeout(showToast._timer);
-  showToast._timer = setTimeout(() => els.toast.classList.add('hidden'), 3200);
+
+function getAverageRatingForEmployee(employeeId) {
+  const rows = state.reviews.filter(item => item.employee_id === employeeId);
+  if (!rows.length) return 0;
+  return rows.reduce((sum, item) => sum + Number(item.rating || 0), 0) / rows.length;
 }
 
-async function confirmSalaryPaid(employeeId) {
-  if (state.currentUser?.role !== 'admin') return;
-  try {
-    const { error } = await state.supabase.from('employees').update({
-      salary_paid_month: getPayrollMonthKey(state.currentYear, state.currentMonth),
-      salary_paid_at: new Date().toISOString(),
-      salary_paid_by: state.currentUser.id,
-    }).eq('id', employeeId);
-    if (error) throw error;
-    await fetchEmployees();
-    renderPayroll();
-    showToast(t('salaryPaidSuccess'));
-  } catch (error) {
-    console.error(error);
-    showToast(t('salaryPaidError'), 'error');
+function getAverageRatingForVisibleEmployees() {
+  const rows = getVisibleReviews();
+  if (!rows.length) return 0;
+  return rows.reduce((sum, item) => sum + Number(item.rating || 0), 0) / rows.length;
+}
+
+function countPaidHolidayDaysForMonth(userId, year, monthIndex) {
+  return state.holidays.filter(item => {
+    const d = new Date(`${item.holiday_date}T00:00:00`);
+    return d.getFullYear() === year && d.getMonth() === monthIndex && item.is_paid;
+  }).length;
+}
+
+function countPaidDayOffDaysForMonth(userId, year, monthIndex) {
+  return state.dayOffs.filter(item => {
+    const d = new Date(`${item.off_date}T00:00:00`);
+    return item.user_id === userId && d.getFullYear() === year && d.getMonth() === monthIndex && item.is_paid;
+  }).length;
+}
+
+function countApprovedFullDayLeavesForMonth(userId, year, monthIndex) {
+  return state.requests.filter(item => {
+    if (item.user_id !== userId || item.status !== 'approved' || !item.requested_date || !item.affects_entire_day) return false;
+    const d = new Date(`${item.requested_date}T00:00:00`);
+    return d.getFullYear() === year && d.getMonth() === monthIndex && (item.type === 'day_off' || item.type === 'leave_early');
+  }).length;
+}
+
+function isPaidHoliday(workDate) {
+  return !!state.holidays.find(item => item.holiday_date === workDate && item.is_paid);
+}
+
+function isPaidDayOff(userId, workDate) {
+  return !!state.dayOffs.find(item => item.user_id === userId && item.off_date === workDate && item.is_paid);
+}
+
+function isSalaryPaidForMonth(employee, monthIndex, year) {
+  return String(employee.salary_paid_month || '') === getMonthKey(year, monthIndex);
+}
+
+function getLastSevenDaysAttendance(userId) {
+  const now = new Date();
+  const rows = [];
+
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date(now);
+    date.setDate(now.getDate() - i);
+    const key = getDateString(date);
+    const row = getAttendanceRecord(userId, key) || {
+      work_date: key,
+      total_hours: 0
+    };
+    rows.push(row);
+  }
+
+  return rows;
+}
+
+function exportAttendance() {
+  const rows = getVisibleAttendanceForCurrentView();
+  if (!rows.length) return showToast(t('noDataExport'), 'info');
+
+  const csvRows = [[
+    'Punonjesi',
+    'Data',
+    'Orari',
+    'Hyrje/Dalje',
+    'Ore normale',
+    'Ore shtese',
+    'Ore totale',
+    'Paga ditore',
+    'Statusi'
+  ]];
+
+  rows.forEach(row => {
+    const user = getUserById(row.user_id);
+    const schedule = getEffectiveSchedule(row.user_id, row.work_date);
+    const sessions = getSessionsForDay(row.user_id, row.work_date)
+      .map(session => `${session.session_type === 'overtime' ? 'OT ' : ''}${formatTime(session.check_in)}${session.check_out ? `-${formatTime(session.check_out)}` : '-.'}`)
+      .join(' | ');
+
+    csvRows.push([
+      user?.full_name || '-',
+      formatDate(row.work_date),
+      `${schedule.start} - ${schedule.end}`,
+      sessions,
+      Number(row.regular_hours || 0).toFixed(2),
+      Number(row.overtime_hours || 0).toFixed(2),
+      Number(row.total_hours || 0).toFixed(2),
+      getDailyPay(row.user_id, row.work_date, row).toFixed(2),
+      getAttendanceStatusLabel(row.status)
+    ]);
+  });
+
+  const csvContent = csvRows
+    .map(row => row.map(value => `"${String(value).replaceAll('"', '""')}"`).join(','))
+    .join('\n');
+
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `${t('exportFilename')}-${state.currentYear}-${String(state.currentMonth + 1).padStart(2, '0')}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+function openModal(id) {
+  document.body.classList.add('modal-open');
+  const modal = document.getElementById(id);
+  if (!modal) return;
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+
+function closeModal(id) {
+  document.body.classList.remove('modal-open');
+  const modal = document.getElementById(id);
+  if (!modal) return;
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+
+  if (id === 'requestModal') els.requestForm?.reset();
+  if (id === 'employeeModal') els.employeeForm?.reset();
+  if (id === 'globalHolidayModal') els.globalHolidayForm?.reset();
+  if (id === 'employeeDayOffModal') els.employeeDayOffForm?.reset();
+  if (id === 'workdayConfigModal') els.workdayConfigForm?.reset();
+  if (id === 'messageModal') els.messageForm?.reset();
+}
+
+function changeMonth(offset) {
+  state.currentMonth += offset;
+  if (state.currentMonth < 0) {
+    state.currentMonth = 11;
+    state.currentYear--;
+  }
+  if (state.currentMonth > 11) {
+    state.currentMonth = 0;
+    state.currentYear++;
+  }
+  setMonthLabel();
+  renderEverything();
+}
+
+function setMonthLabel() {
+  if (els.currentMonthDisplay) els.currentMonthDisplay.textContent = formatMonthYear(state.currentYear, state.currentMonth);
+  if (els.workYear && !els.workYear.value) els.workYear.value = state.currentYear;
+}
+
+function normalizeEmployee(item) {
+  return {
+    ...item,
+    overtime_rate: Number(item.overtime_rate || 0),
+    full_month_salary: Number(item.full_month_salary || 0),
+    bank_salary: Number(item.bank_salary || 0),
+    shift_start: item.shift_start || DEFAULT_SHIFT_START,
+    shift_end: item.shift_end || DEFAULT_SHIFT_END,
+    active: item.active !== false
+  };
+}
+
+function normalizeAttendance(item) {
+  return {
+    ...item,
+    regular_hours: Number(item.regular_hours || 0),
+    overtime_hours: Number(item.overtime_hours || 0),
+    total_hours: Number(item.total_hours || 0),
+    overtime_pay: Number(item.overtime_pay || 0),
+    total_sessions: Number(item.total_sessions || 0)
+  };
+}
+
+function normalizeSession(item) {
+  return {
+    ...item,
+    worked_hours: Number(item.worked_hours || 0)
+  };
+}
+
+function getStatusMeta(status) {
+  if (status === 'approved') return { label: t('approved'), className: 'status-approved' };
+  if (status === 'rejected') return { label: t('rejected'), className: 'status-rejected' };
+  return { label: t('pending'), className: 'status-pending' };
+}
+
+function getAttendanceStatusClass(status) {
+  switch (status) {
+    case 'complete': return 'bg-emerald-50 text-emerald-700';
+    case 'at_work': return 'bg-blue-50 text-blue-700';
+    case 'overtime_open': return 'bg-violet-50 text-violet-700';
+    case 'holiday': return 'bg-amber-50 text-amber-700';
+    case 'day_off': return 'bg-slate-100 text-slate-700';
+    case 'absent': return 'bg-rose-50 text-rose-700';
+    default: return 'bg-slate-100 text-slate-700';
   }
 }
-function getPayrollMonthKey(year, month) { return `${year}-${String(month + 1).padStart(2, '0')}`; }
-function isSalaryPaidForMonth(employee, month, year) { return (employee.salary_paid_month || '') === getPayrollMonthKey(year, month); }
-function getEffectiveSchedule(userId, workDate) {
-  const employee = getUserById(userId);
-  const approvedShift = state.requests.find(request => request.user_id === userId && request.type === 'shift_change' && request.status === 'approved' && request.requested_date === workDate);
-  if (approvedShift?.requested_shift === 'afternoon') return { ...AFTERNOON_SHIFT };
-  if (approvedShift?.requested_shift === 'morning') return { ...MORNING_SHIFT };
-  return { start: employee?.shift_start || DEFAULT_SHIFT_START, end: employee?.shift_end || DEFAULT_SHIFT_END, label: 'Default' };
+
+function getAttendanceStatusLabel(status) {
+  switch (status) {
+    case 'complete': return t('complete');
+    case 'at_work': return t('atWork');
+    case 'overtime_open': return t('overtimeOpen');
+    case 'holiday': return t('holiday');
+    case 'day_off': return t('dayOff');
+    case 'absent': return t('absent');
+    default: return status || '-';
+  }
 }
-function combineDateTime(workDate, timeValue) { return new Date(`${workDate}T${timeValue}:00`); }
-function getLocalDateString(date) { const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000); return local.toISOString().slice(0, 10); }
-function calculateHours(startIso, endIso) { return Number(Math.max(0, (new Date(endIso) - new Date(startIso)) / 36e5).toFixed(2)); }
-function sum(values) { return Number(values.reduce((acc, value) => acc + Number(value || 0), 0).toFixed(2)); }
+
+function getRequestTypeLabel(type) {
+  switch (type) {
+    case 'leave_early': return t('requestLeaveEarly');
+    case 'day_off': return t('requestDayOff');
+    case 'weekend_work': return t('requestWeekendWork');
+    case 'complaint': return t('requestComplaint');
+    case 'shift_change': return t('requestShiftChange');
+    default: return t('requestOther');
+  }
+}
+
+function getPaymentMethodLabel(method) {
+  switch (method) {
+    case 'bank': return 'Bankë';
+    case 'mixed': return 'Përzier';
+    default: return 'Cash';
+  }
+}
+
+function getSortDate(item) {
+  if (item.type === 'attendance') return item.data.work_date;
+  return item.data.created_at;
+}
+
+function getMonthKey(year, monthIndex) {
+  return `${year}-${String(monthIndex + 1).padStart(2, '0')}`;
+}
+
+function getDateString(date) {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function combineDateTime(dateString, timeString) {
+  return new Date(`${dateString}T${timeString}:00`);
+}
+
+function subtractMinutesFromTime(timeString, minutes) {
+  const [h, m] = String(timeString).split(':').map(Number);
+  const base = new Date(2000, 0, 1, h || 0, m || 0, 0);
+  base.setMinutes(base.getMinutes() - minutes);
+  return `${String(base.getHours()).padStart(2, '0')}:${String(base.getMinutes()).padStart(2, '0')}`;
+}
+
+function formatDate(value) {
+  if (!value) return '-';
+  const date = new Date(String(value).includes('T') ? value : `${value}T00:00:00`);
+  return date.toLocaleDateString('sq-AL', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+
+function formatDateTime(value) {
+  if (!value) return '-';
+  const date = new Date(value);
+  return date.toLocaleString('sq-AL', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+}
+
+function formatTime(value) {
+  if (!value) return '-';
+  const date = new Date(value);
+  return date.toLocaleTimeString('sq-AL', { hour: '2-digit', minute: '2-digit' });
+}
+
+function formatMonthYear(year, monthIndex) {
+  return new Date(year, monthIndex, 1).toLocaleDateString('sq-AL', { month: 'long', year: 'numeric' });
+}
+
+function formatMonthName(monthIndex) {
+  return new Date(2026, monthIndex, 1).toLocaleDateString('sq-AL', { month: 'long' });
+}
+
+function getAvatarText(name) {
+  return String(name || '?')
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map(part => part[0]?.toUpperCase() || '')
+    .join('') || '?';
+}
+
+function emptyState(text) {
+  return `<div class="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center text-slate-400">${escapeHtml(text)}</div>`;
+}
+
+function renderStars(value) {
+  const rounded = Math.round(Number(value || 0));
+  if (!rounded) return '☆☆☆☆☆';
+  return '★'.repeat(rounded) + '☆'.repeat(Math.max(0, 5 - rounded));
+}
+
+function showToast(message, type = 'success') {
+  if (!els.toast) return;
+  els.toast.textContent = message;
+  els.toast.className = `toast toast-${type}`;
+  els.toast.classList.remove('hidden');
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(() => {
+    els.toast.classList.add('hidden');
+  }, 3200);
+}
+
+function setButtonLoading(button, isLoading, label = '') {
+  if (!button) return;
+  button.disabled = isLoading;
+  if (isLoading) {
+    button.dataset.originalText = button.textContent;
+    button.textContent = label;
+    button.classList.add('opacity-70', 'cursor-not-allowed');
+  } else {
+    button.textContent = button.dataset.originalText || label;
+    button.classList.remove('opacity-70', 'cursor-not-allowed');
+  }
+}
+
+function togglePassword(inputId, buttonId) {
+  const input = document.getElementById(inputId);
+  const button = document.getElementById(buttonId);
+  if (!input || !button) return;
+
+  input.type = input.type === 'password' ? 'text' : 'password';
+  const icon = button.querySelector('i');
+  if (icon) {
+    icon.setAttribute('data-lucide', input.type === 'password' ? 'eye' : 'eye-off');
+    lucide.createIcons();
+  }
+}
+
+function round2(value) {
+  return Math.round(Number(value || 0) * 100) / 100;
+}
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
 async function hashPassword(value) {
-  const data = new TextEncoder().encode(value);
-  const hash = await crypto.subtle.digest('SHA-256', data);
-  return Array.from(new Uint8Array(hash)).map(byte => byte.toString(16).padStart(2, '0')).join('');
+  const msgUint8 = new TextEncoder().encode(String(value));
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
-function escapeHtml(value = '') { return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;'); }
