@@ -3,38 +3,119 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WorkFlow EMS Pro</title>
+  <title>TrendyHome EMS</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
-    * { font-family: 'Inter', sans-serif; }
-    html, body { margin: 0; padding: 0; min-height: 100%; background: #f8fafc; }
+    * { font-family: 'Inter', sans-serif; box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background: #f8fafc;
+      color: #0f172a;
+    }
     body.modal-open { overflow: hidden; }
-    .app-gradient { background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%); }
-    .sidebar-gradient { background: linear-gradient(180deg, #020617 0%, #0f172a 55%, #1e293b 100%); }
-    .card-shadow { box-shadow: 0 10px 35px rgba(15, 23, 42, 0.08); }
-    .card-hover { transition: transform .25s ease, box-shadow .25s ease; }
-    .card-hover:hover { transform: translateY(-3px); box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12); }
+
+    .app-gradient {
+      background: linear-gradient(135deg, #0f172a 0%, #172554 45%, #1d4ed8 100%);
+    }
+    .sidebar-gradient {
+      background: linear-gradient(180deg, #020617 0%, #0f172a 55%, #1e3a8a 100%);
+    }
+    .card-shadow {
+      box-shadow: 0 10px 35px rgba(15, 23, 42, 0.08);
+    }
+    .card-hover {
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+    }
+
     .page-view { display: none; }
     .page-view.active { display: block; }
-    .nav-active { background: rgba(255,255,255,.12); color: #fff; }
+
+    .nav-active {
+      background: rgba(255,255,255,.12);
+      color: #fff;
+    }
     .nav-active i { color: #fff !important; }
-    .status-pending { background: #fff7ed; color: #9a3412; border: 1px solid #fdba74; }
-    .status-approved { background: #ecfdf5; color: #065f46; border: 1px solid #6ee7b7; }
-    .status-rejected { background: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; }
+
+    .status-pending {
+      background: #fff7ed;
+      color: #9a3412;
+      border: 1px solid #fdba74;
+    }
+    .status-approved {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #6ee7b7;
+    }
+    .status-rejected {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
     .scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
     .scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
     .scrollbar::-webkit-scrollbar-track { background: transparent; }
+
+    .table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .mobile-safe {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      min-width: 280px;
+      max-width: 90vw;
+      border-radius: 18px;
+      padding: 14px 16px;
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.2);
+    }
+    .toast-success { background: #16a34a; }
+    .toast-error { background: #dc2626; }
+    .toast-info { background: #2563eb; }
+
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+      .card-shadow {
+        box-shadow: 0 8px 25px rgba(15, 23, 42, 0.07);
+      }
+    }
   </style>
 </head>
+
 <body class="text-slate-800">
   <div id="configBanner" class="hidden bg-amber-50 border-b border-amber-200 text-amber-900 px-4 py-3 text-sm"></div>
 
+  <!-- LOGIN -->
   <section id="loginScreen" class="min-h-screen app-gradient flex items-center justify-center p-4 md:p-8 relative">
     <div class="absolute top-4 right-4">
       <select id="languageSwitcher" class="rounded-2xl bg-white/95 border border-slate-200 px-4 py-2 text-sm font-medium outline-none">
@@ -44,7 +125,7 @@
       </select>
     </div>
 
-    <div class="w-full max-w-md bg-white rounded-3xl card-shadow p-8 md:p-10">
+    <div class="w-full max-w-md bg-white rounded-3xl card-shadow p-6 sm:p-8 md:p-10">
       <div class="text-center mb-8">
         <div class="w-[72px] h-[72px] mx-auto rounded-2xl app-gradient flex items-center justify-center shadow-xl mb-4">
           <i data-lucide="briefcase-business" class="w-9 h-9 text-white"></i>
@@ -55,37 +136,59 @@
 
       <form id="loginForm" class="space-y-5">
         <div>
-          <label for="loginIdentifier" class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="loginIdentifierLabel">Email ose username</label>
-          <input id="loginIdentifier" type="text" autocomplete="username" required class="w-full rounded-2xl border border-slate-200 px-4 py-3.5 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition" data-i18n-placeholder="loginIdentifierPlaceholder" placeholder="Shkruaj email-in ose username-in" />
+          <label for="loginIdentifier" class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="loginIdentifierLabel">Username</label>
+          <input
+            id="loginIdentifier"
+            type="text"
+            autocomplete="username"
+            required
+            class="w-full rounded-2xl border border-slate-200 px-4 py-3.5 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition"
+            data-i18n-placeholder="loginIdentifierPlaceholder"
+            placeholder="Shkruaj username"
+          />
         </div>
+
         <div>
           <div class="flex items-center justify-between mb-2">
             <label for="loginPassword" class="block text-sm font-semibold text-slate-700" data-i18n="password">Fjalëkalimi</label>
             <button type="button" id="forgotPasswordBtn" class="text-sm text-blue-600 hover:text-blue-700 font-medium" data-i18n="loginHelp">Ndihmë për qasje</button>
           </div>
           <div class="relative">
-            <input id="loginPassword" type="password" autocomplete="current-password" required class="w-full rounded-2xl border border-slate-200 px-4 py-3.5 pr-12 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition" placeholder="••••••••" />
+            <input
+              id="loginPassword"
+              type="password"
+              autocomplete="current-password"
+              required
+              class="w-full rounded-2xl border border-slate-200 px-4 py-3.5 pr-12 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition"
+              placeholder="••••••••"
+            />
             <button type="button" id="toggleLoginPassword" class="absolute inset-y-0 right-0 px-4 text-slate-500 hover:text-slate-700">
               <i data-lucide="eye" class="w-5 h-5"></i>
             </button>
           </div>
         </div>
+
         <label class="flex items-center gap-3 text-sm text-slate-600">
           <input id="rememberMe" type="checkbox" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
           <span data-i18n="rememberMe">Më mbaj mend në këtë pajisje</span>
         </label>
-        <button id="loginSubmitBtn" type="submit" class="w-full rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 transition shadow-lg shadow-blue-600/20" data-i18n="login">Hyni</button>
+
+        <button id="loginSubmitBtn" type="submit" class="w-full rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 transition shadow-lg shadow-blue-600/20" data-i18n="login">
+          Hyni
+        </button>
       </form>
 
       <div class="mt-6 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-600 space-y-1">
-        <div data-i18n="demoInfo">Mund të hyni me email ose username.</div>
+        <div data-i18n="demoInfo">Mund të hyni me username.</div>
         <div data-i18n="standardSchedule">Orari normal: 08:00 - 17:00</div>
-        <div data-i18n="overtimeRule">Pas orës 17:00 orët shtesë llogariten me €5/orë.</div>
+        <div data-i18n="overtimeRule">Orët shtesë llogariten sipas shtesës së caktuar për punonjësin.</div>
       </div>
     </div>
   </section>
 
+  <!-- APP -->
   <div id="mainApp" class="hidden min-h-screen md:flex">
+    <!-- SIDEBAR -->
     <aside class="hidden md:flex md:w-72 sidebar-gradient text-white flex-col sticky top-0 h-screen">
       <div class="p-6 border-b border-white/10">
         <div class="flex items-center gap-3">
@@ -93,18 +196,48 @@
             <i data-lucide="layers-3" class="w-6 h-6 text-blue-300"></i>
           </div>
           <div>
-            <p class="font-bold text-lg" data-i18n="appName">Trendy Home EMS</p>
+            <p class="font-bold text-lg">TrendyHome EMS</p>
             <p class="text-xs text-slate-400" data-i18n="panelProfessional">Panel profesional</p>
           </div>
         </div>
       </div>
 
       <nav class="flex-1 overflow-y-auto scrollbar px-4 py-5 space-y-2">
-        <button data-page="dashboard" class="nav-btn nav-active w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left hover:bg-white/10 transition"><i data-lucide="layout-dashboard" class="w-5 h-5 text-slate-400"></i><span class="font-medium" data-i18n="dashboard">Dashboard</span></button>
-        <button id="menuEmployees" data-page="employees" class="nav-btn hidden w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left hover:bg-white/10 transition"><i data-lucide="users" class="w-5 h-5 text-slate-400"></i><span class="font-medium" data-i18n="employees">Punonjësit</span></button>
-        <button data-page="requests" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left hover:bg-white/10 transition"><i data-lucide="messages-square" class="w-5 h-5 text-slate-400"></i><span class="font-medium" data-i18n="requests">Kërkesat</span><span id="requestBadge" class="ml-auto hidden rounded-full bg-rose-500 text-white text-xs px-2.5 py-1">0</span></button>
-        <button id="menuPayroll" data-page="payroll" class="nav-btn hidden w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left hover:bg-white/10 transition"><i data-lucide="wallet-cards" class="w-5 h-5 text-slate-400"></i><span class="font-medium" data-i18n="payroll">Pagat</span></button>
-        <button data-page="attendance" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left hover:bg-white/10 transition"><i data-lucide="clock-3" class="w-5 h-5 text-slate-400"></i><span class="font-medium" data-i18n="attendance">Pjesëmarrja</span></button>
+        <button data-page="dashboard" class="nav-btn nav-active w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left hover:bg-white/10 transition">
+          <i data-lucide="layout-dashboard" class="w-5 h-5 text-slate-400"></i>
+          <span class="font-medium" data-i18n="dashboard">Dashboard</span>
+        </button>
+
+        <button id="menuEmployees" data-page="employees" class="nav-btn hidden w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left hover:bg-white/10 transition">
+          <i data-lucide="users" class="w-5 h-5 text-slate-400"></i>
+          <span class="font-medium" data-i18n="employees">Punonjësit</span>
+        </button>
+
+        <button data-page="requests" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left hover:bg-white/10 transition">
+          <i data-lucide="messages-square" class="w-5 h-5 text-slate-400"></i>
+          <span class="font-medium" data-i18n="requests">Kërkesat</span>
+          <span id="requestBadge" class="ml-auto hidden rounded-full bg-rose-500 text-white text-xs px-2.5 py-1">0</span>
+        </button>
+
+        <button id="menuPayroll" data-page="payroll" class="nav-btn hidden w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left hover:bg-white/10 transition">
+          <i data-lucide="wallet-cards" class="w-5 h-5 text-slate-400"></i>
+          <span class="font-medium" data-i18n="payroll">Pagat</span>
+        </button>
+
+        <button data-page="attendance" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left hover:bg-white/10 transition">
+          <i data-lucide="clock-3" class="w-5 h-5 text-slate-400"></i>
+          <span class="font-medium" data-i18n="attendance">Pjesëmarrja</span>
+        </button>
+
+        <button id="menuHolidays" data-page="holidays" class="nav-btn hidden w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left hover:bg-white/10 transition">
+          <i data-lucide="calendar-days" class="w-5 h-5 text-slate-400"></i>
+          <span class="font-medium">Pushimet & Festat</span>
+        </button>
+
+        <button id="menuMessages" data-page="messages" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left hover:bg-white/10 transition">
+          <i data-lucide="mail" class="w-5 h-5 text-slate-400"></i>
+          <span class="font-medium">Mesazhet</span>
+        </button>
       </nav>
 
       <div class="p-4 border-t border-white/10 space-y-3">
@@ -113,6 +246,7 @@
           <option value="en">English</option>
           <option value="bs">Bosanski</option>
         </select>
+
         <div class="flex items-center gap-3 rounded-2xl bg-white/5 p-3">
           <div id="userAvatar" class="w-11 h-11 rounded-full bg-blue-500 flex items-center justify-center font-bold text-white">A</div>
           <div class="min-w-0">
@@ -120,77 +254,193 @@
             <p id="userRole" class="text-xs text-slate-400 truncate">Role</p>
           </div>
         </div>
-        <button id="logoutBtn" class="w-full rounded-2xl bg-rose-500/15 text-rose-200 hover:bg-rose-500/25 px-4 py-3 font-semibold flex items-center justify-center gap-2 transition"><i data-lucide="log-out" class="w-4 h-4"></i><span data-i18n="logout">Dilni</span></button>
+
+        <button id="logoutBtn" class="w-full rounded-2xl bg-rose-500/15 text-rose-200 hover:bg-rose-500/25 px-4 py-3 font-semibold flex items-center justify-center gap-2 transition">
+          <i data-lucide="log-out" class="w-4 h-4"></i>
+          <span data-i18n="logout">Dilni</span>
+        </button>
       </div>
     </aside>
 
+    <!-- CONTENT -->
     <div class="flex-1 min-h-screen bg-slate-50">
+      <!-- MOBILE HEADER -->
       <header class="md:hidden sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-slate-200 px-4 py-3 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-2xl app-gradient flex items-center justify-center"><i data-lucide="layers-3" class="w-5 h-5 text-white"></i></div>
-          <div>
-            <p class="font-bold text-slate-900" data-i18n="appName">Trendy Home EMS</p>
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-10 h-10 rounded-2xl app-gradient flex items-center justify-center shrink-0">
+            <i data-lucide="layers-3" class="w-5 h-5 text-white"></i>
+          </div>
+          <div class="min-w-0">
+            <p class="font-bold text-slate-900 truncate">TrendyHome EMS</p>
             <p class="text-xs text-slate-500" data-i18n="panel">Panel</p>
           </div>
         </div>
-        <button id="mobileMenuBtn" class="p-2 rounded-xl hover:bg-slate-100"><i data-lucide="menu" class="w-6 h-6"></i></button>
+        <button id="mobileMenuBtn" class="p-2 rounded-xl hover:bg-slate-100">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
       </header>
 
+      <!-- MOBILE MENU -->
       <div id="mobileMenu" class="hidden md:hidden fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm">
-        <div class="w-72 h-full bg-white p-4 shadow-2xl">
+        <div class="w-72 h-full bg-white p-4 shadow-2xl mobile-safe">
           <div class="flex items-center justify-between mb-5">
             <h3 class="font-bold text-lg" data-i18n="menu">Menu</h3>
-            <button id="mobileMenuClose" class="p-2 rounded-xl hover:bg-slate-100"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <button id="mobileMenuClose" class="p-2 rounded-xl hover:bg-slate-100">
+              <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
           </div>
+
           <div class="space-y-2">
             <button data-mobile-page="dashboard" class="mobile-nav-btn w-full text-left rounded-2xl px-4 py-3 hover:bg-slate-100" data-i18n="dashboard">Dashboard</button>
             <button id="mobileMenuEmployees" data-mobile-page="employees" class="mobile-nav-btn hidden w-full text-left rounded-2xl px-4 py-3 hover:bg-slate-100" data-i18n="employees">Punonjësit</button>
             <button data-mobile-page="requests" class="mobile-nav-btn w-full text-left rounded-2xl px-4 py-3 hover:bg-slate-100" data-i18n="requests">Kërkesat</button>
             <button id="mobileMenuPayroll" data-mobile-page="payroll" class="mobile-nav-btn hidden w-full text-left rounded-2xl px-4 py-3 hover:bg-slate-100" data-i18n="payroll">Pagat</button>
             <button data-mobile-page="attendance" class="mobile-nav-btn w-full text-left rounded-2xl px-4 py-3 hover:bg-slate-100" data-i18n="attendance">Pjesëmarrja</button>
+            <button id="mobileMenuHolidays" data-mobile-page="holidays" class="mobile-nav-btn hidden w-full text-left rounded-2xl px-4 py-3 hover:bg-slate-100">Pushimet & Festat</button>
+            <button id="mobileMenuMessages" data-mobile-page="messages" class="mobile-nav-btn w-full text-left rounded-2xl px-4 py-3 hover:bg-slate-100">Mesazhet</button>
             <hr class="my-3 border-slate-200">
             <button id="mobileLogoutBtn" class="w-full text-left rounded-2xl px-4 py-3 bg-rose-50 text-rose-600" data-i18n="logout">Dilni</button>
           </div>
         </div>
       </div>
 
-      <main class="p-4 md:p-8 max-w-7xl mx-auto space-y-8">
+      <main class="p-4 md:p-6 xl:p-8 max-w-7xl mx-auto space-y-8">
+        <!-- DASHBOARD -->
         <section id="dashboard" class="page-view active">
-          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-8">
+          <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4 mb-8">
             <div>
-              <h1 id="dashboardTitle" class="text-3xl font-extrabold text-slate-900" data-i18n="dashboard">Dashboard</h1>
+              <h1 id="dashboardTitle" class="text-2xl sm:text-3xl font-extrabold text-slate-900" data-i18n="dashboard">Dashboard</h1>
               <p id="dashboardSubtitle" class="text-slate-500 mt-2" data-i18n="standardSchedule">Orari normal: 08:00 - 17:00</p>
             </div>
+
             <div class="flex flex-wrap gap-3">
-              <button id="newRequestBtn" class="rounded-2xl bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 font-semibold flex items-center gap-2 shadow-lg shadow-blue-600/15"><i data-lucide="plus" class="w-4 h-4"></i><span data-i18n="newRequest">Kërkesë e Re</span></button>
-              <button id="standardBtn" class="rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-3 font-semibold flex items-center gap-2 shadow-lg shadow-emerald-600/15"><i id="standardBtnIcon" data-lucide="log-in" class="w-4 h-4"></i><span id="standardBtnText">Check In</span></button>
-              <button id="overtimeBtn" class="rounded-2xl bg-violet-600 hover:bg-violet-700 text-white px-5 py-3 font-semibold flex items-center gap-2 shadow-lg shadow-violet-600/15"><i id="overtimeBtnIcon" data-lucide="timer" class="w-4 h-4"></i><span id="overtimeBtnText">Orë shtesë: Check In</span></button>
+              <button id="newRequestBtn" class="rounded-2xl bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 font-semibold flex items-center gap-2 shadow-lg shadow-blue-600/15">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                <span data-i18n="newRequest">Kërkesë e Re</span>
+              </button>
+
+              <button id="standardBtn" class="rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-3 font-semibold flex items-center gap-2 shadow-lg shadow-emerald-600/15">
+                <i id="standardBtnIcon" data-lucide="log-in" class="w-4 h-4"></i>
+                <span id="standardBtnText">Check In</span>
+              </button>
+
+              <button id="overtimeBtn" class="rounded-2xl bg-violet-600 hover:bg-violet-700 text-white px-5 py-3 font-semibold flex items-center gap-2 shadow-lg shadow-violet-600/15">
+                <i id="overtimeBtnIcon" data-lucide="timer" class="w-4 h-4"></i>
+                <span id="overtimeBtnText">Orë shtesë: Check In</span>
+              </button>
             </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-6 gap-5 mb-8">
-            <div class="bg-white rounded-3xl p-6 card-shadow card-hover"><div class="flex items-center justify-between mb-5"><div class="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center"><i data-lucide="users" class="w-7 h-7 text-blue-600"></i></div></div><p id="statTotalEmployees" class="text-3xl font-extrabold">0</p><p class="text-slate-500 mt-1" data-i18n="totalEmployees">Total punonjësish</p></div>
-            <div class="bg-white rounded-3xl p-6 card-shadow card-hover"><div class="flex items-center justify-between mb-5"><div class="w-14 h-14 rounded-2xl bg-amber-50 flex items-center justify-center"><i data-lucide="clock-3" class="w-7 h-7 text-amber-600"></i></div></div><p id="statHoursThisMonth" class="text-3xl font-extrabold">0h</p><p class="text-slate-500 mt-1" data-i18n="hoursThisMonth">Orë këtë muaj</p></div>
-            <div class="bg-white rounded-3xl p-6 card-shadow card-hover"><div class="flex items-center justify-between mb-5"><div class="w-14 h-14 rounded-2xl bg-violet-50 flex items-center justify-center"><i data-lucide="wallet" class="w-7 h-7 text-violet-600"></i></div></div><p id="statSalaryThisMonth" class="text-3xl font-extrabold">€0</p><p class="text-slate-500 mt-1" data-i18n="salaryThisMonth">Paga këtë muaj</p></div>
-            <div class="bg-white rounded-3xl p-6 card-shadow card-hover"><div class="flex items-center justify-between mb-5"><div class="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center"><i data-lucide="messages-square" class="w-7 h-7 text-emerald-600"></i></div></div><p id="statPendingRequests" class="text-3xl font-extrabold">0</p><p class="text-slate-500 mt-1" data-i18n="pendingRequests">Kërkesa në pritje</p></div>
+            <div class="bg-white rounded-3xl p-6 card-shadow card-hover">
+              <div class="flex items-center justify-between mb-5">
+                <div class="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center">
+                  <i data-lucide="users" class="w-7 h-7 text-blue-600"></i>
+                </div>
+              </div>
+              <p id="statTotalEmployees" class="text-3xl font-extrabold">0</p>
+              <p class="text-slate-500 mt-1" data-i18n="totalEmployees">Total punonjësish</p>
+            </div>
+
+            <div class="bg-white rounded-3xl p-6 card-shadow card-hover">
+              <div class="flex items-center justify-between mb-5">
+                <div class="w-14 h-14 rounded-2xl bg-amber-50 flex items-center justify-center">
+                  <i data-lucide="clock-3" class="w-7 h-7 text-amber-600"></i>
+                </div>
+              </div>
+              <p id="statHoursThisMonth" class="text-3xl font-extrabold">0h</p>
+              <p class="text-slate-500 mt-1" data-i18n="hoursThisMonth">Orë këtë muaj</p>
+            </div>
+
+            <div class="bg-white rounded-3xl p-6 card-shadow card-hover">
+              <div class="flex items-center justify-between mb-5">
+                <div class="w-14 h-14 rounded-2xl bg-violet-50 flex items-center justify-center">
+                  <i data-lucide="wallet" class="w-7 h-7 text-violet-600"></i>
+                </div>
+              </div>
+              <p id="statSalaryThisMonth" class="text-3xl font-extrabold">€0</p>
+              <p class="text-slate-500 mt-1" data-i18n="salaryThisMonth">Paga këtë muaj</p>
+            </div>
+
+            <div class="bg-white rounded-3xl p-6 card-shadow card-hover">
+              <div class="flex items-center justify-between mb-5">
+                <div class="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center">
+                  <i data-lucide="messages-square" class="w-7 h-7 text-emerald-600"></i>
+                </div>
+              </div>
+              <p id="statPendingRequests" class="text-3xl font-extrabold">0</p>
+              <p class="text-slate-500 mt-1" data-i18n="pendingRequests">Kërkesa në pritje</p>
+            </div>
+
+            <div class="bg-white rounded-3xl p-6 card-shadow card-hover">
+              <div class="flex items-center justify-between mb-5">
+                <div class="w-14 h-14 rounded-2xl bg-cyan-50 flex items-center justify-center">
+                  <i data-lucide="hand-coins" class="w-7 h-7 text-cyan-600"></i>
+                </div>
+              </div>
+              <p id="statSalaryDue" class="text-3xl font-extrabold">€0</p>
+              <p class="text-slate-500 mt-1">Paga për t’u dhënë</p>
+            </div>
+
+            <div class="bg-white rounded-3xl p-6 card-shadow card-hover">
+              <div class="flex items-center justify-between mb-5">
+                <div class="w-14 h-14 rounded-2xl bg-sky-50 flex items-center justify-center">
+                  <i data-lucide="building-2" class="w-7 h-7 text-sky-600"></i>
+                </div>
+              </div>
+              <p id="statBankSalary" class="text-3xl font-extrabold">€0</p>
+              <p class="text-slate-500 mt-1">Paga në bankë</p>
+            </div>
           </div>
 
           <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
             <div class="xl:col-span-2 bg-white rounded-3xl p-6 card-shadow">
-              <div class="flex items-center justify-between mb-5">
+              <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
                 <h2 class="text-lg font-bold" data-i18n="analyticsTitle">Analitika</h2>
-                <span class="text-sm text-slate-400" id="chartCaption"></span>
+                <div class="flex items-center gap-3 flex-wrap">
+                  <span class="text-sm text-slate-400" id="chartCaption"></span>
+                  <div class="flex items-center gap-2">
+                    <label for="chartMode" class="text-sm text-slate-500">Grafiku</label>
+                    <select id="chartMode" class="rounded-2xl border border-slate-200 px-3 py-2 text-sm outline-none">
+                      <option value="total">Totale</option>
+                      <option value="bank">Bankë</option>
+                      <option value="cash">Cash</option>
+                    </select>
+                  </div>
+                </div>
               </div>
-              <div class="h-[320px]"><canvas id="dashboardChart"></canvas></div>
+              <div class="h-[300px] sm:h-[320px]">
+                <canvas id="dashboardChart"></canvas>
+              </div>
             </div>
+
             <div class="bg-white rounded-3xl p-6 card-shadow">
               <h2 class="text-lg font-bold mb-5" data-i18n="quickInfo">Informacion i shpejtë</h2>
               <div class="space-y-4 text-sm text-slate-600">
-                <div class="rounded-2xl border border-slate-200 p-4"><p class="font-semibold text-slate-800 mb-1" data-i18n="todayStatusTitle">Statusi i sotëm</p><p id="todayStatus">-</p></div>
-                <div class="rounded-2xl border border-slate-200 p-4"><p class="font-semibold text-slate-800 mb-1" data-i18n="overtimeTodayTitle">Orë shtesë sot</p><p id="overtimeTodayHours">0h</p></div>
-                <div class="rounded-2xl border border-slate-200 p-4"><p class="font-semibold text-slate-800 mb-1" data-i18n="overtimePayTodayTitle">Pagesë shtesë sot</p><p id="overtimeTodayPay">€0</p></div>
-                <div class="rounded-2xl border border-slate-200 p-4"><p class="font-semibold text-slate-800 mb-1" data-i18n="activeMonthTitle">Muaji aktiv</p><p id="activeMonthLabel">-</p></div>
-                <div class="rounded-2xl border border-slate-200 p-4"><p class="font-semibold text-slate-800 mb-1" data-i18n="accountTypeTitle">Lloji i llogarisë</p><p id="accountTypeLabel">-</p></div>
+                <div class="rounded-2xl border border-slate-200 p-4">
+                  <p class="font-semibold text-slate-800 mb-1" data-i18n="todayStatusTitle">Statusi i sotëm</p>
+                  <p id="todayStatus">-</p>
+                </div>
+
+                <div class="rounded-2xl border border-slate-200 p-4">
+                  <p class="font-semibold text-slate-800 mb-1" data-i18n="overtimeTodayTitle">Orë shtesë sot</p>
+                  <p id="overtimeTodayHours">0h</p>
+                </div>
+
+                <div class="rounded-2xl border border-slate-200 p-4">
+                  <p class="font-semibold text-slate-800 mb-1" data-i18n="overtimePayTodayTitle">Pagesë shtesë sot</p>
+                  <p id="overtimeTodayPay">€0</p>
+                </div>
+
+                <div class="rounded-2xl border border-slate-200 p-4">
+                  <p class="font-semibold text-slate-800 mb-1" data-i18n="activeMonthTitle">Muaji aktiv</p>
+                  <p id="activeMonthLabel">-</p>
+                </div>
+
+                <div class="rounded-2xl border border-slate-200 p-4">
+                  <p class="font-semibold text-slate-800 mb-1" data-i18n="accountTypeTitle">Lloji i llogarisë</p>
+                  <p id="accountTypeLabel">-</p>
+                </div>
               </div>
             </div>
           </div>
@@ -201,25 +451,43 @@
           </div>
         </section>
 
+        <!-- EMPLOYEES -->
         <section id="employees" class="page-view">
-          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+          <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4 mb-6">
             <div>
-              <h1 class="text-3xl font-extrabold text-slate-900" data-i18n="employeesTitle">Menaxhimi i Punonjësve</h1>
+              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900" data-i18n="employeesTitle">Menaxhimi i Punonjësve</h1>
               <p class="text-slate-500 mt-2" data-i18n="employeesSubtitle">Shtoni, editoni, fshini dhe filtroni punonjësit</p>
             </div>
-            <button id="openEmployeeModalBtn" class="rounded-2xl bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 font-semibold flex items-center gap-2 shadow-lg shadow-blue-600/15"><i data-lucide="user-plus" class="w-4 h-4"></i><span data-i18n="addEmployee">Shto Punonjës</span></button>
+
+            <div class="flex gap-3 flex-wrap">
+              <button id="openHolidayModalBtn" class="rounded-2xl bg-slate-900 hover:bg-slate-800 text-white px-5 py-3 font-semibold flex items-center gap-2 shadow-lg">
+                <i data-lucide="calendar-plus" class="w-4 h-4"></i>
+                <span>Festë / Pushim</span>
+              </button>
+
+              <button id="openEmployeeModalBtn" class="rounded-2xl bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 font-semibold flex items-center gap-2 shadow-lg shadow-blue-600/15">
+                <i data-lucide="user-plus" class="w-4 h-4"></i>
+                <span data-i18n="addEmployee">Shto Punonjës</span>
+              </button>
+            </div>
           </div>
 
           <div class="bg-white rounded-3xl card-shadow overflow-hidden">
-            <div class="p-5 border-b border-slate-200 flex flex-col lg:flex-row gap-3">
+            <div class="p-5 border-b border-slate-200 flex flex-col xl:flex-row gap-3">
               <div class="relative flex-1">
                 <i data-lucide="search" class="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                <input id="searchEmployee" type="text" data-i18n-placeholder="searchEmployeePlaceholder" placeholder="Kërko sipas emrit, username ose email-it" class="w-full rounded-2xl border border-slate-200 pl-12 pr-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
+                <input
+                  id="searchEmployee"
+                  type="text"
+                  placeholder="Kërko sipas emrit ose username"
+                  class="w-full rounded-2xl border border-slate-200 pl-12 pr-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500"
+                />
               </div>
+
               <select id="filterDepartment" class="rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
-                <option value="" data-i18n="allDepartments">Të gjitha departamentet</option>
-                <option value="Monter">Monter ne teren</option>
-                <option value="Monterfb">Monter ne fabrike</option>
+                <option value="">Të gjitha departamentet</option>
+                <option value="Monter ne teren">Monter ne teren</option>
+                <option value="Monter ne fabrike">Monter ne fabrike</option>
                 <option value="Reparti i ngjyrosjes">Reparti i ngjyrosjes</option>
                 <option value="Reparti i maqinave">Reparti i maqinave</option>
                 <option value="Reparti i Kauqave">Reparti i Kauqave</option>
@@ -228,18 +496,20 @@
                 <option value="Shitese">Shitese</option>
               </select>
             </div>
-            <div class="overflow-x-auto scrollbar">
-              <table class="w-full text-left min-w-[1250px]">
+
+            <div class="table-wrap scrollbar">
+              <table class="w-full text-left min-w-[1180px]">
                 <thead class="bg-slate-50 border-b border-slate-200">
                   <tr>
-                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500" data-i18n="employeeCol">Punonjësi</th>
-                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500" data-i18n="departmentCol">Departamenti</th>
+                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Punonjësi</th>
+                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Departamenti</th>
                     <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Username</th>
-                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500" data-i18n="salaryHourCol">Paga / orë</th>
-                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500" data-i18n="schedule">Orari</th>
-                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500" data-i18n="paymentMethod">Pagesa</th>
-                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500" data-i18n="statusCol">Statusi</th>
-                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500 text-right" data-i18n="actionsCol">Veprime</th>
+                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Orari</th>
+                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Rroga</th>
+                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Pagesa</th>
+                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Vlerësimi</th>
+                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Statusi</th>
+                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500 text-right">Veprime</th>
                   </tr>
                 </thead>
                 <tbody id="employeesTable" class="divide-y divide-slate-100"></tbody>
@@ -248,45 +518,52 @@
           </div>
         </section>
 
+        <!-- REQUESTS -->
         <section id="requests" class="page-view">
           <div class="mb-6">
-            <h1 class="text-3xl font-extrabold text-slate-900" data-i18n="requestsTitle">Kërkesat dhe Ankesat</h1>
-            <p class="text-slate-500 mt-2" data-i18n="requestsSubtitle">Punonjësi dërgon kërkesa, admini i aprovon ose i refuzon</p>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Kërkesat dhe Ankesat</h1>
+            <p class="text-slate-500 mt-2">Punonjësi dërgon kërkesë me datë/orë, admini e aprovon ose e refuzon</p>
           </div>
           <div id="requestsList" class="space-y-4"></div>
         </section>
 
+        <!-- PAYROLL -->
         <section id="payroll" class="page-view">
           <div class="mb-6">
-            <h1 class="text-3xl font-extrabold text-slate-900" data-i18n="payrollTitle">Pagat</h1>
-            <p class="text-slate-500 mt-2" data-i18n="payrollSubtitle">Llogaritje automatike sipas orëve të punuara dhe orëve shtesë</p>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Pagat</h1>
+            <p class="text-slate-500 mt-2">Llogaritje automatike sipas ditëve të punës, mungesave, pushimeve dhe orëve shtesë</p>
           </div>
+
           <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
             <div class="bg-white rounded-3xl p-6 card-shadow">
-              <h2 class="font-bold text-lg mb-4" data-i18n="summary">Përmbledhje</h2>
+              <h2 class="font-bold text-lg mb-4">Përmbledhje</h2>
               <div class="space-y-3 text-sm">
-                <div class="flex justify-between"><span class="text-slate-500" data-i18n="totalPayroll">Total pagash</span><span id="totalPayroll" class="font-bold">€0</span></div>
-                <div class="flex justify-between"><span class="text-slate-500" data-i18n="totalHours">Orë totale</span><span id="totalHoursAll" class="font-bold">0h</span></div>
-                <div class="flex justify-between"><span class="text-slate-500" data-i18n="averageSalary">Paga mesatare</span><span id="avgSalary" class="font-bold">€0</span></div>
+                <div class="flex justify-between"><span class="text-slate-500">Total pagash</span><span id="totalPayroll" class="font-bold">€0</span></div>
+                <div class="flex justify-between"><span class="text-slate-500">Orë totale</span><span id="totalHoursAll" class="font-bold">0h</span></div>
+                <div class="flex justify-between"><span class="text-slate-500">Paga mesatare</span><span id="avgSalary" class="font-bold">€0</span></div>
               </div>
             </div>
+
             <div class="xl:col-span-2 bg-white rounded-3xl card-shadow overflow-hidden">
-              <div class="p-5 border-b border-slate-200"><h2 class="font-bold text-lg" data-i18n="payrollDetails">Detaje pagash</h2></div>
-              <div class="overflow-x-auto scrollbar">
-                <table class="w-full min-w-[1500px]">
+              <div class="p-5 border-b border-slate-200">
+                <h2 class="font-bold text-lg">Detaje pagash</h2>
+              </div>
+
+              <div class="table-wrap scrollbar">
+                <table class="w-full text-left min-w-[1450px]">
                   <thead class="bg-slate-50 border-b border-slate-200">
                     <tr>
-                      <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500" data-i18n="employeeCol">Punonjësi</th>
-                      <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500" data-i18n="schedule">Orari</th>
-                      <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Normale</th>
+                      <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Punonjësi</th>
+                      <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Ditë pune</th>
+                      <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Orë normale</th>
                       <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">OT</th>
-                      <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500" data-i18n="salaryDue">Paga për t’u dhënë</th>
-                      <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500" data-i18n="bankSalary">Banka</th>
-                      <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500" data-i18n="cashSalary">Cash</th>
-                      <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500" data-i18n="fullSalary">Rroga e plotë</th>
-                      <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500" data-i18n="deduction">Zbritja</th>
-                      <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500" data-i18n="statusCol">Statusi</th>
-                      <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500 text-right" data-i18n="actionsCol">Veprime</th>
+                      <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Paga për t’u dhënë</th>
+                      <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Banka</th>
+                      <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Cash</th>
+                      <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Rroga e plotë</th>
+                      <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Zbritja</th>
+                      <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Statusi</th>
+                      <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500 text-right">Veprime</th>
                     </tr>
                   </thead>
                   <tbody id="payrollTable" class="divide-y divide-slate-100"></tbody>
@@ -296,32 +573,42 @@
           </div>
         </section>
 
+        <!-- ATTENDANCE -->
         <section id="attendance" class="page-view">
-          <div class="mb-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          <div class="mb-6 flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4">
             <div>
-              <h1 class="text-3xl font-extrabold text-slate-900" data-i18n="attendanceTitle">Pjesëmarrja</h1>
-              <p class="text-slate-500 mt-2" data-i18n="attendanceSubtitle">Check in, check out, auto check out në ora 5 dhe eksport CSV</p>
+              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Pjesëmarrja</h1>
+              <p class="text-slate-500 mt-2">Check in / check out sipas orarit individual, auto check out dhe eksport CSV</p>
             </div>
+
             <div class="flex gap-2 items-center flex-wrap">
-              <button id="prevMonthBtn" class="p-3 rounded-2xl bg-white border border-slate-200 hover:bg-slate-50"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
-              <div id="currentMonthDisplay" class="font-bold min-w-[150px] text-center"></div>
-              <button id="nextMonthBtn" class="p-3 rounded-2xl bg-white border border-slate-200 hover:bg-slate-50"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
-              <button id="exportAttendanceBtn" class="rounded-2xl bg-white border border-slate-200 hover:bg-slate-50 px-4 py-3 font-semibold flex items-center gap-2"><i data-lucide="download" class="w-4 h-4"></i><span data-i18n="export">Eksporto</span></button>
+              <button id="prevMonthBtn" class="p-3 rounded-2xl border border-slate-200 hover:bg-slate-50">
+                <i data-lucide="chevron-left" class="w-5 h-5"></i>
+              </button>
+              <div id="currentMonthDisplay" class="px-4 py-3 rounded-2xl bg-white border border-slate-200 font-semibold">-</div>
+              <button id="nextMonthBtn" class="p-3 rounded-2xl border border-slate-200 hover:bg-slate-50">
+                <i data-lucide="chevron-right" class="w-5 h-5"></i>
+              </button>
+              <button id="exportAttendanceBtn" class="rounded-2xl bg-slate-900 hover:bg-slate-800 text-white px-5 py-3 font-semibold flex items-center gap-2">
+                <i data-lucide="download" class="w-4 h-4"></i>
+                <span>Eksporto</span>
+              </button>
             </div>
           </div>
+
           <div class="bg-white rounded-3xl card-shadow overflow-hidden">
-            <div class="overflow-x-auto scrollbar">
-              <table class="w-full min-w-[1280px]">
+            <div class="table-wrap scrollbar">
+              <table class="w-full text-left min-w-[1450px]">
                 <thead class="bg-slate-50 border-b border-slate-200">
                   <tr>
-                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500" data-i18n="employeeCol">Punonjësi / Data</th>
-                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500" data-i18n="sessions">Hyrje/Dalje</th>
+                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Punonjësi / Data</th>
+                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Hyrje / Dalje</th>
                     <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Orë normale</th>
-                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500" data-i18n="overtimeHoursCol">Orë shtesë</th>
-                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500" data-i18n="totalHoursCol">Orë totale</th>
+                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Orë shtesë</th>
+                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Orë totale</th>
                     <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Pagesa ditore</th>
-                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500" data-i18n="schedule">Orari</th>
-                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500" data-i18n="statusCol">Statusi</th>
+                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Orari</th>
+                    <th class="px-6 py-4 text-xs uppercase tracking-wider text-slate-500">Statusi</th>
                   </tr>
                 </thead>
                 <tbody id="attendanceTable" class="divide-y divide-slate-100"></tbody>
@@ -329,107 +616,488 @@
             </div>
           </div>
         </section>
+
+        <!-- HOLIDAYS -->
+        <section id="holidays" class="page-view">
+          <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4 mb-6">
+            <div>
+              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Pushimet & Festat</h1>
+              <p class="text-slate-500 mt-2">Menaxho festat zyrtare, ditët pushim për të gjithë dhe pushimet individuale</p>
+            </div>
+
+            <div class="flex flex-wrap gap-3">
+              <button id="openGlobalHolidayModalBtn" class="rounded-2xl bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 font-semibold flex items-center gap-2 shadow-lg">
+                <i data-lucide="calendar-plus" class="w-4 h-4"></i>
+                <span>Shto festë për të gjithë</span>
+              </button>
+
+              <button id="openEmployeeDayOffModalBtn" class="rounded-2xl bg-slate-900 hover:bg-slate-800 text-white px-5 py-3 font-semibold flex items-center gap-2 shadow-lg">
+                <i data-lucide="user-round-minus" class="w-4 h-4"></i>
+                <span>Shto pushim individual</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <div class="bg-white rounded-3xl card-shadow overflow-hidden">
+              <div class="p-5 border-b border-slate-200">
+                <h2 class="font-bold text-lg">Festat zyrtare / Pushime për të gjithë</h2>
+              </div>
+              <div id="holidaysList" class="p-5 space-y-3"></div>
+            </div>
+
+            <div class="bg-white rounded-3xl card-shadow overflow-hidden">
+              <div class="p-5 border-b border-slate-200">
+                <h2 class="font-bold text-lg">Pushimet individuale</h2>
+              </div>
+              <div id="employeeDayOffList" class="p-5 space-y-3"></div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-3xl card-shadow mt-6 overflow-hidden">
+            <div class="p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div>
+                <h2 class="font-bold text-lg">Ditët e punës sipas muajit</h2>
+                <p class="text-sm text-slate-500">Mund t’i vendosësh manualisht 21, 22, 23 etj. për secilin muaj</p>
+              </div>
+              <button id="openWorkdayConfigModalBtn" class="rounded-2xl bg-amber-500 hover:bg-amber-600 text-white px-5 py-3 font-semibold">
+                Ndrysho muajt
+              </button>
+            </div>
+            <div id="monthlyWorkdaysList" class="p-5 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4"></div>
+          </div>
+        </section>
+
+        <!-- MESSAGES -->
+        <section id="messages" class="page-view">
+          <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4 mb-6">
+            <div>
+              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Mesazhet & Vlerësimet</h1>
+              <p class="text-slate-500 mt-2">Dërgo njoftime, vrejtje, lavdërime dhe vlerësime për punonjësit</p>
+            </div>
+
+            <button id="openMessageModalBtn" class="rounded-2xl bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 font-semibold flex items-center gap-2 shadow-lg shadow-blue-600/15">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span>Dërgo mesazh</span>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
+            <div class="bg-white rounded-3xl p-6 card-shadow">
+              <h2 class="text-lg font-bold mb-4">Mesatarja e vlerësimit</h2>
+              <p id="overallRatingValue" class="text-4xl font-extrabold">0.0</p>
+              <p class="text-slate-500 mt-2">Mesatarja e përgjithshme e vlerësimeve</p>
+            </div>
+
+            <div class="bg-white rounded-3xl p-6 card-shadow">
+              <h2 class="text-lg font-bold mb-4">Mesazhe të palexuara</h2>
+              <p id="unreadMessagesCount" class="text-4xl font-extrabold">0</p>
+              <p class="text-slate-500 mt-2">Mesazhe të reja për përdoruesin aktiv</p>
+            </div>
+
+            <div class="bg-white rounded-3xl p-6 card-shadow">
+              <h2 class="text-lg font-bold mb-4">Vlerësime totale</h2>
+              <p id="totalReviewsCount" class="text-4xl font-extrabold">0</p>
+              <p class="text-slate-500 mt-2">Numri total i vlerësimeve të ruajtura</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <div class="bg-white rounded-3xl card-shadow overflow-hidden">
+              <div class="p-5 border-b border-slate-200">
+                <h2 class="font-bold text-lg">Mesazhet e fundit</h2>
+              </div>
+              <div id="messagesList" class="p-5 space-y-4"></div>
+            </div>
+
+            <div class="bg-white rounded-3xl card-shadow overflow-hidden">
+              <div class="p-5 border-b border-slate-200">
+                <h2 class="font-bold text-lg">Vlerësimi sipas punonjësve</h2>
+              </div>
+              <div id="employeeRatingsList" class="p-5 space-y-4"></div>
+            </div>
+          </div>
+        </section>
       </main>
     </div>
   </div>
 
+  <!-- REQUEST MODAL -->
   <div id="requestModal" class="hidden fixed inset-0 z-50 items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-    <div class="w-full max-w-lg rounded-3xl bg-white card-shadow p-6 md:p-8">
+    <div class="w-full max-w-2xl rounded-3xl bg-white card-shadow p-6 md:p-8 max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between mb-6">
         <div>
-          <h3 class="text-2xl font-bold text-slate-900" data-i18n="requestNewTitle">Kërkesë e Re</h3>
-          <p class="text-slate-500 mt-1" data-i18n="requestNewSubtitle">Dërgo një kërkesë ose ankesë për adminin</p>
+          <h3 class="text-2xl font-bold text-slate-900">Kërkesë e Re</h3>
+          <p class="text-slate-500 mt-1">Dërgo një kërkesë me datë dhe, kur duhet, edhe me orar</p>
         </div>
-        <button type="button" class="close-modal-btn p-2 rounded-xl hover:bg-slate-100" data-close="requestModal"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <button type="button" class="close-modal-btn p-2 rounded-xl hover:bg-slate-100" data-close="requestModal">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
       </div>
-      <form id="requestForm" class="space-y-5">
-        <div>
-          <label for="requestType" class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="requestType">Lloji i kërkesës</label>
-          <select id="requestType" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
-            <option value="leave_early" data-i18n="requestLeaveEarly">Lëshim herët nga puna</option>
-            <option value="day_off" data-i18n="requestDayOff">Ditë pushimi</option>
-            <option value="weekend_work" data-i18n="requestWeekendWork">Kërkesë për punë në vikend</option>
-            <option value="complaint" data-i18n="requestComplaint">Ankesë</option>
-            <option value="other" data-i18n="requestOther">Tjetër</option>
-          </select>
-        </div>
-        <div>
-          <label for="requestDescription" class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="requestDescription">Përshkrimi</label>
-          <textarea id="requestDescription" rows="5" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 resize-none" data-i18n-placeholder="requestDescriptionPlaceholder" placeholder="Shkruaj arsyen e kërkesës"></textarea>
-        </div>
-        <div class="flex justify-end gap-3">
-          <button type="button" class="close-modal-btn rounded-2xl border border-slate-200 px-5 py-3 font-semibold hover:bg-slate-50" data-close="requestModal" data-i18n="cancel">Anulo</button>
-          <button type="submit" class="rounded-2xl bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 font-semibold" data-i18n="send">Dërgo</button>
-        </div>
-      </form>
-    </div>
-  </div>
 
-  <div id="employeeModal" class="hidden fixed inset-0 z-50 items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-    <div class="w-full max-w-2xl rounded-3xl bg-white card-shadow p-6 md:p-8">
-      <div class="flex items-center justify-between mb-6">
-        <div>
-          <h3 id="employeeModalTitle" class="text-2xl font-bold text-slate-900" data-i18n="employeeModalAdd">Shto Punonjës</h3>
-          <p class="text-slate-500 mt-1" data-i18n="employeeModalSubtitle">Krijo ose përditëso një punonjës</p>
-        </div>
-        <button type="button" class="close-modal-btn p-2 rounded-xl hover:bg-slate-100" data-close="employeeModal"><i data-lucide="x" class="w-5 h-5"></i></button>
-      </div>
-      <form id="employeeForm" class="space-y-5">
-        <input type="hidden" id="employeeId" />
+      <form id="requestForm" class="space-y-5">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label for="employeeName" class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="fullName">Emri i plotë</label>
-            <input id="employeeName" type="text" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
-          </div>
-          <div>
-            <label for="employeeUsername" class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="username">Username</label>
-            <input id="employeeUsername" type="text" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
-          </div>
-          <div>
-            <label for="employeeEmail" class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="email">Email</label>
-            <input id="employeeEmail" type="email" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
-          </div>
-          <div>
-            <label for="employeeDepartment" class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="departmentCol">Departamenti</label>
-            <select id="employeeDepartment" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
-                <option value="Monter">Monter ne teren</option>
-                <option value="Monterfb">Monter ne fabrike</option>
-                <option value="Reparti i ngjyrosjes">Reparti i ngjyrosjes</option>
-                <option value="Reparti i maqinave">Reparti i maqinave</option>
-                <option value="Reparti i Kauqave">Reparti i Kauqave</option>
-                <option value="Administrata">Administrata</option>
-                <option value="Arkitektura">Arkitektura</option>
-                <option value="Shitese">Shitese</option>
+            <label for="requestType" class="block text-sm font-semibold text-slate-700 mb-2">Lloji i kërkesës</label>
+            <select id="requestType" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
+              <option value="day_off">Ditë pushimi</option>
+              <option value="leave_early">Lëshim më herët</option>
+              <option value="shift_change">Ndryshim orari</option>
+              <option value="weekend_work">Punë në vikend</option>
+              <option value="complaint">Ankesë</option>
+              <option value="other">Tjetër</option>
             </select>
           </div>
+
           <div>
-            <label for="employeeSalary" class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="salaryPerHour">Paga për orë (€)</label>
-            <input id="employeeSalary" type="number" min="0" step="0.01" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
+            <label for="requestDate" class="block text-sm font-semibold text-slate-700 mb-2">Data</label>
+            <input id="requestDate" type="date" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
           </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label for="employeeRole" class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="role">Roli</label>
-            <select id="employeeRole" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
-              <option value="employee" data-i18n="employeeRole">Punonjës</option>
-              <option value="admin" data-i18n="adminRole">Administrator</option>
+            <label for="requestStartTime" class="block text-sm font-semibold text-slate-700 mb-2">Nga ora</label>
+            <input id="requestStartTime" type="time" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
+          </div>
+
+          <div>
+            <label for="requestEndTime" class="block text-sm font-semibold text-slate-700 mb-2">Deri në ora</label>
+            <input id="requestEndTime" type="time" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
+          </div>
+
+          <div>
+            <label for="requestHours" class="block text-sm font-semibold text-slate-700 mb-2">Orë të kërkuara</label>
+            <input id="requestHours" type="number" min="0" step="0.5" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" placeholder="P.sh. 2" />
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          <label class="inline-flex items-center gap-2 rounded-2xl border border-slate-200 px-4 py-3">
+            <input id="requestEntireDay" type="checkbox" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+            <span class="text-sm font-medium text-slate-700">Krejt ditën</span>
+          </label>
+
+          <div class="flex-1 min-w-[220px]">
+            <label for="requestShift" class="block text-sm font-semibold text-slate-700 mb-2">Orari i kërkuar</label>
+            <select id="requestShift" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
+              <option value="">-</option>
+              <option value="morning">Paradite</option>
+              <option value="afternoon">Masdite</option>
             </select>
           </div>
         </div>
+
         <div>
-          <label for="employeePassword" class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="newPassword">Fjalëkalimi i ri</label>
-          <div class="relative">
-            <input id="employeePassword" type="password" class="w-full rounded-2xl border border-slate-200 px-4 py-3 pr-12 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
-            <button type="button" id="toggleEmployeePassword" class="absolute inset-y-0 right-0 px-4 text-slate-500 hover:text-slate-700"><i data-lucide="eye" class="w-5 h-5"></i></button>
-          </div>
+          <label for="requestDescription" class="block text-sm font-semibold text-slate-700 mb-2">Përshkrimi</label>
+          <textarea id="requestDescription" rows="4" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" placeholder="Shkruaj arsyen e kërkesës"></textarea>
         </div>
+
         <div class="flex justify-end gap-3">
-          <button type="button" class="close-modal-btn rounded-2xl border border-slate-200 px-5 py-3 font-semibold hover:bg-slate-50" data-close="employeeModal" data-i18n="cancel">Anulo</button>
-          <button type="submit" class="rounded-2xl bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 font-semibold" data-i18n="save">Ruaj</button>
+          <button type="button" class="close-modal-btn rounded-2xl border border-slate-200 px-5 py-3 font-semibold hover:bg-slate-50" data-close="requestModal">Anulo</button>
+          <button type="submit" class="rounded-2xl bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 font-semibold">Dërgo</button>
         </div>
       </form>
     </div>
   </div>
 
-  <div id="toast" class="hidden"></div>
+  <!-- EMPLOYEE MODAL -->
+  <div id="employeeModal" class="hidden fixed inset-0 z-50 items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+    <div class="w-full max-w-4xl rounded-3xl bg-white card-shadow p-6 md:p-8 max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h3 id="employeeModalTitle" class="text-2xl font-bold text-slate-900">Shto Punonjës</h3>
+          <p class="text-slate-500 mt-1">Krijo ose përditëso një punonjës</p>
+        </div>
+        <button type="button" class="close-modal-btn p-2 rounded-xl hover:bg-slate-100" data-close="employeeModal">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="employeeForm" class="space-y-5">
+        <input id="employeeId" type="hidden" />
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div>
+            <label for="employeeName" class="block text-sm font-semibold text-slate-700 mb-2">Emri i plotë</label>
+            <input id="employeeName" type="text" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
+          </div>
+
+          <div>
+            <label for="employeeUsername" class="block text-sm font-semibold text-slate-700 mb-2">Username</label>
+            <input id="employeeUsername" type="text" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
+          </div>
+
+          <div>
+            <label for="employeeDepartment" class="block text-sm font-semibold text-slate-700 mb-2">Departamenti</label>
+            <select id="employeeDepartment" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
+              <option value="Monter ne teren">Monter ne teren</option>
+              <option value="Monter ne fabrike">Monter ne fabrike</option>
+              <option value="Reparti i ngjyrosjes">Reparti i ngjyrosjes</option>
+              <option value="Reparti i maqinave">Reparti i maqinave</option>
+              <option value="Reparti i Kauqave">Reparti i Kauqave</option>
+              <option value="Administrata">Administrata</option>
+              <option value="Arkitektura">Arkitektura</option>
+              <option value="Shitese">Shitese</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="employeeRole" class="block text-sm font-semibold text-slate-700 mb-2">Roli</label>
+            <select id="employeeRole" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
+              <option value="employee">Punonjës</option>
+              <option value="admin">Administrator</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="employeeFullSalary" class="block text-sm font-semibold text-slate-700 mb-2">Rroga e plotë (€)</label>
+            <input id="employeeFullSalary" type="number" min="0" step="0.01" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
+          </div>
+
+          <div>
+            <label for="employeeBankSalary" class="block text-sm font-semibold text-slate-700 mb-2">Paga në bankë (€)</label>
+            <input id="employeeBankSalary" type="number" min="0" step="0.01" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
+          </div>
+
+          <div>
+            <label for="employeeOvertimeRate" class="block text-sm font-semibold text-slate-700 mb-2">Shtesa për orë shtesë (€)</label>
+            <input id="employeeOvertimeRate" type="number" min="0" step="0.01" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
+          </div>
+
+          <div>
+            <label for="employeePaymentMethod" class="block text-sm font-semibold text-slate-700 mb-2">Mënyra e pagesës</label>
+            <select id="employeePaymentMethod" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
+              <option value="cash">Cash</option>
+              <option value="bank">Bankë</option>
+              <option value="mixed">Përzier</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="employeeShiftStart" class="block text-sm font-semibold text-slate-700 mb-2">Fillimi i orarit</label>
+            <input id="employeeShiftStart" type="time" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
+          </div>
+
+          <div>
+            <label for="employeeShiftEnd" class="block text-sm font-semibold text-slate-700 mb-2">Mbarimi i orarit</label>
+            <input id="employeeShiftEnd" type="time" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
+          </div>
+        </div>
+
+        <div>
+          <label for="employeePassword" class="block text-sm font-semibold text-slate-700 mb-2">Fjalëkalimi i ri</label>
+          <div class="relative">
+            <input id="employeePassword" type="password" class="w-full rounded-2xl border border-slate-200 px-4 py-3 pr-12 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
+            <button type="button" id="toggleEmployeePassword" class="absolute inset-y-0 right-0 px-4 text-slate-500 hover:text-slate-700">
+              <i data-lucide="eye" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3 flex-wrap">
+          <button type="button" class="close-modal-btn rounded-2xl border border-slate-200 px-5 py-3 font-semibold hover:bg-slate-50" data-close="employeeModal">Anulo</button>
+          <button type="submit" class="rounded-2xl bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 font-semibold">Ruaj</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- GLOBAL HOLIDAY MODAL -->
+  <div id="globalHolidayModal" class="hidden fixed inset-0 z-50 items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+    <div class="w-full max-w-xl rounded-3xl bg-white card-shadow p-6 md:p-8">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h3 class="text-2xl font-bold text-slate-900">Shto festë për të gjithë</h3>
+          <p class="text-slate-500 mt-1">Kjo ditë do të vlejë për të gjithë punonjësit</p>
+        </div>
+        <button type="button" class="close-modal-btn p-2 rounded-xl hover:bg-slate-100" data-close="globalHolidayModal">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="globalHolidayForm" class="space-y-5">
+        <div>
+          <label for="holidayTitle" class="block text-sm font-semibold text-slate-700 mb-2">Emri i festës</label>
+          <input id="holidayTitle" type="text" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
+        </div>
+
+        <div>
+          <label for="holidayDate" class="block text-sm font-semibold text-slate-700 mb-2">Data</label>
+          <input id="holidayDate" type="date" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
+        </div>
+
+        <label class="flex items-center gap-3 text-sm text-slate-600">
+          <input id="holidayPaid" type="checkbox" checked class="rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+          <span>Kjo ditë llogaritet si e paguar</span>
+        </label>
+
+        <div class="flex justify-end gap-3">
+          <button type="button" class="close-modal-btn rounded-2xl border border-slate-200 px-5 py-3 font-semibold hover:bg-slate-50" data-close="globalHolidayModal">Anulo</button>
+          <button type="submit" class="rounded-2xl bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 font-semibold">Ruaj</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- EMPLOYEE DAY OFF MODAL -->
+  <div id="employeeDayOffModal" class="hidden fixed inset-0 z-50 items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+    <div class="w-full max-w-xl rounded-3xl bg-white card-shadow p-6 md:p-8">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h3 class="text-2xl font-bold text-slate-900">Shto pushim individual</h3>
+          <p class="text-slate-500 mt-1">Pushim i vlefshëm vetëm për një punonjës</p>
+        </div>
+        <button type="button" class="close-modal-btn p-2 rounded-xl hover:bg-slate-100" data-close="employeeDayOffModal">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="employeeDayOffForm" class="space-y-5">
+        <div>
+          <label for="dayOffEmployeeId" class="block text-sm font-semibold text-slate-700 mb-2">Punonjësi</label>
+          <select id="dayOffEmployeeId" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500"></select>
+        </div>
+
+        <div>
+          <label for="dayOffDate" class="block text-sm font-semibold text-slate-700 mb-2">Data</label>
+          <input id="dayOffDate" type="date" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
+        </div>
+
+        <div>
+          <label for="dayOffReason" class="block text-sm font-semibold text-slate-700 mb-2">Arsyeja</label>
+          <input id="dayOffReason" type="text" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
+        </div>
+
+        <label class="flex items-center gap-3 text-sm text-slate-600">
+          <input id="dayOffPaid" type="checkbox" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+          <span>Kjo ditë llogaritet si e paguar</span>
+        </label>
+
+        <div class="flex justify-end gap-3">
+          <button type="button" class="close-modal-btn rounded-2xl border border-slate-200 px-5 py-3 font-semibold hover:bg-slate-50" data-close="employeeDayOffModal">Anulo</button>
+          <button type="submit" class="rounded-2xl bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 font-semibold">Ruaj</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- WORKDAY CONFIG MODAL -->
+  <div id="workdayConfigModal" class="hidden fixed inset-0 z-50 items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+    <div class="w-full max-w-3xl rounded-3xl bg-white card-shadow p-6 md:p-8 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h3 class="text-2xl font-bold text-slate-900">Ditët e punës sipas muajit</h3>
+          <p class="text-slate-500 mt-1">Vendos manualisht 21 / 22 / 23 ditë pune për secilin muaj</p>
+        </div>
+        <button type="button" class="close-modal-btn p-2 rounded-xl hover:bg-slate-100" data-close="workdayConfigModal">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="workdayConfigForm" class="space-y-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+          <div>
+            <label for="workYear" class="block text-sm font-semibold text-slate-700 mb-2">Viti</label>
+            <input id="workYear" type="number" min="2025" max="2100" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
+          </div>
+
+          <div>
+            <label for="workMonth" class="block text-sm font-semibold text-slate-700 mb-2">Muaji</label>
+            <select id="workMonth" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
+              <option value="1">Janar</option>
+              <option value="2">Shkurt</option>
+              <option value="3">Mars</option>
+              <option value="4">Prill</option>
+              <option value="5">Maj</option>
+              <option value="6">Qershor</option>
+              <option value="7">Korrik</option>
+              <option value="8">Gusht</option>
+              <option value="9">Shtator</option>
+              <option value="10">Tetor</option>
+              <option value="11">Nëntor</option>
+              <option value="12">Dhjetor</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="expectedWorkDays" class="block text-sm font-semibold text-slate-700 mb-2">Ditë pune</label>
+            <input id="expectedWorkDays" type="number" min="0" max="31" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3">
+          <button type="button" class="close-modal-btn rounded-2xl border border-slate-200 px-5 py-3 font-semibold hover:bg-slate-50" data-close="workdayConfigModal">Anulo</button>
+          <button type="submit" class="rounded-2xl bg-amber-500 hover:bg-amber-600 text-white px-5 py-3 font-semibold">Ruaj</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MESSAGE MODAL -->
+  <div id="messageModal" class="hidden fixed inset-0 z-50 items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+    <div class="w-full max-w-2xl rounded-3xl bg-white card-shadow p-6 md:p-8 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h3 class="text-2xl font-bold text-slate-900">Dërgo mesazh</h3>
+          <p class="text-slate-500 mt-1">Njoftim, vrejtje ose lavdërim me vlerësim</p>
+        </div>
+        <button type="button" class="close-modal-btn p-2 rounded-xl hover:bg-slate-100" data-close="messageModal">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="messageForm" class="space-y-5">
+        <div>
+          <label for="messageRecipients" class="block text-sm font-semibold text-slate-700 mb-2">Marrësit</label>
+          <select id="messageRecipients" multiple class="w-full rounded-2xl border border-slate-200 px-4 py-3 min-h-[140px] outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500"></select>
+          <p class="text-xs text-slate-500 mt-2">Mund të zgjedhësh një, disa ose të gjithë punonjësit</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="messageType" class="block text-sm font-semibold text-slate-700 mb-2">Lloji i mesazhit</label>
+            <select id="messageType" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
+              <option value="info">Informues</option>
+              <option value="warning">Vrejtje</option>
+              <option value="praise">Lavdërim</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="messageRating" class="block text-sm font-semibold text-slate-700 mb-2">Vlerësimi</label>
+            <select id="messageRating" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
+              <option value="">Pa vlerësim</option>
+              <option value="1">1 yll</option>
+              <option value="2">2 yje</option>
+              <option value="3">3 yje</option>
+              <option value="4">4 yje</option>
+              <option value="5">5 yje</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label for="messageSubject" class="block text-sm font-semibold text-slate-700 mb-2">Titulli</label>
+          <input id="messageSubject" type="text" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500" />
+        </div>
+
+        <div>
+          <label for="messageText" class="block text-sm font-semibold text-slate-700 mb-2">Mesazhi</label>
+          <textarea id="messageText" rows="5" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500"></textarea>
+        </div>
+
+        <div class="flex justify-end gap-3">
+          <button type="button" class="close-modal-btn rounded-2xl border border-slate-200 px-5 py-3 font-semibold hover:bg-slate-50" data-close="messageModal">Anulo</button>
+          <button type="submit" class="rounded-2xl bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 font-semibold">Dërgo</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="hidden toast toast-info"></div>
+
   <script src="app.js"></script>
 </body>
 </html>
